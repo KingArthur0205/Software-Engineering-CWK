@@ -10,7 +10,7 @@
 # This creates a new branch called "arthur-branch" where you can modify the code without affecting the main branch
 >> git checkout -b arthur-branch
 # This switches to arthur-branch
->> get checkout arthur-branch
+>> git checkout arthur-branch
 # Notify GIT about changes in AddEventTag.java file
 >> git add AddEventTag.java
 >> git commit -m "Create the Tag type"

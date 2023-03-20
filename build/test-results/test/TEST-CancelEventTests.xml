@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="CancelEventTests" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-03-20T16:49:55" hostname="GuanzhongdeMacBook-Pro.local" time="4.488">
+  <properties/>
+  <testcase name="cancelEventAsConsumer()" classname="CancelEventTests" time="0.601"/>
+  <testcase name="cancelFutureEventWithCancelledBooking()" classname="CancelEventTests" time="0.898"/>
+  <testcase name="cancelOngoingEvent()" classname="CancelEventTests" time="0.299"/>
+  <testcase name="cancelEventWithoutBookings()" classname="CancelEventTests" time="0.299"/>
+  <testcase name="cancelEndedEvent()" classname="CancelEventTests" time="0.299"/>
+  <testcase name="cancelFutureEventWith2Bookings()" classname="CancelEventTests" time="1.194"/>
+  <testcase name="cancelCurrentEventWith1Booking()" classname="CancelEventTests" time="0.896"/>
+  <system-out><![CDATA[cancelEventAsConsumer()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mCreateEventCommand({organiser=Staff, eventNumber=1, title=Puppies against depression}) => CREATE_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) => USER_LOGIN_SUCCESS?[0m
+?[32mListEventsCommand({eventList=[Event{eventNumber=1, title='Puppies against depression', type=Theatre, numTicketsCap=10, ticketPriceInPence=0, venueAddress='55.94368888764689 -3.1888246174917114', description='Please be prepared to pay 2.50 pounds on entry', startDateTime=2023-03-22T16:49:56.080744, endDateTime=2023-03-22T17:49:56.080773, hasSocialDistancing=false, hasAirFiltration=false, isOutdoors=true, status=ACTIVE, numTicketsLeft=10}], searchDate=null, activeEventsOnly=false, userEventsOnly=false}) => LIST_EVENTS_SUCCESS?[0m
+?[33mCancelEventCommand({currentUser=Consumer{bookings=[], name='Chihuahua Fan', phoneNumber='01324456897', address='55.94872684464941 -3.199892044473183', preferences=ConsumerPreferences{preferSocialDistancing=false, preferAirFiltration=false, preferOutdoorsOnly=false, preferredMaxCapacity=2147483647}}, eventNumber=1}) => CANCEL_EVENT_USER_NOT_STAFF?[0m
+---
+cancelFutureEventWithCancelledBooking()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mCreateEventCommand({organiser=Staff, eventNumber=1, title=Puppies against depression}) => CREATE_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) => USER_LOGIN_SUCCESS?[0m
+?[32mBookEventCommand({numTicketsRequested=20, eventNumber=1}) => BOOK_EVENT_SUCCESS?[0m
+?[32mCancelBookingCommand({bookingNumber=1}) => CANCEL_BOOKING_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mLoginCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mCancelEventCommand({eventNumber=1}) => CANCEL_EVENT_SUCCESS?[0m
+---
+cancelOngoingEvent()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[33mCancelEventCommand({eventNumber=1}) => CANCEL_EVENT_ALREADY_STARTED?[0m
+---
+cancelEventWithoutBookings()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mCreateEventCommand({organiser=Staff, eventNumber=1, title=Puppies against depression}) => CREATE_EVENT_SUCCESS?[0m
+?[32mListEventsCommand({eventList=[Event{eventNumber=1, title='Puppies against depression', type=Theatre, numTicketsCap=10, ticketPriceInPence=0, venueAddress='55.94368888764689 -3.1888246174917114', description='Please be prepared to pay 2.50 pounds on entry', startDateTime=2023-03-22T16:49:57.880536, endDateTime=2023-03-22T17:49:57.880562, hasSocialDistancing=false, hasAirFiltration=false, isOutdoors=true, status=ACTIVE, numTicketsLeft=10}], searchDate=null, activeEventsOnly=false, userEventsOnly=true}) => LIST_EVENTS_SUCCESS?[0m
+?[32mCancelEventCommand({eventNumber=1}) => CANCEL_EVENT_SUCCESS?[0m
+---
+cancelEndedEvent()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[33mCancelEventCommand({eventNumber=1}) => CANCEL_EVENT_ALREADY_STARTED?[0m
+---
+cancelFutureEventWith2Bookings()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mCreateEventCommand({organiser=Staff, eventNumber=1, title=Puppies against depression}) => CREATE_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, address=55.944853077240545 -3.1873034598188967, phoneNumber=78945623, name=Dora The Explorer, email=dora@explorer.com}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=dora@explorer.com}) => USER_LOGIN_SUCCESS?[0m
+?[32mBookEventCommand({numTicketsRequested=20, eventNumber=1}) => BOOK_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, address=55.94458227461727 -3.1853257484630726, phoneNumber=like the kind that you put on a desk, name=Metal Fan, email=literally@a.fan}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=literally@a.fan}) => USER_LOGIN_SUCCESS?[0m
+?[32mBookEventCommand({numTicketsRequested=1, eventNumber=1}) => BOOK_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mLoginCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+Message to dora@explorer.com and 78945623: Sorry!
+Message to literally@a.fan and like the kind that you put on a desk: Sorry!
+?[32mCancelEventCommand({eventNumber=1}) => CANCEL_EVENT_SUCCESS?[0m
+---
+cancelCurrentEventWith1Booking()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mCreateEventCommand({organiser=Staff, eventNumber=1, title=Puppies against depression}) => CREATE_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) => USER_LOGIN_SUCCESS?[0m
+?[32mListEventsCommand({eventList=[Event{eventNumber=1, title='Puppies against depression', type=Theatre, numTicketsCap=10, ticketPriceInPence=0, venueAddress='55.94368888764689 -3.1888246174917114', description='Please be prepared to pay 2.50 pounds on entry', startDateTime=2023-03-20T17:49:59.674323, endDateTime=2023-03-20T18:49:59.674353, hasSocialDistancing=false, hasAirFiltration=false, isOutdoors=true, status=ACTIVE, numTicketsLeft=10}], searchDate=null, activeEventsOnly=false, userEventsOnly=false}) => LIST_EVENTS_SUCCESS?[0m
+?[32mBookEventCommand({numTicketsRequested=4, eventNumber=1}) => BOOK_EVENT_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mLoginCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) => USER_LOGIN_SUCCESS?[0m
+?[32mListEventsCommand({eventList=[Event{eventNumber=1, title='Puppies against depression', type=Theatre, numTicketsCap=10, ticketPriceInPence=0, venueAddress='55.94368888764689 -3.1888246174917114', description='Please be prepared to pay 2.50 pounds on entry', startDateTime=2023-03-20T17:49:59.674323, endDateTime=2023-03-20T18:49:59.674353, hasSocialDistancing=false, hasAirFiltration=false, isOutdoors=true, status=ACTIVE, numTicketsLeft=6}], searchDate=null, activeEventsOnly=false, userEventsOnly=true}) => LIST_EVENTS_SUCCESS?[0m
+Message to i-would-never-steal-a@dog.xd and 01324456897: I guess we're just not bothered to run this after all
+?[32mCancelEventCommand({eventNumber=1}) => CANCEL_EVENT_SUCCESS?[0m
+---
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

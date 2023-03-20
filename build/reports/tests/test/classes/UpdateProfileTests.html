@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class UpdateProfileTests</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class UpdateProfileTests</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/default-package.html">default-package</a> &gt; UpdateProfileTests</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">10</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">5.938s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">updateConsumerAsProvider()</td>
+<td class="success">0.593s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerEmailInvalidatesOldEmail()</td>
+<td class="success">0.889s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerName()</td>
+<td class="success">0.888s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerNewEmailAndRelogin()</td>
+<td class="success">1.192s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerNotLoggedIn()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerNullName()</td>
+<td class="success">0.297s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerTakenEmail()</td>
+<td class="success">0.888s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateConsumerWrongPassword()</td>
+<td class="success">0.596s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateProviderAsConsumer()</td>
+<td class="success">0.593s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">updateProviderNotLoggedIn()</td>
+<td class="success">0.001s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>updateConsumerNewEmailAndRelogin()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[32mUpdateConsumerProfileCommand({preferences=ConsumerPreferences{preferSocialDistancing=false, preferAirFiltration=false, preferOutdoorsOnly=false, preferredMaxCapacity=2147483647}, newName=Alice, newPhoneNumber=000, newPassword=***, newEmail=peter@parker.com, newAddress=}) =&gt; USER_UPDATE_PROFILE_SUCCESS?[0m
+?[32mLogoutCommand =&gt; USER_LOGOUT_SUCCESS?[0m
+?[32mLoginCommand({password=***, email=peter@parker.com}) =&gt; USER_LOGIN_SUCCESS?[0m
+---
+updateConsumerName()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[32mUpdateConsumerProfileCommand({preferences=ConsumerPreferences{preferSocialDistancing=false, preferAirFiltration=false, preferOutdoorsOnly=false, preferredMaxCapacity=2147483647}, newName=Alice, newPhoneNumber=000, newPassword=***, newEmail=i-would-never-steal-a@dog.xd, newAddress=}) =&gt; USER_UPDATE_PROFILE_SUCCESS?[0m
+---
+updateConsumerEmailInvalidatesOldEmail()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[32mUpdateConsumerProfileCommand({preferences=ConsumerPreferences{preferSocialDistancing=false, preferAirFiltration=false, preferOutdoorsOnly=false, preferredMaxCapacity=2147483647}, newName=Alice, newPhoneNumber=000, newPassword=***, newEmail=peter@parker.com, newAddress=}) =&gt; USER_UPDATE_PROFILE_SUCCESS?[0m
+?[32mLogoutCommand =&gt; USER_LOGOUT_SUCCESS?[0m
+?[33mLoginCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_EMAIL_NOT_REGISTERED?[0m
+---
+updateProviderNotLoggedIn()
+?[33mUpdateProfileCommand =&gt; USER_UPDATE_PROFILE_NOT_LOGGED_IN?[0m
+---
+updateConsumerWrongPassword()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[33mUpdateProfileCommand =&gt; USER_UPDATE_PROFILE_WRONG_PASSWORD?[0m
+---
+updateConsumerTakenEmail()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Domain Parker, email=peter@parker.com}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=peter@parker.com}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[32mLogoutCommand =&gt; USER_LOGOUT_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[33mUpdateProfileCommand({old email=i-would-never-steal-a@dog.xd, new email=peter@parker.com}) =&gt; USER_UPDATE_PROFILE_EMAIL_ALREADY_IN_USE?[0m
+---
+updateProviderAsConsumer()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[33mUpdateStaffProfileCommand =&gt; USER_UPDATE_PROFILE_NOT_STAFF?[0m
+---
+updateConsumerAsProvider()
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) =&gt; REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=bring-in-the-cash@pawsforawwws.org}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[33mUpdateConsumerProfileCommand =&gt; USER_UPDATE_PROFILE_NOT_CONSUMER?[0m
+---
+updateConsumerNullName()
+?[32mRegisterConsumerCommand({password=***, address=55.94872684464941 -3.199892044473183, phoneNumber=01324456897, name=Chihuahua Fan, email=i-would-never-steal-a@dog.xd}) =&gt; REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=i-would-never-steal-a@dog.xd}) =&gt; USER_LOGIN_SUCCESS?[0m
+?[33mUpdateConsumerProfileCommand({newName=null, oldPassword=***, newPhoneNumber=000, newPassword=***, newEmail=i-would-never-steal-a@dog.xd, newPreferences=ConsumerPreferences{preferSocialDistancing=false, preferAirFiltration=false, preferOutdoorsOnly=false, preferredMaxCapacity=2147483647}}) =&gt; USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL?[0m
+---
+updateConsumerNotLoggedIn()
+?[33mUpdateProfileCommand =&gt; USER_UPDATE_PROFILE_NOT_LOGGED_IN?[0m
+---
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 8.0.2</a> at 2023年3月20日 16:50:13</p>
+</div>
+</div>
+</body>
+</html>

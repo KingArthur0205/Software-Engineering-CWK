@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="UserLoginTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-03-20T16:50:07" hostname="GuanzhongdeMacBook-Pro.local" time="2.671">
+  <properties/>
+  <testcase name="createStaff()" classname="UserLoginTests" time="0.298"/>
+  <testcase name="createConsumerThenLoginWrongEmail()" classname="UserLoginTests" time="0.297"/>
+  <testcase name="createConsumer()" classname="UserLoginTests" time="0.298"/>
+  <testcase name="createConsumerAndRelogin()" classname="UserLoginTests" time="0.592"/>
+  <testcase name="createStaffAndRelogin()" classname="UserLoginTests" time="0.592"/>
+  <testcase name="createConsumerThenLoginWrongPassword()" classname="UserLoginTests" time="0.593"/>
+  <system-out><![CDATA[createStaff()
+?[32mRegisterStaffCommand({password=***, email=always@lovin.it}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+---
+createConsumerThenLoginWrongEmail()
+?[32mRegisterConsumerCommand({password=***, address=, phoneNumber=000, name=Ronald McDonald, email=always@lovin.it}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[33mLoginCommand({password=***, email=admin@inf2sepp.app}) => USER_LOGIN_EMAIL_NOT_REGISTERED?[0m
+---
+createConsumer()
+?[32mRegisterConsumerCommand({password=***, address=, phoneNumber=000, name=Ronald McDonald, email=always@lovin.it}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+---
+createConsumerAndRelogin()
+?[32mRegisterConsumerCommand({password=***, address=, phoneNumber=000, name=Ronald McDonald, email=always@lovin.it}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mLoginCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+---
+createStaffAndRelogin()
+?[32mRegisterStaffCommand({password=***, email=always@lovin.it}) => REGISTER_STAFF_SUCCESS?[0m
+?[32mRegisterStaffCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[32mLoginCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+---
+createConsumerThenLoginWrongPassword()
+?[32mRegisterConsumerCommand({password=***, address=, phoneNumber=000, name=Ronald McDonald, email=always@lovin.it}) => REGISTER_CONSUMER_SUCCESS?[0m
+?[32mRegisterConsumerCommand({password=***, email=always@lovin.it}) => USER_LOGIN_SUCCESS?[0m
+?[32mLogoutCommand => USER_LOGOUT_SUCCESS?[0m
+?[33mLoginCommand({password=***, email=always@lovin.it}) => USER_LOGIN_WRONG_PASSWORD?[0m
+---
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

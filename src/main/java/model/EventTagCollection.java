@@ -38,4 +38,16 @@ public class EventTagCollection {
     public Map<String, String> getTags() {
         return tags;
     }
+
+    /**
+     * Obtain the value associated with the tagName.
+     * @param tagName The name of the Tag of which we want to obtain the value.
+     * @return        The value associated with the tagName. null if the tagName doesn't exist
+     */
+    public String getValueFor(String tagName) {
+        if (tagName == null) {
+            return null;
+        }
+        return tags.get(tagName);
+    }
 }

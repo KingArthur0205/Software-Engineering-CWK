@@ -8,7 +8,7 @@ import java.util.Map;
  * value selected for it.
  */
 public class EventTagCollection {
-    private Map<String, String> tags;
+    private final Map<String, String> tags;
 
     /**
      * Create a new EventTagCollection with an empty map of Tags.
@@ -23,12 +23,19 @@ public class EventTagCollection {
      * the map of tags with their corresponding Tags.
      */
     public EventTagCollection(String valuesOfEachTag) {
-        String[] pairs = valuesOfEachTag.split(",");
-        for (String pair : pairs) {
-            String[] tagAndValue = pair.split("=");
-            String tagName = tagAndValue[0];
-            String value = tagAndValue[1];
-            tags.put(tagName, value);
+        this();
+        if (valuesOfEachTag != null) {
+            String[] pairs = valuesOfEachTag.split(",");
+            for (String pair : pairs) {
+                String[] tagAndValue = pair.split("=");
+                String tagName = tagAndValue[0];
+                String value = tagAndValue[1];
+                tags.put(tagName, value);
+            }
         }
+    }
+
+    public Map<String, String> getTags() {
+        return tags;
     }
 }

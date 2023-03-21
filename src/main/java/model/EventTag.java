@@ -11,8 +11,8 @@ public class EventTag {
 
     /**
      * Create a new Tag with the given possible values and a default value.
-     * @param values: Possible values of the Tag
-     * @param defaultValue: Default value of the Tag
+     * @param values        Possible values of the Tag
+     * @param defaultValue  Default value of the Tag
      */
     public EventTag(Set<String> values, String defaultValue) {
         this.defaultValue = defaultValue;

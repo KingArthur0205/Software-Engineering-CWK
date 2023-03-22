@@ -24,6 +24,7 @@ public class ConsoleView implements IView {
     public static final int STAFF_MENU_CREATE_EVENT = 3;
     public static final int STAFF_MENU_CANCEL_EVENT = 4;
     public static final int STAFF_MENU_LIST_EVENT_BOOKINGS = 5;
+    public static final int STAFF_MENU_ADD_EVENT_TAG = 6;
     public static final int STAFF_MENU_RETURN = -1;
 
     /**

@@ -62,6 +62,9 @@ public class AddEventTagCommand implements ICommand<EventTag>{
 
     private enum LogStatus {
         ADD_EVENT_TAG_USER_NOT_STAFF,
+        ADD_EVENT_TAG_TITLE_CLASH,
+        ADD_EVENT_TAG_DEFAULT_VALUE_NOT_POSSIBLE,
+        ADD_EVENT_TAG_NOT_FEW_POSSIBLE_VALUES,
         ADD_EVENT_TAG_SUCCESS
     }
 }

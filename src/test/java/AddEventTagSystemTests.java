@@ -24,8 +24,9 @@ public class AddEventTagSystemTests extends ConsoleTest{
         Controller controller = createController();
         startOutputCapture();
         EventTag tag = createEventTag(controller, "tag1",
-                new HashSet<>(Arrays.asList("value1", "value2")), "defValue");
+                new HashSet<>(Arrays.asList("value1", "value2")), "value1");
         stopOutputCaptureAndCompare("ADD_EVENT_TAG_USER_NOT_STAFF");
+
         // Check tag is null
         assertNull(tag);
         // Check that EventState doesn't have the tag as one element of the possibleTags
@@ -37,7 +38,7 @@ public class AddEventTagSystemTests extends ConsoleTest{
         Controller controller = setUp();
         startOutputCapture();
         EventTag tag = createEventTag(controller, "tag1",
-                new HashSet<>(Arrays.asList("value1", "value2")), "defValue");
+                new HashSet<>(Arrays.asList("value1", "value2")), "value1");
         stopOutputCaptureAndCompare("ADD_EVENT_TAG_SUCCESS");
 
         assertNotNull(tag);
@@ -45,10 +46,28 @@ public class AddEventTagSystemTests extends ConsoleTest{
     }
 
     @Test
-    void addAlreadyExistedTag() {
+    void addTagWithNoPossibleValues() {}
+
+    @Test
+    void addTagWithOnePossibleValue() {}
+
+    @Test
+    void addTagWithClashedName() {
         Controller controller = setUp();
         startOutputCapture();
+
+        EventTag tag = createEventTag(controller, "tag1",
+                new HashSet<>(Arrays.asList("value1", "value2")), "value1");
+        EventTag tag2 = createEventTag(controller, "tag1",
+                new HashSet<>(Arrays.asList("value3", "value4")), "value3");
+        stopOutputCaptureAndCompare("ADD_EVENT_TAG_SUCCESS");
+
+        assertNull(tag2);
+        assertEquals(tag, obtainEventTagFromState(controller, "tag1"));
     }
+
+    @Test
+    void addTagWithInvalidDefaultValue() {}
 
     // Create a controller and setup the current user as a Staff.
     private Controller setUp() {
@@ -57,7 +76,7 @@ public class AddEventTagSystemTests extends ConsoleTest{
         return controller;
     }
 
-
+    // Obtain the actual Tag saved if successful, null otherwise
     private EventTag obtainEventTagFromState(Controller controller, String tagName) {
         IEventState eventState = controller.getContext().getEventState();
         return eventState.getPossibleTags().get(tagName);

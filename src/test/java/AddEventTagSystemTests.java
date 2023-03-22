@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AddEventTagTests extends ConsoleTest{
+import static org.junit.jupiter.api.Assertions.*;
+
+public class AddEventTagSystemTests extends ConsoleTest{
     private static EventTag createEventTag(Controller controller, String tagName, Set<String> possibleValues,
                                            String defaultValue) {
         AddEventTagCommand eventCmd = new AddEventTagCommand(tagName, possibleValues, defaultValue);
@@ -24,7 +26,16 @@ public class AddEventTagTests extends ConsoleTest{
     }
 
     @Test
-    void addEventTag() {
-
+    void addNewEventTag() {
+        Controller controller = createController();
+        createStaff(controller);
+        startOutputCapture();
+        EventTag tag = createEventTag(controller, "tag1",
+                new HashSet<>(Arrays.asList("value1", "value2")), "defValue");
+        assertNotNull(tag);
+        stopOutputCaptureAndCompare("ADD_EVENT_TAG_SUCCESS");
     }
+
+    @Test
+    void addAlreadyExistedTag() {}
 }

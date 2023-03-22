@@ -127,6 +127,7 @@ public class Main {
                 case ConsoleView.STAFF_MENU_CREATE_EVENT -> runCommandFromUserInput(controller, CreateEventCommand.class);
                 case ConsoleView.STAFF_MENU_CANCEL_EVENT -> runCommandFromUserInput(controller, CancelEventCommand.class);
                 case ConsoleView.STAFF_MENU_LIST_EVENT_BOOKINGS -> runCommandFromUserInput(controller, ListEventBookingsCommand.class);
+                case ConsoleView.STAFF_MENU_ADD_EVENT_TAG -> runCommandFromUserInput(controller, AddEventTagCommand.class);
             }
             view.displayStaffMenu();
         }

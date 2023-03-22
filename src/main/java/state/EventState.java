@@ -1,11 +1,11 @@
 package state;
 
 import model.Event;
+import model.EventTag;
 import model.EventType;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * {@link EventState} is a concrete implementation of {@link IEventState}.
@@ -13,14 +13,21 @@ import java.util.List;
 public class EventState implements IEventState {
     private final List<Event> events;
     private long nextEventNumber;
+    private final Map<String, EventTag> possibleTags;
 
     /**
      * Create a new EventState with an empty list of events, which keeps track of the next event and performance numbers
-     * it will generate, starting from 1 and incrementing by 1 each time when requested
+     * it will generate, starting from 1 and incrementing by 1 each time when requested.
      */
     public EventState() {
         events = new LinkedList<>();
         nextEventNumber = 1;
+        possibleTags = new HashMap<>();
+        Set<String> valueSet = new HashSet<>(Arrays.asList("true", "false"));
+        Set<String> capacity = new HashSet<>(Arrays.asList("<20", "20-100", "100-200", "200"));
+        possibleTags.put("hasSocialDistancing", new EventTag(valueSet, "false"));
+        possibleTags.put("hasAirFiltration", new EventTag(valueSet, "false"));
+        possibleTags.put("venueCapacity", new EventTag(capacity, "<20"));
     }
 
     /**
@@ -28,10 +35,11 @@ public class EventState implements IEventState {
      *
      * @param other instance to copy
      */
-    public EventState(IEventState other) {
+    public EventState(IEventState other, Map<String, EventTag> possibleTags) {
         EventState otherImpl = (EventState) other;
         events = new LinkedList<>(otherImpl.events);
         nextEventNumber = otherImpl.nextEventNumber;
+        this.possibleTags = possibleTags;
     }
 
     @Override
@@ -67,5 +75,19 @@ public class EventState implements IEventState {
                 endDateTime, hasSocialDistancing, hasAirFiltration, isOutdoors);
         events.add(event);
         return event;
+    }
+
+    public void addEvent(Event event) {
+        events.add(event);
+    }
+
+    public Map<String, EventTag> getPossibleTags() {
+        return possibleTags;
+    }
+
+    public EventTag createEventTag(String tagName, Set<String> possibleValues, String defaultValue) {
+        EventTag tag = new EventTag(possibleValues, defaultValue);
+        possibleTags.put(tagName, tag);
+        return tag;
     }
 }

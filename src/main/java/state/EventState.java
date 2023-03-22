@@ -24,10 +24,10 @@ public class EventState implements IEventState {
         nextEventNumber = 1;
         possibleTags = new HashMap<>();
         Set<String> valueSet = new HashSet<>(Arrays.asList("true", "false"));
-        Set<String> capacity = new HashSet<>(Arrays.asList("<20", "20-100", "100-200", "200"));
-        possibleTags.put("hasSocialDistancing", new EventTag(valueSet, "false"));
-        possibleTags.put("hasAirFiltration", new EventTag(valueSet, "false"));
-        possibleTags.put("venueCapacity", new EventTag(capacity, "<20"));
+        Set<String> capacitySet = new HashSet<>(Arrays.asList("<20", "20-100", "100-200", "200"));
+        createEventTag("hasSocialDistancing", valueSet, "false");
+        createEventTag("hasAirFiltration", valueSet, "false");
+        createEventTag("venueCapacity", capacitySet, "<20");
     }
 
     /**
@@ -35,11 +35,11 @@ public class EventState implements IEventState {
      *
      * @param other instance to copy
      */
-    public EventState(IEventState other, Map<String, EventTag> possibleTags) {
+    public EventState(IEventState other) {
         EventState otherImpl = (EventState) other;
         events = new LinkedList<>(otherImpl.events);
         nextEventNumber = otherImpl.nextEventNumber;
-        this.possibleTags = possibleTags;
+        this.possibleTags = otherImpl.possibleTags;
     }
 
     @Override

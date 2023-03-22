@@ -66,6 +66,7 @@ public class ConsoleView implements IView {
         System.out.println("[" + STAFF_MENU_CREATE_EVENT + "] CreateEventCommand");
         System.out.println("[" + STAFF_MENU_CANCEL_EVENT + "] CancelEventCommand");
         System.out.println("[" + STAFF_MENU_LIST_EVENT_BOOKINGS + "] ListEventBookingsCommand");
+        System.out.print("[" + STAFF_MENU_ADD_EVENT_TAG + "] AddEventTagCommand");
         System.out.println("[" + STAFF_MENU_RETURN + "] Return to main menu");
     }
 

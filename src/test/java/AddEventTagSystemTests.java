@@ -38,9 +38,10 @@ public class AddEventTagSystemTests extends ConsoleTest{
         startOutputCapture();
         EventTag tag = createEventTag(controller, "tag1",
                 new HashSet<>(Arrays.asList("value1", "value2")), "defValue");
+        stopOutputCaptureAndCompare("ADD_EVENT_TAG_SUCCESS");
+
         assertNotNull(tag);
         assertNotNull(obtainEventTagFromState(controller, "tag1"));
-        stopOutputCaptureAndCompare("ADD_EVENT_TAG_SUCCESS");
     }
 
     @Test

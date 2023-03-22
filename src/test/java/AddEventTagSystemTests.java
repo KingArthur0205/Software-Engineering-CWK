@@ -22,4 +22,9 @@ public class AddEventTagTests extends ConsoleTest{
         createEventTag(controller, "tag1", new HashSet<>(Arrays.asList("value1")), "defValue");
         stopOutputCaptureAndCompare("ADD_EVENT_TAG_USER_NOT_STAFF");
     }
+
+    @Test
+    void addEventTag() {
+
+    }
 }

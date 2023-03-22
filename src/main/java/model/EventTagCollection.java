@@ -42,7 +42,7 @@ public class EventTagCollection {
     /**
      * Obtain the value associated with the tagName.
      * @param tagName The name of the Tag of which we want to obtain the value.
-     * @return        The value associated with the tagName. null if the tagName doesn't exist
+     * @return        AThe value associated with the tagName. null if the tagName doesn't exist
      */
     public String getValueFor(String tagName) {
         if (tagName == null) {

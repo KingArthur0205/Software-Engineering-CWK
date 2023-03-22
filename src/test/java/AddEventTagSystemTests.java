@@ -26,7 +26,7 @@ public class AddEventTagSystemTests extends ConsoleTest{
         EventTag tag = createEventTag(controller, "tag1",
                 new HashSet<>(Arrays.asList("value1", "value2")), "defValue");
         stopOutputCaptureAndCompare("ADD_EVENT_TAG_USER_NOT_STAFF");
-
+        // Check tag is null
         assertNull(tag);
         // Check that EventState doesn't have the tag as one element of the possibleTags
         assertNull(obtainEventTagFromState(controller, "tag1"));

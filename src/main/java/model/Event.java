@@ -1,6 +1,8 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link Event} represents an event that can be booked by {@link Consumer}s. Tickets can be free, but they are
@@ -19,6 +21,7 @@ public class Event {
     private final boolean hasSocialDistancing;
     private final boolean hasAirFiltration;
     private final boolean isOutdoors;
+    private List<Review> review;
 
     private EventStatus status;
     private int numTicketsLeft;
@@ -64,6 +67,7 @@ public class Event {
         this.hasSocialDistancing = hasSocialDistancing;
         this.hasAirFiltration = hasAirFiltration;
         this.isOutdoors = isOutdoors;
+        this.review = new ArrayList<>();
 
         this.status = EventStatus.ACTIVE;
         this.numTicketsLeft = numTicketsCap;
@@ -129,6 +133,10 @@ public class Event {
      */
     public void cancel() {
         status = EventStatus.CANCELLED;
+    }
+
+    public void addReview(Review review) {
+
     }
 
     @Override

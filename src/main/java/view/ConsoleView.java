@@ -25,6 +25,8 @@ public class ConsoleView implements IView {
     public static final int STAFF_MENU_CANCEL_EVENT = 4;
     public static final int STAFF_MENU_LIST_EVENT_BOOKINGS = 5;
     public static final int STAFF_MENU_ADD_EVENT_TAG = 6;
+    public static final int STAFF_MENU_EXPORT = 7;
+    public static final int STAFF_MENU_IMPORT = 8;
     public static final int STAFF_MENU_RETURN = -1;
 
     /**
@@ -67,6 +69,8 @@ public class ConsoleView implements IView {
         System.out.println("[" + STAFF_MENU_CANCEL_EVENT + "] CancelEventCommand");
         System.out.println("[" + STAFF_MENU_LIST_EVENT_BOOKINGS + "] ListEventBookingsCommand");
         System.out.println("[" + STAFF_MENU_ADD_EVENT_TAG + "] AddEventTagCommand");
+        System.out.println("[" + STAFF_MENU_EXPORT + "] ExportDataCommand");
+        System.out.println("[" + STAFF_MENU_IMPORT + "] ImportDataCommand");
         System.out.println("[" + STAFF_MENU_RETURN + "] Return to main menu");
     }
 

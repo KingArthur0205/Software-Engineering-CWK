@@ -5,6 +5,7 @@ import external.PaymentSystem;
 import state.*;
 
 import java.io.Closeable;
+import java.io.Serializable;
 
 /**
  * {@link Context} is a wrapper around the entire app state. It keeps references to the internal states:
@@ -12,7 +13,7 @@ import java.io.Closeable;
  * The state classes are kept as interfaces, so that other classes using the context cannot depend on their
  * implementation details.
  */
-public class Context implements AutoCloseable {
+public class Context implements AutoCloseable, Serializable {
     private final String orgName;
     private final String orgAddress;
     private final String orgEmail;

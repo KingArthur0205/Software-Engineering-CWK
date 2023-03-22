@@ -77,14 +77,17 @@ public class EventState implements IEventState {
         return event;
     }
 
+    @Override
     public void addEvent(Event event) {
         events.add(event);
     }
 
+    @Override
     public Map<String, EventTag> getPossibleTags() {
         return possibleTags;
     }
 
+    @Override
     public EventTag createEventTag(String tagName, Set<String> possibleValues, String defaultValue) {
         EventTag tag = new EventTag(possibleValues, defaultValue);
         possibleTags.put(tagName, tag);

@@ -7,6 +7,10 @@ import view.IView;
  * {@link Controller} is the main external interface of this application. It allows executing commands.
  */
 public class Controller {
+    public Context getContext() {
+        return context;
+    }
+
     private final Context context;
     private final IView view;
 

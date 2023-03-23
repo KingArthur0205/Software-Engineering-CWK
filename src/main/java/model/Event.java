@@ -139,6 +139,8 @@ public class Event {
         reviews.add(review);
     }
 
+    public List<Review> getReviews() {return reviews;}
+
     @Override
     public String toString() {
         return "Event{" +

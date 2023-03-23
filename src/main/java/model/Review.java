@@ -14,4 +14,18 @@ public class Review {
         this.creationDateTime = creationDateTime;
         this.content = content;
     }
+
+    public String getContent() {return content;}
+
+    public Consumer getAuthor() {
+        return author;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
 }

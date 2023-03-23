@@ -21,7 +21,7 @@ public class Event {
     private final boolean hasSocialDistancing;
     private final boolean hasAirFiltration;
     private final boolean isOutdoors;
-    private List<Review> review;
+    private List<Review> reviews;
 
     private EventStatus status;
     private int numTicketsLeft;
@@ -67,7 +67,7 @@ public class Event {
         this.hasSocialDistancing = hasSocialDistancing;
         this.hasAirFiltration = hasAirFiltration;
         this.isOutdoors = isOutdoors;
-        this.review = new ArrayList<>();
+        this.reviews = new ArrayList<>();
 
         this.status = EventStatus.ACTIVE;
         this.numTicketsLeft = numTicketsCap;
@@ -136,7 +136,7 @@ public class Event {
     }
 
     public void addReview(Review review) {
-
+        reviews.add(review);
     }
 
     @Override

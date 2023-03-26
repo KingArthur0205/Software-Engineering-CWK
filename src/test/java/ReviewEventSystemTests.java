@@ -81,7 +81,9 @@ public class ReviewEventSystemTests extends ConsoleTest{
     void reviewWhenConsumerHasNoBooking() {}
 
     @Test
-    void reviewRunningEvent() {}
+    void reviewRunningEvent() {
+
+    }
 
     @Test
     void reviewFutureEvent() {}

@@ -4,13 +4,14 @@ import model.Event;
 import model.EventTag;
 import model.EventType;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  * {@link EventState} is a concrete implementation of {@link IEventState}.
  */
-public class EventState implements IEventState {
+public class EventState implements IEventState, Serializable {
     private final List<Event> events;
     private long nextEventNumber;
     private final Map<String, EventTag> possibleTags;

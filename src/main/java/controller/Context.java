@@ -14,14 +14,14 @@ import java.io.Serializable;
  * implementation details.
  */
 public class Context implements AutoCloseable, Serializable {
-    private final String orgName;
-    private final String orgAddress;
-    private final String orgEmail;
-    private final String orgSecret;
-    private final PaymentSystem paymentSystem;
-    private final IUserState userState;
-    private final IEventState eventState;
-    private final IBookingState bookingState;
+    private String orgName;
+    private String orgAddress;
+    private String orgEmail;
+    private String orgSecret;
+    private PaymentSystem paymentSystem;
+    private IUserState userState;
+    private IEventState eventState;
+    private IBookingState bookingState;
 
     /**
      * Initialises all the state members with default constructors of the concrete implementations:
@@ -43,6 +43,16 @@ public class Context implements AutoCloseable, Serializable {
         this.bookingState = new BookingState();
     }
 
+    public void setContext(Context other){
+        orgName = other.orgName;
+        orgAddress = other.orgAddress;
+        orgEmail = other.orgEmail;
+        orgSecret = other.orgSecret;
+        paymentSystem = new MockPaymentSystem((MockPaymentSystem) other.paymentSystem);
+        userState = new UserState(other.userState);
+        eventState = new EventState(other.eventState);
+        bookingState = new BookingState(other.bookingState);
+    }
     /**
      * Copy constructor, makes a deep copy of another {@link Context}.
      *
@@ -59,6 +69,7 @@ public class Context implements AutoCloseable, Serializable {
         eventState = new EventState(other.eventState);
         bookingState = new BookingState(other.bookingState);
     }
+
 
     public String getOrgName() { return orgName; }
 
@@ -85,6 +96,7 @@ public class Context implements AutoCloseable, Serializable {
     public IEventState getEventState() {
         return eventState;
     }
+
 
     /**
      * Closes this resource, relinquishing any underlying resources.

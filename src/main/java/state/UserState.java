@@ -2,13 +2,14 @@ package state;
 
 import model.User;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * {@link UserState} is a concrete implementation of {@link IUserState}.
  */
-public class UserState implements IUserState {
+public class UserState implements IUserState, Serializable {
     private final HashMap<String, User> users;
     private User currentUser;
 

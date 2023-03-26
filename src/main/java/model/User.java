@@ -2,11 +2,13 @@ package model;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
+import java.io.Serializable;
+
 /**
  * {@link User} is an abstraction, containing common state and behaviours shared by different kinds of users:
  * {@link Consumer}s and {@link Staff}s.
  */
-public abstract class User {
+public abstract class User implements Serializable {
     private String email;
     private String passwordHash;
 

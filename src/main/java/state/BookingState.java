@@ -4,6 +4,7 @@ import model.Booking;
 import model.Consumer;
 import model.Event;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * {@link BookingState} is a concrete implementation of {@link IBookingState}.
  */
-public class BookingState implements IBookingState {
+public class BookingState implements IBookingState, Serializable {
     private final List<Booking> bookings;
     private long nextBookingNumber;
 

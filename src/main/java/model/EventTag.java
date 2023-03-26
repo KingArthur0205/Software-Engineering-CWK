@@ -1,11 +1,12 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * {@link EventTag} aids classification of the {@link Event}s or match of preferences for {@link Consumer}s.
  */
-public class EventTag {
+public class EventTag implements Serializable {
     private final Set<String> values;
     private final String defaultValue;
 

@@ -1,10 +1,12 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * A set of Covid-19 preferences that {@link Consumer}s can save in their profile and filter {@link Event}s based on
  * them.
  */
-public class ConsumerPreferences {
+public class ConsumerPreferences implements Serializable {
     public boolean preferSocialDistancing;
     public boolean preferAirFiltration;
     public boolean preferOutdoorsOnly;

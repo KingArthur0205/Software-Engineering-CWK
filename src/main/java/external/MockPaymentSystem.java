@@ -1,5 +1,6 @@
 package external;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.Objects;
  * <p>
  * Hint: you may find it helpful to use an inner Transaction class, overriding its equals and hashCode methods
  */
-public class MockPaymentSystem implements PaymentSystem {
+public class MockPaymentSystem implements PaymentSystem, Serializable {
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_CYAN = "\u001B[36m";
 

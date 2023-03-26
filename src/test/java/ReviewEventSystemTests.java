@@ -30,6 +30,7 @@ public class ReviewEventSystemTests extends ConsoleTest{
                 1, LocalDateTime.now().minusHours(20)));
         return controller;
     }
+
     @Test
     void reviewWithNonexistentEvent() {
         Controller controller = createAndBookEvent();

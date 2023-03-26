@@ -1,13 +1,11 @@
-import command.CreateEventCommand;
 import command.LogoutCommand;
 import command.ReviewEventCommand;
 import controller.Context;
 import controller.Controller;
 import model.*;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import state.IEventState;
+
 
 import java.time.LocalDateTime;
 

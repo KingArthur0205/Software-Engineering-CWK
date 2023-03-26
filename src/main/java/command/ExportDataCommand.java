@@ -33,8 +33,8 @@ public class ExportDataCommand implements ICommand<Boolean> {
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
              objectOutputStream.writeObject(context);
 
-            fileOutputStream.close();
-            objectOutputStream.close();
+             fileOutputStream.close();
+             objectOutputStream.close();
 
              System.out.println("Context object has been serialized to context.ser");
         } catch (IOException e) {

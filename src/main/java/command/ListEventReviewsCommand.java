@@ -6,6 +6,7 @@ import model.Review;
 import state.IEventState;
 import view.IView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ public class ListEventReviewsCommand implements ICommand<List<Review>>{
 
     public ListEventReviewsCommand(String eventTitle) {
         this.eventTitle = eventTitle;
+        this.reviewsResult = new ArrayList<>();
     }
 
     @Override
@@ -27,10 +29,11 @@ public class ListEventReviewsCommand implements ICommand<List<Review>>{
                 reviewsResult.addAll(reviewsOfEvent);
             }
         }
+
         view.displaySuccess(
                 "ListEventReviewsCommand",
                 LogStatus.LIST_EVENT_REVIEWS_SUCCESS,
-                Map.of("eventTitle", eventTitle, "reviewsResult", reviewsResult));
+                Map.of("eventTitle", eventTitle, "reviewsResult", reviewsResult.toString()));
     }
 
     @Override

@@ -95,6 +95,7 @@ public class Main {
                 case ConsoleView.MAIN_MENU_LOGIN -> runCommandFromUserInput(controller, LoginCommand.class);
                 case ConsoleView.MAIN_MENU_LOGOUT -> runCommandFromUserInput(controller, LogoutCommand.class);
                 case ConsoleView.MAIN_MENU_LIST_EVENTS -> runCommandFromUserInput(controller, ListEventsCommand.class);
+                case ConsoleView.MAIN_MENU_LIST_EVENT_REVIEWS -> runCommandFromUserInput(controller, ListEventReviewsCommand.class);
                 case ConsoleView.MAIN_MENU_CONSUMER -> goToConsumerMenu(controller, view);
                 case ConsoleView.MAIN_MENU_STAFF -> goToStaffMenu(controller, view);
             }

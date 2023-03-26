@@ -28,4 +28,12 @@ public class Review {
     public LocalDateTime getCreationDateTime() {
         return creationDateTime;
     }
+
+    public String toString() {
+        return "Review" +
+                "{" +"author=" + author.getName() +
+                ", creationDateTime=" + creationDateTime +
+                ", content=" + content +
+                "}";
+    }
 }

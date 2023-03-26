@@ -10,8 +10,9 @@ public class ConsoleView implements IView {
     public static final int MAIN_MENU_LOGIN = 1;
     public static final int MAIN_MENU_LOGOUT = 2;
     public static final int MAIN_MENU_LIST_EVENTS = 3;
-    public static final int MAIN_MENU_CONSUMER = 4;
-    public static final int MAIN_MENU_STAFF = 5;
+    public static final int MAIN_MENU_LIST_EVENT_REVIEWS = 4;
+    public static final int MAIN_MENU_CONSUMER = 5;
+    public static final int MAIN_MENU_STAFF = 6;
     public static final int MAIN_MENU_EXIT = -1;
     public static final int CONSUMER_MENU_REGISTER = 1;
     public static final int CONSUMER_MENU_UPDATE_PROFILE = 2;
@@ -39,6 +40,7 @@ public class ConsoleView implements IView {
         System.out.println("[" + MAIN_MENU_LOGIN + "] LoginCommand");
         System.out.println("[" + MAIN_MENU_LOGOUT + "] LogoutCommand");
         System.out.println("[" + MAIN_MENU_LIST_EVENTS + "] ListEventsCommand");
+        System.out.println("[" + MAIN_MENU_LIST_EVENT_REVIEWS + "] ListEventReviewsCommand");
         System.out.println("[" + MAIN_MENU_CONSUMER + "] Go to consumer menu");
         System.out.println("[" + MAIN_MENU_STAFF + "] Go to staff menu");
         System.out.println("[" + MAIN_MENU_EXIT + "] Exit");

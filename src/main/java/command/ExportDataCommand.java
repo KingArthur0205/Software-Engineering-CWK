@@ -1,18 +1,34 @@
 package command;
 
 import controller.Context;
+import model.Event;
+import model.Staff;
+import model.User;
 import view.IView;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 
 public class ExportDataCommand implements ICommand<Boolean> {
+    private Boolean eventResult;
 
 
     @Override
     public void execute(Context context, IView view) {
+
+        User currentUser = context.getUserState().getCurrentUser();
+        if (!(currentUser instanceof Staff)) {
+            view.displayFailure(
+                    "ExportDataCommand",
+                    ExportDataCommand.LogStatus.Export_Data_USER_NOT_STAFF,
+                    Map.of("user", currentUser != null ? currentUser : "none")
+            );
+            eventResult = false;
+            return;
+        }
         try (FileOutputStream fileOutputStream = new FileOutputStream("context.ser");
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
              objectOutputStream.writeObject(context);
@@ -31,5 +47,10 @@ public class ExportDataCommand implements ICommand<Boolean> {
     public Boolean getResult() {
         return null;
     }
+    private enum LogStatus {
+        Export_Data_USER_NOT_STAFF,
+
+    }
 }
+
 

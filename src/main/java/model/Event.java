@@ -160,4 +160,12 @@ public class Event {
                 ", numTicketsLeft=" + numTicketsLeft +
                 '}';
     }
+
+    public String getVenueAddress() {
+        return venueAddress;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }

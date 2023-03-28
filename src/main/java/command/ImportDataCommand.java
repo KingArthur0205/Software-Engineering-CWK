@@ -13,10 +13,10 @@ public class ImportDataCommand implements ICommand<Boolean> {
     public void execute(Context context, IView view) {
         try (FileInputStream fileInputStream = new FileInputStream("context.ser");
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-             context.setContext((Context) objectInputStream.readObject());
+             //context.setContext((Context) objectInputStream.readObject());
              System.out.println("Context object has been deserialized from context.ser");
              System.out.println(context.getUserState().getAllUsers());
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
              System.err.println("Error deserializing context object: " + e.getMessage());
              e.printStackTrace();
              return;

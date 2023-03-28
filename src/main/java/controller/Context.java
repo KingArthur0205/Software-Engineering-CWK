@@ -102,4 +102,8 @@ public class Context implements AutoCloseable, Serializable {
     public void close() throws Exception {
         paymentSystem.close();
     }
+
+    public MapSystem getMapSystem() {
+        return mapSystem;
+    }
 }

@@ -113,6 +113,7 @@ public class Main {
                 case ConsoleView.CONSUMER_MENU_BOOK_EVENT -> runCommandFromUserInput(controller, BookEventCommand.class);
                 case ConsoleView.CONSUMER_MENU_CANCEL_BOOKING -> runCommandFromUserInput(controller, CancelBookingCommand.class);
                 case ConsoleView.CONSUMER_MENU_LIST_BOOKINGS -> runCommandFromUserInput(controller, ListConsumerBookingsCommand.class);
+                case ConsoleView.CONSUMER_MENU_GET_EVENT_DIRECTIONS -> runCommandFromUserInput(controller, GetEventDirectionsCommand.class);
             }
             view.displayConsumerMenu();
         }

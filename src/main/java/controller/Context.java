@@ -59,7 +59,7 @@ public class Context implements AutoCloseable, Serializable {
 //            eventState.createEventTag(other.eventState.getPossibleTags().get(key));
 //        }
 
-        bookingState = new BookingState(other.bookingState);
+        //bookingState = new BookingState(other.bookingState);
     }
 
     /**

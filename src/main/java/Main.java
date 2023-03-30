@@ -95,6 +95,7 @@ public class Main {
                 case ConsoleView.MAIN_MENU_LOGIN -> runCommandFromUserInput(controller, LoginCommand.class);
                 case ConsoleView.MAIN_MENU_LOGOUT -> runCommandFromUserInput(controller, LogoutCommand.class);
                 case ConsoleView.MAIN_MENU_LIST_EVENTS -> runCommandFromUserInput(controller, ListEventsCommand.class);
+                case ConsoleView.MAIN_MENU_LIST_EVENT_REVIEWS -> runCommandFromUserInput(controller, ListEventReviewsCommand.class);
                 case ConsoleView.MAIN_MENU_CONSUMER -> goToConsumerMenu(controller, view);
                 case ConsoleView.MAIN_MENU_STAFF -> goToStaffMenu(controller, view);
             }
@@ -112,6 +113,7 @@ public class Main {
                 case ConsoleView.CONSUMER_MENU_BOOK_EVENT -> runCommandFromUserInput(controller, BookEventCommand.class);
                 case ConsoleView.CONSUMER_MENU_CANCEL_BOOKING -> runCommandFromUserInput(controller, CancelBookingCommand.class);
                 case ConsoleView.CONSUMER_MENU_LIST_BOOKINGS -> runCommandFromUserInput(controller, ListConsumerBookingsCommand.class);
+                case ConsoleView.CONSUMER_MENU_GET_EVENT_DIRECTIONS -> runCommandFromUserInput(controller, GetEventDirectionsCommand.class);
             }
             view.displayConsumerMenu();
         }

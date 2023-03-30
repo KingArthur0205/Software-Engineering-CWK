@@ -84,4 +84,12 @@ public class Consumer extends User {
                 ", preferences=" + preferences +
                 '}';
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
 }

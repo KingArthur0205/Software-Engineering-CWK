@@ -1,8 +1,7 @@
 package state;
 
-import model.EventTag;
-import model.Staff;
 import model.Event;
+import model.EventTag;
 import model.EventType;
 
 import java.time.LocalDateTime;
@@ -68,7 +67,7 @@ public interface IEventState {
      * @param tagName        name of the Tag
      * @param possibleValues possible values of a Tag
      * @param defaultValue   default value of a Tag
-     * @return The newly created {@link Tag}
+     * @return The newly created {@link EventTag}
      */
     EventTag createEventTag(String tagName, Set<String> possibleValues, String defaultValue);
 }

@@ -1,6 +1,8 @@
 package controller;
 
+import external.MapSystem;
 import external.MockPaymentSystem;
+import external.OfflineMapSystem;
 import external.PaymentSystem;
 import state.*;
 
@@ -14,18 +16,19 @@ import java.io.Serializable;
  * implementation details.
  */
 public class Context implements AutoCloseable, Serializable {
-    private String orgName;
-    private String orgAddress;
-    private String orgEmail;
-    private String orgSecret;
-    private PaymentSystem paymentSystem;
-    private IUserState userState;
-    private IEventState eventState;
-    private IBookingState bookingState;
+    private final String orgName;
+    private final String orgAddress;
+    private final String orgEmail;
+    private final String orgSecret;
+    private final PaymentSystem paymentSystem;
+    private final MapSystem mapSystem;
+    private final IUserState userState;
+    private final IEventState eventState;
+    private final IBookingState bookingState;
 
     /**
      * Initialises all the state members with default constructors of the concrete implementations:
-     * {@link UserState}, {@link EventState}, and {@link BookingState}.
+     * {@link UserState}, {@link EventState}, {@link MapSystem}, and {@link BookingState}.
      *
      * @param orgName Name of the organisation that owns this application instance
      * @param orgAddress Address of the organisation that owns this application instance
@@ -38,6 +41,7 @@ public class Context implements AutoCloseable, Serializable {
         this.orgEmail = orgEmail;
         this.orgSecret = orgSecret;
         this.paymentSystem = new MockPaymentSystem();
+        this.mapSystem = new OfflineMapSystem();
         this.userState = new UserState();
         this.eventState = new EventState();
         this.bookingState = new BookingState();
@@ -57,6 +61,7 @@ public class Context implements AutoCloseable, Serializable {
 
         bookingState = new BookingState(other.bookingState);
     }
+
     /**
      * Copy constructor, makes a deep copy of another {@link Context}.
      *
@@ -69,6 +74,7 @@ public class Context implements AutoCloseable, Serializable {
         orgEmail = other.orgEmail;
         orgSecret = other.orgSecret;
         paymentSystem = new MockPaymentSystem((MockPaymentSystem) other.paymentSystem);
+        mapSystem = new OfflineMapSystem();
         userState = new UserState(other.userState);
         eventState = new EventState(other.eventState);
         bookingState = new BookingState(other.bookingState);
@@ -110,5 +116,9 @@ public class Context implements AutoCloseable, Serializable {
     @Override
     public void close() throws Exception {
         paymentSystem.close();
+    }
+
+    public MapSystem getMapSystem() {
+        return mapSystem;
     }
 }

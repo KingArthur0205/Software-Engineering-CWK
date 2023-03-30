@@ -47,6 +47,21 @@ public class Context implements AutoCloseable, Serializable {
         this.bookingState = new BookingState();
     }
 
+    public void setContext(Context other){
+        for (String key : other.userState.getAllUsers().keySet()) {
+            userState.addUser(other.userState.getAllUsers().get(key));
+        }
+        for (int i = 0; i < other.eventState.getAllEvents().size(); i++) {
+            eventState.addEvent(other.eventState.getAllEvents().get(i));
+        }
+
+//        for (String key : other.eventState.getPossibleTags().keySet()) {
+//            eventState.createEventTag(other.eventState.getPossibleTags().get(key));
+//        }
+
+        bookingState = new BookingState(other.bookingState);
+    }
+
     /**
      * Copy constructor, makes a deep copy of another {@link Context}.
      *

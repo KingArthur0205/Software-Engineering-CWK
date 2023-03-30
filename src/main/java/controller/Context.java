@@ -44,13 +44,17 @@ public class Context implements AutoCloseable, Serializable {
     }
 
     public void setContext(Context other){
-        orgName = other.orgName;
-        orgAddress = other.orgAddress;
-        orgEmail = other.orgEmail;
-        orgSecret = other.orgSecret;
-        paymentSystem = new MockPaymentSystem((MockPaymentSystem) other.paymentSystem);
-        userState = new UserState(other.userState);
-        eventState = new EventState(other.eventState);
+        for (String key : other.userState.getAllUsers().keySet()) {
+            userState.addUser(other.userState.getAllUsers().get(key));
+        }
+        for (int i = 0; i < other.eventState.getAllEvents().size(); i++) {
+            eventState.addEvent(other.eventState.getAllEvents().get(i));
+        }
+
+//        for (String key : other.eventState.getPossibleTags().keySet()) {
+//            eventState.createEventTag(other.eventState.getPossibleTags().get(key));
+//        }
+
         bookingState = new BookingState(other.bookingState);
     }
     /**

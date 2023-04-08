@@ -15,10 +15,10 @@ import java.util.stream.Stream;
  * Optionally, users can specify a particular {@link LocalDate} to look up events for.
  */
 public class ListEventsCommand implements ICommand<List<Event>> {
-    private final boolean userEventsOnly;
-    private final boolean activeEventsOnly;
-    private final LocalDate searchDate;
-    private List<Event> eventListResult;
+    protected final boolean userEventsOnly;
+    protected final boolean activeEventsOnly;
+    protected final LocalDate searchDate;
+    protected List<Event> eventListResult;
 
     /**
      * @param userEventsOnly   if true, the returned events will be filtered depending on the logged-in user:
@@ -36,7 +36,17 @@ public class ListEventsCommand implements ICommand<List<Event>> {
     }
 
     private static boolean eventSatisfiesPreferences(EventTagCollection preferences, Event event) {
-        return false;
+        Map<String, String> preferenceTags = preferences.getTags();
+        EventTagCollection eventTags = event.getTags();
+        // Check the value of each tag in consumer preferences is the same as its value in the event
+        for (String tagName : preferenceTags.keySet()) {
+            String eventTagValue = eventTags.getValueFor(tagName);
+            String preferenceTagValue = preferenceTags.get(tagName);
+            if (eventTagValue == null || !eventTagValue.equals(preferenceTagValue)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static List<Event> filterEvents(List<Event> events, boolean activeEventsOnly, LocalDate searchDate) {

@@ -1,10 +1,9 @@
 package command;
 
+import com.graphhopper.util.shapes.GHPoint;
 import controller.Context;
-import model.Staff;
-import model.Event;
-import model.EventType;
-import model.User;
+import external.MapSystem;
+import model.*;
 import view.IView;
 
 import java.time.LocalDateTime;
@@ -23,10 +22,8 @@ public class CreateEventCommand implements ICommand<Event> {
     private final String description;
     private final LocalDateTime startDateTime;
     private final LocalDateTime endDateTime;
-    private final boolean hasSocialDistancing;
-    private final boolean hasAirFiltration;
-    private final boolean isOutdoors;
     private Event eventResult;
+    private EventTagCollection tags;
 
     /**
      * @param title               title of the event
@@ -38,13 +35,6 @@ public class CreateEventCommand implements ICommand<Event> {
      * @param description         additional details about the event
      * @param startDateTime       indicates the date and time when this performance is due to start
      * @param endDateTime         indicates the date and time when this performance is due to end
-     * @param hasSocialDistancing indicates whether social distancing will be enforced at this performance.
-     *                            Users can filter events based on this field if they have Covid-19 safety preferences
-     * @param hasAirFiltration    indicates whether air filtration will be in place at this performance.
-     *                            Users can filter events based on this field if they have Covid-19 safety preferences
-     * @param isOutdoors          indicates whether this performance will take place outdoors. Normally would imply
-     *                            {@link #hasAirFiltration}, but kept as a separate field for simplicity.
-     *                            Users can filter events based on this field if they have Covid-19 safety preferences
      */
     public CreateEventCommand(String title,
                               EventType type,
@@ -54,9 +44,7 @@ public class CreateEventCommand implements ICommand<Event> {
                               String description,
                               LocalDateTime startDateTime,
                               LocalDateTime endDateTime,
-                              boolean hasSocialDistancing,
-                              boolean hasAirFiltration,
-                              boolean isOutdoors) {
+                              EventTagCollection tags) {
         this.title = title;
         this.type = type;
         this.numTickets = numTickets;
@@ -65,9 +53,7 @@ public class CreateEventCommand implements ICommand<Event> {
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.hasSocialDistancing = hasSocialDistancing;
-        this.hasAirFiltration = hasAirFiltration;
-        this.isOutdoors = isOutdoors;
+        this.tags = tags;
     }
 
     /**
@@ -152,9 +138,66 @@ public class CreateEventCommand implements ICommand<Event> {
             return;
         }
 
+        MapSystem map = context.getMapSystem();
+        // Verify if the venue address is provided, then:
+        // 1. It is a valid long-lat form
+        // 2. It falls within map system boundary
+        if (venueAddress != null || !venueAddress.isBlank()) {
+            String[] venueCoordinates = venueAddress.split(" ");
+            // If the form of the address is not given in long-lat, createEvent fails
+            if (venueCoordinates.length != 2) {
+                view.displayFailure("CreateEventCommand", LogStatus.CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
+                        Map.of("venueAddress", venueAddress));
+                eventResult = null;
+                return;
+            }
+            // Verify if the venue address can be converted into two double
+            try {
+                Double.parseDouble(venueCoordinates[0]);
+                Double.parseDouble(venueCoordinates[1]);
+            }catch(NumberFormatException e){
+                view.displayFailure("CreateEventCommand", LogStatus.CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
+                        Map.of("venueAddress", venueAddress));
+            }
+
+            String modifiedVenueAddress = venueCoordinates[0] + "," + venueCoordinates[1];
+            // Verify if the address is within the boundary
+            GHPoint addressPoint = map.convertToCoordinates(modifiedVenueAddress);
+            if (!map.isPointWithinMapBounds(addressPoint)) {
+                view.displayFailure("CreateEventCommand",
+                        LogStatus.CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY,
+                        Map.of("venueAddress", venueAddress));
+                eventResult = null;
+                return;
+            }
+        }
+
+        if (tags != null) {
+            Map<String, EventTag> possibleTags = context.getEventState().getPossibleTags();
+            Map<String, String> eventTags = tags.getTags();
+            for (String tagName: eventTags.keySet()) {
+                if (!possibleTags.containsKey(tagName)) {
+                    view.displayFailure("CreateEventCommand",
+                            LogStatus.CREATE_EVENT_TAG_DO_NOT_EXIST,
+                            Map.of("tags", tags));
+                    eventResult = null;
+                    return;
+                }
+
+                String tagValue = eventTags.get(tagName);
+                EventTag tag = possibleTags.get(tagName);
+                if (!tag.getValues().contains(tagValue)) {
+                    view.displayFailure("CreateEventCommand", LogStatus.CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH,
+                            Map.of("tags", tags));
+                    eventResult = null;
+                    return;
+                }
+            }
+        }
+
         Event event = context.getEventState().createEvent(title, type, numTickets,
                 ticketPriceInPence, venueAddress, description,
-                startDateTime, endDateTime, hasSocialDistancing, hasAirFiltration, isOutdoors);
+                startDateTime, endDateTime, tags);
         view.displaySuccess(
                 "CreateEventCommand",
                 LogStatus.CREATE_EVENT_SUCCESS,
@@ -171,6 +214,10 @@ public class CreateEventCommand implements ICommand<Event> {
         CREATE_EVENT_IN_THE_PAST,
         CREATE_EVENT_TITLE_AND_TIME_CLASH,
         CREATE_EVENT_NEGATIVE_TICKET_PRICE,
+        CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
+        CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY,
+        CREATE_EVENT_TAG_DO_NOT_EXIST,
+        CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH,
         CREATE_EVENT_SUCCESS,
     }
 }

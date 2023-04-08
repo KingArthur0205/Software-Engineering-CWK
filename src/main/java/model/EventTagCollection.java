@@ -1,5 +1,7 @@
 package model;
 
+import state.IEventState;
+
 import java.util.HashMap;
 import java.util.Map;
 

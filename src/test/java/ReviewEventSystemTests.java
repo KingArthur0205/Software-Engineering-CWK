@@ -18,8 +18,8 @@ public class ReviewEventSystemTests extends ConsoleTest{
         Context context = controller.getContext();
         Event testEvent = context.getEventState().createEvent("TestEvent", EventType.Music, 10,
                 100, "Old College", "This is the Test Event",
-                LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), false,
-                false, false);
+                LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
+        );
 
         // Create a consumer, log in, and add a booking in the past
         createConsumer(controller);

@@ -1,7 +1,6 @@
 import command.*;
-import controller.Context;
 import controller.Controller;
-import model.ConsumerPreferences;
+import model.EventTagCollection;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -20,7 +19,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertFalse(updateCmd.getResult());
@@ -41,7 +40,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 STAFF_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertFalse(updateCmd.getResult());
@@ -99,7 +98,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertFalse(updateCmd.getResult());
@@ -122,7 +121,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertTrue(updateCmd.getResult());
@@ -145,7 +144,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertFalse(updateCmd.getResult());
@@ -177,7 +176,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertFalse(updateCmd.getResult());
@@ -203,7 +202,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertTrue(updateCmd.getResult());
@@ -234,7 +233,7 @@ public class UpdateProfileTests extends ConsoleTest {
                 "000",
                 "",
                 CONSUMER_PASSWORD,
-                new ConsumerPreferences()
+                new EventTagCollection()
         );
         controller.runCommand(updateCmd);
         assertTrue(updateCmd.getResult());

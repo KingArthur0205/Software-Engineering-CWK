@@ -3,6 +3,7 @@ import command.LogoutCommand;
 import command.RegisterStaffCommand;
 import controller.Controller;
 import model.Event;
+import model.EventTagCollection;
 import model.EventType;
 import org.junit.jupiter.api.Test;
 
@@ -22,18 +23,18 @@ public class CreateEventTests extends ConsoleTest {
     private static Event createEvent(Controller controller,
                                      LocalDateTime startDateTime,
                                      LocalDateTime endDateTime) {
+        String address = "55.944377051350656 -3.18913215894117";
+        System.out.println(address);
         CreateEventCommand eventCmd = new CreateEventCommand(
                 "Puppies against depression",
                 EventType.Theatre,
                 500,
                 100,
-                "George Square Gardens, Edinburgh",
+                address,
                 "Come and enjoy some pets for pets",
                 startDateTime,
                 endDateTime,
-                true,
-                true,
-                false
+                new EventTagCollection()
         );
         controller.runCommand(eventCmd);
         return eventCmd.getResult();
@@ -98,4 +99,17 @@ public class CreateEventTests extends ConsoleTest {
                 "CREATE_EVENT_START_AFTER_END"
         );
     }
+
+    @Test
+    void createEventNotWithinBoundary() {}
+
+    @Test
+    void createEventWithInvalidAddress1() {
+        String hi = "55.944377051350656,-3.18913215894117";
+        String[] arr = hi.split(",");
+        System.out.println(arr.length);
+    }
+
+    @Test
+    void createEventWithInvalidAddress2() {}
 }

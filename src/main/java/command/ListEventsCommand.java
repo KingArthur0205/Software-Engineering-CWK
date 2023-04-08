@@ -23,7 +23,7 @@ public class ListEventsCommand implements ICommand<List<Event>> {
     /**
      * @param userEventsOnly   if true, the returned events will be filtered depending on the logged-in user:
      *                         for {@link Staff}s only the {@link Event}s they have created,
-     *                         and for {@link Consumer}s only the {@link Event}s that match their {@link ConsumerPreferences}
+     *                         and for {@link Consumer}s only the {@link Event}s that match their {@link EventTagCollection}
      * @param activeEventsOnly if true, returned {@link Event}s will be filtered to contain only {@link Event}s with
      *                         {@link EventStatus#ACTIVE}
      * @param searchDate       chosen date to look for events. Can be null. If not null, only {@link Event}s that are
@@ -35,12 +35,8 @@ public class ListEventsCommand implements ICommand<List<Event>> {
         this.searchDate = searchDate;
     }
 
-    private static boolean eventSatisfiesPreferences(ConsumerPreferences preferences, Event event) {
-        return (!preferences.preferOutdoorsOnly || event.isOutdoors())
-                        && (!preferences.preferAirFiltration || event.hasAirFiltration())
-                        && (!preferences.preferSocialDistancing || event.hasSocialDistancing())
-                        && (preferences.preferredMaxCapacity >= event.getNumTicketsCap()
-                );
+    private static boolean eventSatisfiesPreferences(EventTagCollection preferences, Event event) {
+        return false;
     }
 
     private static List<Event> filterEvents(List<Event> events, boolean activeEventsOnly, LocalDate searchDate) {
@@ -106,7 +102,7 @@ public class ListEventsCommand implements ICommand<List<Event>> {
 
         if (currentUser instanceof Consumer) {
             Consumer consumer = (Consumer) currentUser;
-            ConsumerPreferences preferences = consumer.getPreferences();
+            EventTagCollection preferences = consumer.getPreferences();
             List<Event> eventsFittingPreferences = context.getEventState().getAllEvents().stream()
                     .filter(event -> eventSatisfiesPreferences(preferences, event))
                     .collect(Collectors.toList());

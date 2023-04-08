@@ -1,10 +1,7 @@
 package command;
 
 import controller.Context;
-import model.Consumer;
-import model.ConsumerPreferences;
-import model.Event;
-import model.User;
+import model.*;
 import view.IView;
 
 import java.util.Map;
@@ -20,7 +17,7 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
     private final String newPhoneNumber;
     private final String newAddress;
     private final String newPassword;
-    private final ConsumerPreferences newPreferences;
+    private final EventTagCollection newPreferences;
 
     /**
      * @param oldPassword    account password before the change, required for extra security verification. Must not be null
@@ -30,7 +27,7 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
      *                       {@link Event} cancellations that they have bookings for). Must not be null
      * @param newAddress     updated Consumer address. Optional and may be null
      * @param newPassword    password to use for this account. Must not be null
-     * @param newPreferences a {@link ConsumerPreferences} object of Covid-19 preferences, used for filtering events
+     * @param newPreferences a {@link EventTagCollection} object of Covid-19 preferences, used for filtering events
      *                       in the {@link ListEventsCommand}. If null, default preferences are applied
      */
     public UpdateConsumerProfileCommand(String oldPassword,
@@ -39,14 +36,14 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
                                         String newPhoneNumber,
                                         String newAddress,
                                         String newPassword,
-                                        ConsumerPreferences newPreferences) {
+                                        EventTagCollection newPreferences) {
         this.oldPassword = oldPassword;
         this.newName = newName;
         this.newEmail = newEmail;
         this.newPhoneNumber = newPhoneNumber;
         this.newAddress = newAddress;
         this.newPassword = newPassword;
-        this.newPreferences = newPreferences == null ? new ConsumerPreferences() : newPreferences;
+        this.newPreferences = newPreferences == null ? new EventTagCollection() : newPreferences;
     }
 
     /**

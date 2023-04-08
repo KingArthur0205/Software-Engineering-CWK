@@ -2,6 +2,7 @@ package state;
 
 import model.Event;
 import model.EventTag;
+import model.EventTagCollection;
 import model.EventType;
 
 import java.io.Serializable;
@@ -65,15 +66,13 @@ public class EventState implements IEventState, Serializable {
                              String description,
                              LocalDateTime startDateTime,
                              LocalDateTime endDateTime,
-                             boolean hasSocialDistancing,
-                             boolean hasAirFiltration,
-                             boolean isOutdoors) {
+                             EventTagCollection tags) {
         long eventNumber = nextEventNumber;
         nextEventNumber++;
 
         Event event = new Event(eventNumber, title, type, numTickets,
                 ticketPriceInPence, venueAddress, description, startDateTime,
-                endDateTime, hasSocialDistancing, hasAirFiltration, isOutdoors);
+                endDateTime, tags);
         events.add(event);
         return event;
     }

@@ -23,8 +23,7 @@ public class CreateEventTests extends ConsoleTest {
     private static Event createEvent(Controller controller,
                                      LocalDateTime startDateTime,
                                      LocalDateTime endDateTime) {
-        String address = "55.944377051350656 -3.18913215894117";
-        System.out.println(address);
+        String address = "55.944377051350656, -3.18913215894117";
         CreateEventCommand eventCmd = new CreateEventCommand(
                 "Puppies against depression",
                 EventType.Theatre,

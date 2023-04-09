@@ -1,11 +1,17 @@
 package command;
 
+import com.graphhopper.ResponsePath;
+import com.graphhopper.util.InstructionList;
+import com.graphhopper.util.Translation;
+import com.graphhopper.util.shapes.GHPoint;
 import controller.Context;
+import external.MapSystem;
 import view.IView;
 import model.*;
 
 import java.time.LocalDate;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ListEventsMaxDistanceCommand extends ListEventsCommand{
     private final TransportMode transportMode;
@@ -40,6 +46,7 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
             return;
         }
 
+        // Check if current user is a consumer
         if (!(currentUser instanceof Consumer)) {
             view.displayFailure("ListEventsMaxDistanceCommand",
                     LogStatus.LIST_EVENTS_MAX_DISTANCE_USER_NOT_CONSUMER,
@@ -50,19 +57,77 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
 
         Consumer consumer = (Consumer)currentUser;
         String consumerAddress = consumer.getAddress();
+        // Check if consumer address is not null
         if (consumerAddress == null || consumerAddress.isBlank()) {
             view.displayFailure("ListEventsMaxDistanceCommand",
-                    LogStatus.LIST_EVENTS_CONSUMER_ADDRESS_INVALID,
+                    LogStatus.LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID,
                     Map.of("consumerAddress", consumerAddress != null ? consumerAddress : "none"));
             eventListResult = null;
             return;
         }
+
+        MapSystem mapSystem = context.getMapSystem();
+        GHPoint consumerPoint = null;
+        try {
+            String[] consumerAddressCoordinates = consumerAddress.split(" ");
+            String modifiedConsumerAddress = consumerAddressCoordinates[0] + "," + consumerAddressCoordinates[1];
+            consumerPoint = mapSystem.convertToCoordinates(modifiedConsumerAddress);
+        } catch(Exception e) {
+            view.displayFailure("ListEventsMaxDistanceCommand",
+                    LogStatus.LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID,
+                    Map.of("consumerAddress", consumerAddress));
+            eventListResult = null;
+            return;
+        }
+
+        // Filter based on consumer preference
+        EventTagCollection preferences = consumer.getPreferences();
+        List<Event> eventsFittingPreferences = context.getEventState().getAllEvents().stream()
+                .filter(event -> super.eventSatisfiesPreferences(preferences, event))
+                .collect(Collectors.toList());
+
+        List<Event> result = new ArrayList<>();
+        // Filter based on event distance
+        for (int i = 0; i < eventsFittingPreferences.size(); ++i) {
+            Event event = eventsFittingPreferences.get(i);
+            String eventAddress = event.getVenueAddress();
+            if (eventAddress == null || eventAddress.isBlank()) {
+                continue;
+            }
+
+            GHPoint eventPoint = null;
+            try {
+                String[] eventAddressCoordinates = eventAddress.split(" ");
+                String modifiedEventAddress = eventAddressCoordinates[0] + "," + eventAddressCoordinates[1];
+                eventPoint = mapSystem.convertToCoordinates(modifiedEventAddress);
+            } catch(Exception e) {
+                continue;
+            }
+
+            ResponsePath path = mapSystem.routeBetweenPoints(transportMode,consumerPoint, eventPoint);
+            InstructionList il = path.getInstructions();
+            if (il.get(0).getDistance() <= maxDistance) {
+                result.add(eventsFittingPreferences.get(i));
+            }
+        }
+        result.sort(null);
+        eventListResult = result;
+        view.displaySuccess(
+                "ListEventsMaxDistanceCommand",
+                LogStatus.LIST_EVENTS_MAX_DISTANCE_SUCCESS,
+                Map.of("activeEventsOnly", activeEventsOnly,
+                        "userEventsOnly", true,
+                        "searchDate", String.valueOf(searchDate),
+                        "maxDistance", maxDistance,
+                        "transportMode", transportMode,
+                        "eventList", eventListResult)
+        );
     }
 
     private enum LogStatus {
         LIST_EVENTS_MAX_DISTANCE_NOT_LOGGED_IN,
         LIST_EVENTS_MAX_DISTANCE_USER_NOT_CONSUMER,
-        LIST_EVENTS_CONSUMER_ADDRESS_INVALID,
+        LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID,
         LIST_EVENTS_MAX_DISTANCE_SUCCESS
     }
 }

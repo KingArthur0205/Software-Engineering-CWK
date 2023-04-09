@@ -1,7 +1,10 @@
 package command;
 
+import com.graphhopper.util.shapes.GHPoint;
 import controller.Context;
+import external.MapSystem;
 import model.Consumer;
+import model.EventTagCollection;
 import model.User;
 import view.IView;
 
@@ -72,6 +75,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             return;
         }
 
+        // Verify that there is no clashed email
         if (context.getUserState().getAllUsers().containsKey(email)) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -80,6 +84,29 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             );
             newConsumerResult = null;
             return;
+        }
+
+        if (address != null && !address.isBlank()) {
+            MapSystem mapSystem = context.getMapSystem();
+            GHPoint addressPoint = null;
+            try{
+                String[] addressCoordinates = address.split(" ");
+                String modifiedAddress = addressCoordinates[0] + "," + addressCoordinates[1];
+                addressPoint = mapSystem.convertToCoordinates(modifiedAddress);
+            } catch (Exception e) {
+                view.displayFailure("RegisterConsumerCommand",
+                        LogStatus.USER_REGISTER_INVALID_ADDRESS_FORMAT,
+                        Map.of("address", address, "error", e.getLocalizedMessage()));
+                newConsumerResult = null;
+                return;
+            }
+
+            if (!mapSystem.isPointWithinMapBounds(addressPoint)) {
+                view.displayFailure("RegisterConsumerCommand", LogStatus.USER_REGISTER_ADDRESS_OUT_OF_BOUNDS,
+                        Map.of("address", address));
+                newConsumerResult = null;
+                return;
+            }
         }
 
         Consumer consumer = new Consumer(name, email, phoneNumber, address, password);
@@ -117,6 +144,8 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
         USER_REGISTER_LOGGED_IN,
         USER_REGISTER_FIELDS_CANNOT_BE_NULL,
         USER_REGISTER_EMAIL_ALREADY_REGISTERED,
+        USER_REGISTER_INVALID_ADDRESS_FORMAT,
+        USER_REGISTER_ADDRESS_OUT_OF_BOUNDS,
         USER_LOGIN_SUCCESS,
     }
 }

@@ -158,6 +158,8 @@ public class CreateEventCommand implements ICommand<Event> {
             }catch(NumberFormatException e){
                 view.displayFailure("CreateEventCommand", LogStatus.CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
                         Map.of("venueAddress", venueAddress));
+                eventResult = null;
+                return;
             }
 
             String modifiedVenueAddress = venueCoordinates[0] + "," + venueCoordinates[1];

@@ -64,8 +64,28 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         }
 
         MapSystem mapSystem = context.getMapSystem();
-        GHPoint consumerAddressPoint = mapSystem.convertToCoordinates(consumer.getAddress());
-        GHPoint venueAddressPoint = mapSystem.convertToCoordinates(event.getVenueAddress());
+        String consumerAddress = consumer.getAddress();
+        String venueAddress = event.getVenueAddress();
+        GHPoint consumerAddressPoint = null;
+        GHPoint venueAddressPoint = null;
+        try {
+            String[] consumerAddressCoordinates = consumerAddress.split(" ");
+            String modifiedConsumerAddress = consumerAddressCoordinates[0] + "," + consumerAddressCoordinates[1];
+            consumerAddressPoint = mapSystem.convertToCoordinates(modifiedConsumerAddress);
+        } catch (Exception e) {
+            view.displayFailure("GetEventDirectionsCommand",
+                    LogStatus.GET_EVENT_DIRECTIONS_CONSUMER_ADDRESS_INVALID,
+                    Map.of("consumerAddress", consumerAddress));
+        }
+        try {
+            String[] venueAddressCoordinates = venueAddress.split(" ");
+            String modifiedVenueAddress = venueAddressCoordinates[0] + "," + venueAddressCoordinates[1];
+            venueAddressPoint = mapSystem.convertToCoordinates(modifiedVenueAddress);
+        } catch (Exception e) {
+            view.displayFailure("GetEventDirectionsCommand",
+                    LogStatus.GET_EVENT_DIRECTIONS_VENUE_ADDRESS_INVALID,
+                    Map.of("venueAddress", venueAddress));
+        }
         ResponsePath path = mapSystem.routeBetweenPoints(transportMode, consumerAddressPoint, venueAddressPoint);
         InstructionList instructions = path.getInstructions();
         Translation translation = mapSystem.getTranslation();
@@ -95,6 +115,8 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         GET_EVENT_DIRECTIONS_NO_VENUE_ADDRESS,
         GET_EVENT_DIRECTIONS_USER_NOT_CONSUMER,
         GET_EVENT_DIRECTIONS_NO_CONSUMER_ADDRESS,
+        GET_EVENT_DIRECTIONS_CONSUMER_ADDRESS_INVALID,
+        GET_EVENT_DIRECTIONS_VENUE_ADDRESS_INVALID,
         GET_EVENT_DIRECTIONS_SUCCESS
     }
 }

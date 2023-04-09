@@ -35,7 +35,7 @@ public class ListEventsCommand implements ICommand<List<Event>> {
         this.searchDate = searchDate;
     }
 
-    private static boolean eventSatisfiesPreferences(EventTagCollection preferences, Event event) {
+    protected static boolean eventSatisfiesPreferences(EventTagCollection preferences, Event event) {
         Map<String, String> preferenceTags = preferences.getTags();
         EventTagCollection eventTags = event.getTags();
         // Check the value of each tag in consumer preferences is the same as its value in the event

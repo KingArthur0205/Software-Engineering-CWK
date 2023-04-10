@@ -124,6 +124,72 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
     }
 
     @Test
+    void listEventsMaxDistanceVenueAddressInValid() {
+        Controller controller = setUp();
+        controller.getContext().getEventState().createEvent("Event4",
+                EventType.Theatre,
+                500,
+                100,
+                "blbal", //Invalid
+                "Come and enjoy some pets for pets",
+                LocalDateTime.now().plusHours(3),
+                LocalDateTime.now().plusHours(4),
+                new EventTagCollection());
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+    }
+
+    @Test
+    void listEventsMaxDistanceVenueAddressNULL() {
+        Controller controller = setUp();
+        controller.getContext().getEventState().createEvent("Event4",
+                EventType.Theatre,
+                500,
+                100,
+                null, //Invalid
+                "Come and enjoy some pets for pets",
+                LocalDateTime.now().plusHours(3),
+                LocalDateTime.now().plusHours(4),
+                new EventTagCollection());
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+    }
+
+    @Test
+    void listEventsMaxDistanceVenueAddressIsBlank() {
+        Controller controller = setUp();
+        controller.getContext().getEventState().createEvent("Event4",
+                EventType.Theatre,
+                500,
+                100,
+                "", //Invalid
+                "Come and enjoy some pets for pets",
+                LocalDateTime.now().plusHours(3),
+                LocalDateTime.now().plusHours(4),
+                new EventTagCollection());
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+    }
+
+    @Test
     void listEventsMaxDistanceSuccess() {
         Controller controller = setUp();
         LogoutCommand logoutCommand = new LogoutCommand();

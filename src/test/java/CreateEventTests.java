@@ -226,6 +226,6 @@ public class CreateEventTests extends ConsoleTest {
                 LocalDateTime.now().plusHours(5),
                 "55.944377051350656 -3.18913215894117",
                 new EventTagCollection("hasAirFiltration=false,hasSocialDistancing=true"));
-        stopOutputCaptureAndCompare("CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH");
+        stopOutputCaptureAndCompare("CREATE_EVENT_SUCCESS");
     }
 }

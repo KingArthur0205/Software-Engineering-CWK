@@ -42,6 +42,15 @@ public class BookEventTests extends ConsoleTest {
     }
 
     @Test
+    void bookEventWithNegativeNumberTicket() {}
+
+    @Test
+    void bookEventThatIsAlreadyOver() {}
+
+    @Test
+    void bookEventThatRequiresPayment() {}
+
+    @Test
     void overbookTicketedEvent() {
         Controller controller = createStaffAndEvent(1, 1);
         controller.runCommand(new LogoutCommand());

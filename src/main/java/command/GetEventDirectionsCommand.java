@@ -44,14 +44,14 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         if (event == null) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_NO_SUCH_EVENT,
                     Map.of("eventNumber", eventNumber));
-            directionsResult = new String[0];
+            directionsResult = null;
             return;
         }
         // Verify if the event includes a venueAddress
         if (event.getVenueAddress() == null || event.getVenueAddress().isBlank()) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_NO_VENUE_ADDRESS,
                     Map.of("event", event));
-            directionsResult = new String[0];
+            directionsResult = null;
             return;
         }
 
@@ -61,7 +61,7 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         if (!(currentUser instanceof Consumer)) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_USER_NOT_CONSUMER,
                     Map.of("currentUser", currentUser != null ? currentUser : "none"));
-            directionsResult = new String[0];
+            directionsResult = null;
             return;
         }
 
@@ -70,7 +70,7 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         if (consumer.getAddress() == null || consumer.getAddress().isBlank()) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_NO_CONSUMER_ADDRESS,
                     Map.of("consumer", consumer));
-            directionsResult = new String[0];
+            directionsResult = null;
             return;
         }
 
@@ -87,6 +87,8 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
             view.displayFailure("GetEventDirectionsCommand",
                     LogStatus.GET_EVENT_DIRECTIONS_CONSUMER_ADDRESS_INVALID,
                     Map.of("consumerAddress", consumerAddress));
+            directionsResult = null;
+            return;
         }
         try {
             String[] venueAddressCoordinates = venueAddress.split(" ");
@@ -96,21 +98,20 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
             view.displayFailure("GetEventDirectionsCommand",
                     LogStatus.GET_EVENT_DIRECTIONS_VENUE_ADDRESS_INVALID,
                     Map.of("venueAddress", venueAddress));
+            directionsResult = null;
+            return;
         }
         ResponsePath path = mapSystem.routeBetweenPoints(transportMode, consumerAddressPoint, venueAddressPoint);
         InstructionList instructions = path.getInstructions();
         Translation translation = mapSystem.getTranslation();
-        directionsResult = new String[instructions.size() + 1];
+        directionsResult = new String[instructions.size()];
 
-        double totalDistance = 0.0;
-        for (int i = 1; i < directionsResult.length; ++i) {
+        for (int i = 0; i < directionsResult.length; ++i) {
             Instruction instruction = instructions.get(i);
-            totalDistance += instruction.getDistance();
             String direction = "distance " + instruction.getDistance() + " for instruction: "
                     + instruction.getTurnDescription(translation);
             directionsResult[i] = direction;
         }
-        directionsResult[0] = new String("total distance: " + totalDistance);
         view.displaySuccess("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_SUCCESS,
                 Map.of("event", event, "consumer", consumer,
                         "directions", Arrays.toString(directionsResult)));

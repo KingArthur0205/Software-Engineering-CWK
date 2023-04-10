@@ -1,7 +1,4 @@
-import command.CreateEventCommand;
-import command.ListEventsMaxDistanceCommand;
-import command.LogoutCommand;
-import command.UpdateConsumerProfileCommand;
+import command.*;
 import controller.Controller;
 import model.Consumer;
 import model.EventTagCollection;
@@ -96,10 +93,35 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
     }
 
     @Test
-    void listWhenConsumerAddressIsBlank() {}
+    void listWhenConsumerAddressIsBlank() {
+        Controller controller = setUp();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateConsumerProfileCommand  =
+                new UpdateConsumerProfileCommand("123456","cici","gongzi@163.com","12398","","gong",new EventTagCollection());
+        controller.runCommand(updateConsumerProfileCommand);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID");
+    }
 
     @Test
-    void listWhenConsumerAddressFormatIsWrong() {}
+    void listWhenConsumerAddressFormatIsWrong() {
+        Controller controller = setUp();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+
+        controller.getContext().getUserState().setCurrentUser(new Consumer("Elon","elon@gmail.com","123","blabal","123"));
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID");
+    }
 
     @Test
     void listEventsMaxDistanceSuccess() {

@@ -40,10 +40,24 @@ public class BookEventSystemTests extends ConsoleTest {
     }
 
     @Test
-    void bookEventWithNegativeNumberTicket() {}
+    void bookEventWithNegativeNumberTicket() {
+        Controller controller = createStaffAndEvent(1, 1);
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+
+        startOutputCapture();
+        createConsumerAndBookFirstEvent(controller, -2);
+        stopOutputCaptureAndCompare("REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "LIST_EVENTS_SUCCESS",
+                "BOOK_EVENT_INVALID_NUM_TICKETS"
+        );
+    }
 
     @Test
-    void bookEventThatIsAlreadyOver() {}
+    void bookEventThatIsAlreadyOver() {
+
+    }
 
     @Test
     void bookEventThatRequiresPayment() {}

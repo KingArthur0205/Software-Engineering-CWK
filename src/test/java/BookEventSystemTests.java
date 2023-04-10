@@ -1,14 +1,12 @@
 import command.BookEventCommand;
-import command.CancelBookingCommand;
 import command.LogoutCommand;
-import command.RegisterConsumerCommand;
 import controller.Controller;
 import model.Event;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class BookEventTests extends ConsoleTest {
+public class BookEventSystemTests extends ConsoleTest {
     @Test
     void bookTicketedEvent() {
         Controller controller = createStaffAndEvent(1, 1);

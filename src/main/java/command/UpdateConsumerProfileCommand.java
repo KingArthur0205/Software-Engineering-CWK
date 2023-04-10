@@ -1,6 +1,8 @@
 package command;
 
+import com.graphhopper.util.shapes.GHPoint;
 import controller.Context;
+import external.MapSystem;
 import model.*;
 import view.IView;
 
@@ -87,6 +89,56 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
             return;
         }
 
+        // Verify the address is a valid lat-long format
+        if (newAddress != null && !newAddress.isBlank()) {
+            MapSystem mapSystem = context.getMapSystem();
+            GHPoint addressPoint = null;
+            try {
+                String[] newAddressCoordinates = newAddress.split(" ");
+                String modifiedNewAddress = newAddressCoordinates[0] + "," + newAddressCoordinates[1];
+                addressPoint = mapSystem.convertToCoordinates(modifiedNewAddress);
+            } catch(Exception e) {
+                view.displayFailure("UpdateConsumerProfileCommand",
+                        LogStatus.USER_UPDATE_PROFILE_ADDRESS_INVALID,
+                        Map.of("newAddress", newAddress));
+                successResult = false;
+                return;
+            }
+
+            // Verify the address is within the boundary
+            if (!mapSystem.isPointWithinMapBounds(addressPoint)) {
+                view.displayFailure("UpdateConsumerProfileCommand",
+                        LogStatus.USER_UPDATE_PROFILE_ADDRESS_NOT_WITHIN_BOUNDARY,
+                        Map.of("newAddress", newAddress));
+                successResult = false;
+                return;
+            }
+        }
+
+        // Verify the new preference only contains known tags
+        Map<String, EventTag> possibleTags = context.getEventState().getPossibleTags();
+        Map<String, String> preferenceTags = newPreferences.getTags();
+        for (String tagName: preferenceTags.keySet()) {
+            // Verify if there exist a tag with the name given in the system
+            if (!possibleTags.containsKey(tagName)) {
+                view.displayFailure("UpdateConsumerProfileCommand",
+                        LogStatus.USER_UPDATE_PROFILE_TAG_DO_NOT_EXIST,
+                        Map.of("newPreference", newPreferences));
+                successResult = false;
+                return;
+            }
+
+            // Verify if the selected value for that tag is valid
+            String tagValue = preferenceTags.get(tagName);
+            EventTag tag = possibleTags.get(tagName);
+            if (!tag.getValues().contains(tagValue)) {
+                view.displayFailure("UpdateConsumerProfileCommand", LogStatus.USER_UPDATE_PROFILE_TAG_VALUE_DO_NOT_EXIST,
+                        Map.of("newPreference", newPreferences));
+                successResult = false;
+                return;
+            }
+        }
+
         changeUserEmail(context, newEmail);
         currentUser.updatePassword(newPassword);
         Consumer consumer = (Consumer) currentUser;
@@ -111,6 +163,10 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
     private enum LogStatus {
         USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL,
         USER_UPDATE_PROFILE_NOT_CONSUMER,
+        USER_UPDATE_PROFILE_ADDRESS_INVALID,
+        USER_UPDATE_PROFILE_ADDRESS_NOT_WITHIN_BOUNDARY,
+        USER_UPDATE_PROFILE_TAG_DO_NOT_EXIST,
+        USER_UPDATE_PROFILE_TAG_VALUE_DO_NOT_EXIST,
         USER_UPDATE_PROFILE_SUCCESS
     }
 }

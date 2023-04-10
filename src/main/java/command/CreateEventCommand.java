@@ -170,6 +170,7 @@ public class CreateEventCommand implements ICommand<Event> {
             Map<String, EventTag> possibleTags = context.getEventState().getPossibleTags();
             Map<String, String> eventTags = tags.getTags();
             for (String tagName: eventTags.keySet()) {
+                // Verify if there exist a tag with the name given in the system
                 if (!possibleTags.containsKey(tagName)) {
                     view.displayFailure("CreateEventCommand",
                             LogStatus.CREATE_EVENT_TAG_DO_NOT_EXIST,
@@ -178,6 +179,7 @@ public class CreateEventCommand implements ICommand<Event> {
                     return;
                 }
 
+                // Verify if the selected value for that tag is valid
                 String tagValue = eventTags.get(tagName);
                 EventTag tag = possibleTags.get(tagName);
                 if (!tag.getValues().contains(tagValue)) {

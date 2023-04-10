@@ -72,7 +72,7 @@ public class ReviewEventSystemTests extends ConsoleTest{
     }
 
     @Test
-    void reviewByStaff() {
+    void reviewWhenUserIsStaff() {
 
     }
 

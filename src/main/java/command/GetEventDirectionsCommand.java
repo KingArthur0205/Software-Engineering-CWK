@@ -104,14 +104,17 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         ResponsePath path = mapSystem.routeBetweenPoints(transportMode, consumerAddressPoint, venueAddressPoint);
         InstructionList instructions = path.getInstructions();
         Translation translation = mapSystem.getTranslation();
-        directionsResult = new String[instructions.size()];
+        directionsResult = new String[instructions.size() + 1];
 
-        for (int i = 0; i < directionsResult.length; ++i) {
-            Instruction instruction = instructions.get(i);
+        double totalDistance = 0.0;
+        for (int i = 1; i < directionsResult.length; ++i) {
+            Instruction instruction = instructions.get(i-1);
+            totalDistance += instruction.getDistance();
             String direction = "distance " + instruction.getDistance() + " for instruction: "
                     + instruction.getTurnDescription(translation);
             directionsResult[i] = direction;
         }
+        directionsResult[0] = String.valueOf(totalDistance);
         view.displaySuccess("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_SUCCESS,
                 Map.of("event", event, "consumer", consumer,
                         "directions", Arrays.toString(directionsResult)));

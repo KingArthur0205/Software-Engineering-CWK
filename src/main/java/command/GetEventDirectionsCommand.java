@@ -60,7 +60,7 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         // Verify if the current user is a Consumer
         if (!(currentUser instanceof Consumer)) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_USER_NOT_CONSUMER,
-                    Map.of("currentUser", currentUser));
+                    Map.of("currentUser", currentUser != null ? currentUser : "none"));
             directionsResult = new String[0];
             return;
         }

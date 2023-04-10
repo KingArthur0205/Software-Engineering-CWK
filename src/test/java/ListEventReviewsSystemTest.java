@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ListEventReviewsSystemTest extends ConsoleTest{
     private Controller createAndReviewEvent() {
         // Create an event in the past
@@ -53,6 +55,8 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(testCmd);
         stopOutputCaptureAndCompare("LIST_EVENT_REVIEWS_SUCCESS");
+
+        assertTrue(testCmd.getResult().isEmpty());
     }
 
     @Test

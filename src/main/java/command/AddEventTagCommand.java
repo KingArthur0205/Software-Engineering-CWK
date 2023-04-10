@@ -60,6 +60,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
             return;
         }
 
+        assert(tagValues != null);
         // Verify that at least two tag values are provided
         if (tagValues == null || tagValues.size() < 2) {
             view.displayFailure("AddEventTagCommand", LogStatus.ADD_EVENT_TAG_TOO_FEW_POSSIBLE_VALUES,
@@ -68,6 +69,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
             return;
         }
 
+        assert(defaultValue != null);
         // Verify that the default value is in the list of possible values
         if (!(tagValues.contains(defaultValue))) {
             view.displayFailure("AddEventTagCommand", LogStatus.ADD_EVENT_TAG_DEFAULT_VALUE_NOT_POSSIBLE,

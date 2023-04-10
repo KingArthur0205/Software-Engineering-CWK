@@ -215,4 +215,17 @@ public class CreateEventTests extends ConsoleTest {
                 new EventTagCollection("hasAirFiltration=invalid"));
         stopOutputCaptureAndCompare("CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH");
     }
+
+    @Test
+    void createEventSuccess() {
+        Controller controller = createController();
+        createStaff(controller);
+        startOutputCapture();
+        Event event = createEvent(controller,
+                LocalDateTime.now().plusHours(3),
+                LocalDateTime.now().plusHours(5),
+                "55.944377051350656 -3.18913215894117",
+                new EventTagCollection("hasAirFiltration=false,hasSocialDistancing=true"));
+        stopOutputCaptureAndCompare("CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH");
+    }
 }

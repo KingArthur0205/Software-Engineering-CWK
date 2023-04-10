@@ -2,6 +2,7 @@ package command;
 
 import controller.Context;
 import model.*;
+import state.BookingState;
 import state.IEventState;
 import state.IUserState;
 import view.IView;
@@ -53,6 +54,20 @@ public class ReviewEventCommand implements ICommand<Review> {
         }
 
         List<Booking> bookings = context.getBookingState().findBookingsByEventNumber(eventNumber);
+        Boolean ifConsumerHasBooking = false;
+        for (Booking booking : bookings) {
+            if (booking.getBooker() == currentUser)
+                ifConsumerHasBooking = true;
+        }
+
+        if (!ifConsumerHasBooking) {
+            view.displayFailure("BookEventCommand",
+                    LogStatus.REVIEW_EVENT_USER_HAVE_NO_BOOKING,
+                    Map.of("eventToBeReviewed", eventToBeReviewed)
+            );
+            reviewResult = null;
+            return;
+        }
 
         // Create and add the Review
         IUserState userState = context.getUserState();

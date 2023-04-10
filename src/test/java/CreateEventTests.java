@@ -47,7 +47,19 @@ public class CreateEventTests extends ConsoleTest {
     }
 
     @Test
-    void createEventWhenUserIsConsumer() {}
+    void createEventWhenUserIsConsumer() {
+        Controller controller = createController();
+        createConsumer(controller);
+        startOutputCapture();
+        Event event = createEvent(
+                controller,
+                LocalDateTime.now().minusDays(5),
+                LocalDateTime.now().minusDays(5).minusHours(2),
+                "55.944377051350656 -3.18913215894117", // George Square,
+                new EventTagCollection()
+        );
+        stopOutputCaptureAndCompare("CREATE_EVENT_USER_NOT_STAFF");
+    }
 
     @Test
     void createEventWithNegativePrice() {

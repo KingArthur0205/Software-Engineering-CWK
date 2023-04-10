@@ -161,7 +161,6 @@ public class CreateEventCommand implements ICommand<Event> {
                 return;
             }
 
-            //System.out.println(map.isPointWithinMapBounds(addressPoint));
             if (!map.isPointWithinMapBounds(addressPoint)) {
                 view.displayFailure("CreateEventCommand",
                         LogStatus.CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY,

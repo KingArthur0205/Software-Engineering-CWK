@@ -17,15 +17,15 @@ public class ReviewEventSystemTests extends ConsoleTest{
         Controller controller = createController();
         Context context = controller.getContext();
         Event testEvent = context.getEventState().createEvent("TestEvent", EventType.Music, 10,
-                100, "Old College", "This is the Test Event",
+                100, "55.944377051350656 -3.18913215894117", "This is the Test Event",
                 LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
         );
 
         // Create a consumer, log in, and add a booking in the past
         createConsumer(controller);
         Consumer curConsumer = (Consumer)context.getUserState().getCurrentUser();
-        curConsumer.addBooking(new Booking(100, curConsumer, testEvent,
-                1, LocalDateTime.now().minusHours(20)));
+        Booking booking = context.getBookingState().createBooking(curConsumer, testEvent, 1);
+        curConsumer.addBooking(booking);
         return controller;
     }
 

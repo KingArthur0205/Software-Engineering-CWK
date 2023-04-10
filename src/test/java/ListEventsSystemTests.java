@@ -1,10 +1,12 @@
 import command.*;
 import controller.Controller;
+import model.Event;
 import model.EventTagCollection;
 import model.EventType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ListEventsSystemTests extends ConsoleTest{
@@ -51,6 +53,42 @@ public class ListEventsSystemTests extends ConsoleTest{
         return controller;
     }
     @Test
+    void listUserEventsOnly() {
+        Controller controller = setup();
+        ListEventsCommand cmd = new ListEventsCommand(false, true, null);
+        startOutputCapture();
+        controller.runCommand(cmd);
+        stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+    }
+
+    @Test
+    void listSearchDateIsNotNullWhenActiveEventsOnly() {
+        Controller controller = setup();
+        ListEventsCommand cmd = new ListEventsCommand(false, true, LocalDate.now());
+        startOutputCapture();
+        controller.runCommand(cmd);
+        stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+    }
+
+    @Test
+    void listSearchDateIsNotNull() {
+        Controller controller = setup();
+        controller.getContext().getEventState().createEvent("Event1",
+                EventType.Theatre,
+                30,
+                0,
+                "55.94368888764689 -3.1888246174917114", // George Square Gardens, Edinburgh
+                "Please be prepared to pay 2.50 pounds on entry",
+                LocalDateTime.now().minusHours(24),
+                LocalDateTime.now().plusHours(4),
+                new EventTagCollection("hasSocialDistancing=false"));
+        ListEventsCommand cmd = new ListEventsCommand(false, false, LocalDate.now());
+        startOutputCapture();
+        controller.runCommand(cmd);
+        stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+    }
+
+    @Test
     void listNotOnlyUserEvents() {
         Controller controller = setup();
         ListEventsCommand cmd = new ListEventsCommand(false, false, null);
@@ -69,6 +107,7 @@ public class ListEventsSystemTests extends ConsoleTest{
         controller.runCommand(listEventsCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_NOT_LOGGED_IN");
     }
+
 
     @Test
     void listEventsUserIsStaff() {

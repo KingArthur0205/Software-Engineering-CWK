@@ -5,6 +5,8 @@ import model.Consumer;
 import model.Staff;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 public class RegisterConsumerSystemTests extends ConsoleTest{
     @Test
     void registerWhenUserIsLoggedIn() {
@@ -54,6 +56,8 @@ public class RegisterConsumerSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("USER_REGISTER_INVALID_ADDRESS_FORMAT");
+
+        assertNull(cmd.getResult());
     }
 
     @Test

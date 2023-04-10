@@ -28,6 +28,15 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         this.transportMode = transportMode;
     }
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that there is an event corresponding to the provided eventNumber
+     * @verifies.that the event includes a venueAddress
+     * @verifies.that the current user is a Consumer
+     * @verifies.that the consumer's profile includes an address
+     */
+
     @Override
     public void execute(Context context, IView view) {
         IEventState eventState = context.getEventState();

@@ -47,6 +47,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
      * @verifies.that no user is currently logged in
      * @verifies.that name, email, phoneNumber, and password are all not null
      * @verifies.that there is no user with the same email address already registered
+     * @verifies.that if an address is provided, it is a valid lat-long format and falls within map system boundaries
      */
     @Override
     public void execute(Context context, IView view) {

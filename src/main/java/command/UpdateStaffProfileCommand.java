@@ -40,6 +40,7 @@ public class UpdateStaffProfileCommand extends UpdateProfileCommand {
      */
     @Override
     public void execute(Context context, IView view) {
+
         if (oldPassword == null || newEmail == null || newPassword == null) {
             view.displayFailure(
                     "UpdateStaffProfileCommand",

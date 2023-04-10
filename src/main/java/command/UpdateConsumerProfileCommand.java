@@ -56,6 +56,8 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
      * @verifies.that oldPassword matches the current user's password
      * @verifies.that there is no other user already registered with the same email address as newEmail
      * @verifies.that currently logged-in user is a Consumer
+     * @verifies.that if an address is provided, it is a valid lat-long format and falls within map system boundaries
+     * @verifies.that new preferences only include known tag names and values
      */
     @Override
     public void execute(Context context, IView view) {

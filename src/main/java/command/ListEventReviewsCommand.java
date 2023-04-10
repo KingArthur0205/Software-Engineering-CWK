@@ -18,7 +18,10 @@ public class ListEventReviewsCommand implements ICommand<List<Review>>{
         this.eventTitle = eventTitle;
         this.reviewsResult = new ArrayList<>();
     }
-
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     */
     @Override
     public void execute(Context context, IView view) {
         IEventState eventState = context.getEventState();

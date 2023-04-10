@@ -34,6 +34,13 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
         this.maxDistance = maxDistance;
     }
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that currently logged-in user is a Consumer
+     * @verifies.that current user has an address set up in their profile
+     */
+
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();

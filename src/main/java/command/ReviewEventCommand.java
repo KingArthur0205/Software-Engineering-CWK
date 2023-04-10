@@ -20,6 +20,15 @@ public class ReviewEventCommand implements ICommand<Review> {
         this.content = content;
     }
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that an event exists with the corresponding eventNumber
+     * @verifies.that the event is already over
+     * @verifies.that the current user is a logged-in Consumer
+     * @verifies.that the consumer had at least 1 valid booking (not cancelled by the consumer) at the event
+     */
+
     @Override
     public void execute(Context context, IView view) {
         // Check an event with the provided event number exists

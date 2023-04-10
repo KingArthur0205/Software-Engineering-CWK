@@ -36,7 +36,10 @@ public class AddEventTagCommand implements ICommand<EventTag>{
     /**
      * @param context object that provides access to global application state
      * @param view    allows passing information to the user interface
-     * @verifies.that
+     * @verifies.that the current user is a Staff member
+     * @verifies.that the new tag name doesn't clash with any existing tags
+     * @verifies.that there are at least 2 tag values
+     * @verifies.that the default tag value is in the list of possible tag value
      */
     @Override
     public void execute(Context context, IView view) {

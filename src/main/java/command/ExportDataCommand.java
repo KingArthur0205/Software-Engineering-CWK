@@ -15,6 +15,11 @@ import java.util.Map;
 public class ExportDataCommand implements ICommand<Boolean> {
     private Boolean eventResult;
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that the currently logged-in user is a Staff member
+     */
 
     @Override
     public void execute(Context context, IView view) {

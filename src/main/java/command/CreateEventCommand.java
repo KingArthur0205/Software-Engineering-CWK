@@ -72,6 +72,8 @@ public class CreateEventCommand implements ICommand<Event> {
      * @verifies.that event startDateTime is in the future
      * @verifies.that no other event with the same title has the same startDateTime and endDateTime
      * @verifies.that the event ticket price is non-negative
+     * @verifies.that if a venue address is provided, it is a valid lat-long format and falls within map system boundaries
+     * @verifies.that event tags, if provided, only include known tag names and values
      */
     @Override
     public void execute(Context context, IView view) {

@@ -41,13 +41,14 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
     public void execute(Context context, IView view) {
         IEventState eventState = context.getEventState();
         Event event = eventState.findEventByNumber(eventNumber);
+        // Verify if there is an event corresponding to the provided eventNumber
         if (event == null) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_NO_SUCH_EVENT,
                     Map.of("eventNumber", eventNumber));
             directionsResult = new String[0];
             return;
         }
-
+        // Verify if the event includes a venueAddress
         if (event.getVenueAddress() == null || event.getVenueAddress().isBlank()) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_NO_VENUE_ADDRESS,
                     Map.of("event", event));
@@ -57,6 +58,7 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
 
         IUserState userState = context.getUserState();
         User currentUser = userState.getCurrentUser();
+        // Verify if the current user is a Consumer
         if (!(currentUser instanceof Consumer)) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_USER_NOT_CONSUMER,
                     Map.of("currentUser", currentUser));
@@ -65,6 +67,7 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
         }
 
         Consumer consumer = (Consumer)currentUser;
+        // Verify if the consumer's profile includes an address
         if (consumer.getAddress() == null || consumer.getAddress().isBlank()) {
             view.displayFailure("GetEventDirectionsCommand", LogStatus.GET_EVENT_DIRECTIONS_NO_CONSUMER_ADDRESS,
                     Map.of("consumer", consumer));

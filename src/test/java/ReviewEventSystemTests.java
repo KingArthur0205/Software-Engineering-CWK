@@ -1,3 +1,4 @@
+import command.BookEventCommand;
 import command.LogoutCommand;
 import command.ReviewEventCommand;
 import controller.Context;
@@ -73,15 +74,47 @@ public class ReviewEventSystemTests extends ConsoleTest{
 
     @Test
     void reviewWhenUserIsStaff() {
+        Controller controller = createAndBookEvent();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
 
+        createStaff(controller);
+        ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "Good Event");
+        startOutputCapture();
+        controller.runCommand(reviewCmd);
+        stopOutputCaptureAndCompare("REVIEW_EVENT_USER_NOT_CONSUMER");
     }
 
     @Test
-    void reviewWhenConsumerHasNoBooking() {}
+    void reviewWhenConsumerHasNoBooking() {
+        Controller controller = createStaffAndEvent(200, 5);
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+
+        ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "Good Event");
+        startOutputCapture();
+        controller.runCommand(reviewCmd);
+        stopOutputCaptureAndCompare("REVIEW_EVENT_USER_HAVE_NO_BOOKING");
+    }
 
     @Test
     void reviewRunningEvent() {
+        Controller controller = createController();
+        createConsumer(controller);
+        Context context = controller.getContext();
+        Event testEvent = context.getEventState().createEvent("TestEvent", EventType.Music, 10,
+                100, "Old College", "This is the Test Event",
+                LocalDateTime.now().minusHours(1), LocalDateTime.now().plusHours(2), new EventTagCollection()
+        );
+        BookEventCommand bookEventCommand = new BookEventCommand(1, 1);
+        controller.runCommand(bookEventCommand);
 
+
+        ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "Good Event");
+        startOutputCapture();
+        controller.runCommand(reviewCmd);
+        stopOutputCaptureAndCompare("REVIEW_EVENT_EVENT_NOT_OVER");
     }
 
     @Test

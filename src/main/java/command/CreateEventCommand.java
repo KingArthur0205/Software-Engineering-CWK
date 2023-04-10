@@ -100,7 +100,7 @@ public class CreateEventCommand implements ICommand<Event> {
             eventResult = null;
             return;
         }
-
+        // Verify if event startDateTime is in the future
         if (startDateTime.isBefore(LocalDateTime.now())) {
             view.displayFailure(
                     "CreateEventCommand",
@@ -130,7 +130,7 @@ public class CreateEventCommand implements ICommand<Event> {
             eventResult = null;
             return;
         }
-
+        // Verify if the event ticket price is non-negative
         if (ticketPriceInPence < 0) {
             view.displayFailure(
                     "CreateEventCommand",

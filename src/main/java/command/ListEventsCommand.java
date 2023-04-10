@@ -71,6 +71,7 @@ public class ListEventsCommand implements ICommand<List<Event>> {
      */
     @Override
     public void execute(Context context, IView view) {
+        // Verify if userEventsOnly is set, the current user must be logged in
         if (!userEventsOnly) {
             eventListResult = filterEvents(context.getEventState().getAllEvents(), activeEventsOnly, searchDate);
             view.displaySuccess(

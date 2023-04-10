@@ -33,7 +33,7 @@ public class LoginCommand implements ICommand<User> {
     @Override
     public void execute(Context context, IView view) {
         Map<String, User> allUsers = context.getUserState().getAllUsers();
-
+        // Verify if the account email is registered on the system
         if (!allUsers.containsKey(email)) {
             view.displayFailure(
                     "LoginCommand",
@@ -46,7 +46,7 @@ public class LoginCommand implements ICommand<User> {
         }
 
         User user = allUsers.get(email);
-
+        // Verify if the password matches the saved password for the corresponding account
         if (!user.checkPasswordMatch(password)) {
             view.displayFailure(
                     "LoginCommand",

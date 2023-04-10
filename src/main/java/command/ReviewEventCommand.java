@@ -42,6 +42,14 @@ public class ReviewEventCommand implements ICommand<Review> {
             return;
         }
 
+        LocalDateTime eventEndTime = eventToBeReviewed.getEndDateTime();
+        if (!eventEndTime.isBefore(LocalDateTime.now())) {
+            view.displayFailure("ReviewEventCommand", LogStatus.REVIEW_EVENT_EVENT_NOT_OVER,
+                    Map.of("endDateTime", eventEndTime));
+            reviewResult = null;
+            return;
+        }
+
         // Check the current user is a logged-in Consumer
         User currentUser = context.getUserState().getCurrentUser();
         if (!(currentUser instanceof Consumer)) {

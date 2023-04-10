@@ -19,6 +19,13 @@ public class EventTagCollection {
         this.tags = new HashMap<String, String>();
     }
 
+    @Override
+    public String toString() {
+        return "EventTagCollection{" +
+                "tags=" + tags +
+                '}';
+    }
+
     /**
      * Create a new EventTagCollection with the String valuesOfEachTag
      * @param valuesOfEachTag  The String has the form "name1=value2,name2=value2...". and will be parsed to obtain
@@ -26,7 +33,7 @@ public class EventTagCollection {
      */
     public EventTagCollection(String valuesOfEachTag) {
         this();
-        if (valuesOfEachTag != null) {
+        if (valuesOfEachTag != null && !valuesOfEachTag.isBlank()) {
             String[] pairs = valuesOfEachTag.split(",");
 
             // Split each "name=value" pair to two individual String of name and value and store them in tags.
@@ -34,6 +41,9 @@ public class EventTagCollection {
                 String[] tagAndValue = pair.split("=");
                 // Verify that each pair is parsed into separate name and value
                 assert(tagAndValue.length == 2);
+                if (tagAndValue.length != 2) {
+                    return;
+                }
 
                 String tagName = tagAndValue[0];
                 String value = tagAndValue[1];

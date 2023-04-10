@@ -43,6 +43,7 @@ public class ReviewEventCommand implements ICommand<Review> {
         }
 
         LocalDateTime eventEndTime = eventToBeReviewed.getEndDateTime();
+        // Verify if the event is already over
         if (!eventEndTime.isBefore(LocalDateTime.now())) {
             view.displayFailure("ReviewEventCommand", LogStatus.REVIEW_EVENT_EVENT_NOT_OVER,
                     Map.of("endDateTime", eventEndTime));
@@ -67,7 +68,7 @@ public class ReviewEventCommand implements ICommand<Review> {
             if (booking.getBooker() == currentUser)
                 ifConsumerHasBooking = true;
         }
-
+        // Verfiy if the consumer had at least 1 valid booking (not cancelled by the consumer) at the event
         if (!ifConsumerHasBooking) {
             view.displayFailure("BookEventCommand",
                     LogStatus.REVIEW_EVENT_USER_HAVE_NO_BOOKING,

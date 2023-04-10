@@ -1,7 +1,9 @@
 import command.CreateEventCommand;
 import command.ListEventsMaxDistanceCommand;
 import command.LogoutCommand;
+import command.UpdateConsumerProfileCommand;
 import controller.Controller;
+import model.Consumer;
 import model.EventTagCollection;
 import model.EventType;
 import model.TransportMode;
@@ -67,11 +69,31 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
 
     @Test
     void listWhenUserIsNotConsumer() {
+        Controller controller = setUp();
 
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_USER_NOT_CONSUMER");
     }
 
     @Test
-    void listWhenConsumerAddressIsNull() {}
+    void listWhenConsumerAddressIsNull() {
+        Controller controller = setUp();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateConsumerProfileCommand  =
+                new UpdateConsumerProfileCommand("123456","cici","gongzi@163.com","12398",null,"gong",new EventTagCollection());
+        controller.runCommand(updateConsumerProfileCommand);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.car, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID");
+    }
 
     @Test
     void listWhenConsumerAddressIsBlank() {}

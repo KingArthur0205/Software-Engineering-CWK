@@ -52,6 +52,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
+        // Verify if no user is currently logged in
         if (currentUser != null) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -61,7 +62,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             newConsumerResult = null;
             return;
         }
-
+        // Verify if name, email, phoneNumber, and password are all not null
         if (name == null || email == null || phoneNumber == null || password == null) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -86,7 +87,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             newConsumerResult = null;
             return;
         }
-
+        // Verify if an address is provided, it is a valid lat-long format and falls within map system boundaries
         if (address != null && !address.isBlank()) {
             MapSystem mapSystem = context.getMapSystem();
             GHPoint addressPoint = null;

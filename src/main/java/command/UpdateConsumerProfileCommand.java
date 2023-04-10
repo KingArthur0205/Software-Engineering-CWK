@@ -61,6 +61,7 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
      */
     @Override
     public void execute(Context context, IView view) {
+        // Verify if oldPassword, newName, newEmail, newPhoneNumber, and newPassword are all not null
         if (oldPassword == null || newName == null || newEmail == null || newPhoneNumber == null || newPassword == null) {
             view.displayFailure(
                     "UpdateConsumerProfileCommand",
@@ -75,14 +76,15 @@ public class UpdateConsumerProfileCommand extends UpdateProfileCommand {
             successResult = false;
             return;
         }
-
+        // Verify if oldPassword matches the current user's password
+        // Verify if there is no other user already registered with the same email address as newEmail
         if (isProfileUpdateInvalid(context, view, oldPassword, newEmail)) {
             successResult = false;
             return;
         }
 
         User currentUser = context.getUserState().getCurrentUser();
-
+        // Verify if current user is a Consumer
         if (!(currentUser instanceof Consumer)) {
             view.displayFailure(
                     "UpdateConsumerProfileCommand",

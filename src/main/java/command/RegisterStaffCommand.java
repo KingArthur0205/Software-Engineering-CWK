@@ -41,6 +41,7 @@ public class RegisterStaffCommand implements ICommand<Staff> {
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
+        // Verify if no user is currently logged in
         if (currentUser != null) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -52,7 +53,7 @@ public class RegisterStaffCommand implements ICommand<Staff> {
         }
 
         Map<String, User> allUsers = context.getUserState().getAllUsers();
-
+        // Verify if email, password, and secret are all not null
         if (email == null || password == null || secret == null) {
             view.displayFailure(
                     "RegisterStaffCommand",
@@ -64,7 +65,7 @@ public class RegisterStaffCommand implements ICommand<Staff> {
             newStaffResult = null;
             return;
         }
-
+        // Verify if the secret matches the one that is set up for this organisation
         if (!context.getOrgSecret().equals(secret)) {
             view.displayFailure(
                     "RegisterStaffCommand",
@@ -73,7 +74,7 @@ public class RegisterStaffCommand implements ICommand<Staff> {
             newStaffResult = null;
             return;
         }
-
+        // Verify if there is no user with the same email address already registered
         if (allUsers.containsKey(email)) {
             view.displayFailure(
                     "RegisterStaffCommand",

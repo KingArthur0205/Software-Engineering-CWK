@@ -16,7 +16,7 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
         Controller controller = createController();
         Context context = controller.getContext();
         Event testEvent = context.getEventState().createEvent("TestEvent", EventType.Music, 10,
-                100, "Old College", "This is the Test Event",
+                100, "55.94368888764689 -3.1888246174917114", "This is the Test Event",
                 LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
         );
 
@@ -36,12 +36,12 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
     private void createMoreEvent(Controller controller) {
         Context context = controller.getContext();
         context.getEventState().createEvent("TestEvent", EventType.Dance, 100,
-                100, "Old College", "This is the Test Event2",
+                100, "55.94368888764689 -3.1888246174917114", "This is the Test Event2",
                 LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
         );
 
         context.getEventState().createEvent("TestEvent", EventType.Movie, 50,
-                100, "Old College", "This is the Test Event3",
+                100, "55.94368888764689 -3.1888246174917114", "This is the Test Event3",
                 LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
         );
     }

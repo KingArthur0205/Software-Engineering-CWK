@@ -144,27 +144,19 @@ public class CreateEventCommand implements ICommand<Event> {
         // 2. It falls within map system boundary
         if (venueAddress != null || !venueAddress.isBlank()) {
             String[] venueCoordinates = venueAddress.split(" ");
+            GHPoint addressPoint = null;
             // If the form of the address is not given in long-lat, createEvent fails
-            if (venueCoordinates.length != 2) {
-                view.displayFailure("CreateEventCommand", LogStatus.CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
-                        Map.of("venueAddress", venueAddress));
-                eventResult = null;
-                return;
-            }
-            // Verify if the venue address can be converted into two double
             try {
-                Double.parseDouble(venueCoordinates[0]);
-                Double.parseDouble(venueCoordinates[1]);
-            }catch(NumberFormatException e){
-                view.displayFailure("CreateEventCommand", LogStatus.CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
+                String modifiedVenueAddress = venueCoordinates[0] + "," + venueCoordinates[1];
+                // Verify if the address is within the boundary
+                addressPoint = map.convertToCoordinates(modifiedVenueAddress);
+            } catch (Exception e) {
+                view.displayFailure("CreateEventCommand",
+                        LogStatus.CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT,
                         Map.of("venueAddress", venueAddress));
                 eventResult = null;
                 return;
             }
-
-            String modifiedVenueAddress = venueCoordinates[0] + "," + venueCoordinates[1];
-            // Verify if the address is within the boundary
-            GHPoint addressPoint = map.convertToCoordinates(modifiedVenueAddress);
             if (!map.isPointWithinMapBounds(addressPoint)) {
                 view.displayFailure("CreateEventCommand",
                         LogStatus.CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY,

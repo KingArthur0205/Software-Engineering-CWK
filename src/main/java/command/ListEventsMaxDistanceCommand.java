@@ -1,9 +1,11 @@
 package command;
 
 import com.graphhopper.ResponsePath;
+import com.graphhopper.util.Instruction;
 import com.graphhopper.util.InstructionList;
 import com.graphhopper.util.Translation;
 import com.graphhopper.util.shapes.GHPoint;
+import com.sun.source.tree.Tree;
 import controller.Context;
 import external.MapSystem;
 import view.IView;
@@ -86,7 +88,7 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
                 .filter(event -> super.eventSatisfiesPreferences(preferences, event))
                 .collect(Collectors.toList());
 
-        List<Event> result = new ArrayList<>();
+        Map<Double, Event> result = new TreeMap<>();
         // Filter based on event distance
         for (int i = 0; i < eventsFittingPreferences.size(); ++i) {
             Event event = eventsFittingPreferences.get(i);
@@ -106,12 +108,21 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
 
             ResponsePath path = mapSystem.routeBetweenPoints(transportMode,consumerPoint, eventPoint);
             InstructionList il = path.getInstructions();
-            if (il.get(0).getDistance() <= maxDistance) {
-                result.add(eventsFittingPreferences.get(i));
+            Double distance = 0.0;
+            for (Instruction in : il) {
+                distance += in.getDistance();
+            }
+
+            if (distance <= maxDistance) {
+                result.put(distance, event);
             }
         }
-        result.sort(null);
-        eventListResult = result;
+
+        List<Event> events = new ArrayList<>();
+        for (Map.Entry<Double, Event> entry : result.entrySet()) {
+            events.add(entry.getValue());
+        }
+        eventListResult = events;
         view.displaySuccess(
                 "ListEventsMaxDistanceCommand",
                 LogStatus.LIST_EVENTS_MAX_DISTANCE_SUCCESS,

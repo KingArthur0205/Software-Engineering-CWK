@@ -20,6 +20,7 @@ public class ConsoleView implements IView {
     public static final int CONSUMER_MENU_CANCEL_BOOKING = 4;
     public static final int CONSUMER_MENU_LIST_BOOKINGS = 5;
     public static final int CONSUMER_MENU_GET_EVENT_DIRECTIONS = 6;
+    public static final int CONSUMER_MENU_LIST_EVENTS_BY_DISTANCE = 7;
     public static final int CONSUMER_MENU_RETURN = -1;
     public static final int STAFF_MENU_REGISTER = 1;
     public static final int STAFF_MENU_UPDATE_PROFILE = 2;
@@ -59,6 +60,7 @@ public class ConsoleView implements IView {
         System.out.println("[" + CONSUMER_MENU_CANCEL_BOOKING + "] CancelBookingCommand");
         System.out.println("[" + CONSUMER_MENU_LIST_BOOKINGS + "] ListConsumerBookingsCommand");
         System.out.println("[" + CONSUMER_MENU_GET_EVENT_DIRECTIONS + "] GetEventDirectionsCommand");
+        System.out.println("[" + CONSUMER_MENU_LIST_EVENTS_BY_DISTANCE + "] ListEventsByDistanceCommand");
         System.out.println("[" + CONSUMER_MENU_RETURN + "] Return to main menu");
     }
 

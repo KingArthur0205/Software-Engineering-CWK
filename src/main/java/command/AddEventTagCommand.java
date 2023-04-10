@@ -33,10 +33,15 @@ public class AddEventTagCommand implements ICommand<EventTag>{
         this.defaultValue = defaultValue;
     }
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that
+     */
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
-        // Check if user is Staff
+        // Verify if current user is a Staff
         if (!(currentUser instanceof Staff)) {
             view.displayFailure("AddEventTagCommand",
                     LogStatus.ADD_EVENT_TAG_USER_NOT_STAFF,
@@ -46,7 +51,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
             return;
         }
 
-        // Check the tagName doesn't clash with any existing ones
+        // Verify that the tagName doesn't clash with any existing tag names
         IEventState eventState = context.getEventState();
         if (eventState.getPossibleTags().containsKey(tagName)) {
             view.displayFailure("AddEventTagCommand", LogStatus.ADD_EVENT_TAG_NAME_CLASH,
@@ -55,7 +60,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
             return;
         }
 
-        // Check if there are at least two tag values
+        // Verify that at least two tag values are provided
         if (tagValues == null || tagValues.size() < 2) {
             view.displayFailure("AddEventTagCommand", LogStatus.ADD_EVENT_TAG_TOO_FEW_POSSIBLE_VALUES,
                     Map.of("tagValues", tagValues));
@@ -63,7 +68,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
             return;
         }
 
-        // Check if the default value is in the list of possible values
+        // Verify that the default value is in the list of possible values
         if (!(tagValues.contains(defaultValue))) {
             view.displayFailure("AddEventTagCommand", LogStatus.ADD_EVENT_TAG_DEFAULT_VALUE_NOT_POSSIBLE,
                     Map.of("tagValues", tagValues, "defaultValues", defaultValue));
@@ -71,7 +76,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
             return;
         }
 
-        // Add tag
+        // Add tag to the system
         EventTag tag = eventState.createEventTag(tagName, tagValues, defaultValue);
         view.displaySuccess("AddEventTagCommand", LogStatus.ADD_EVENT_TAG_SUCCESS,
                 Map.of("tagName", tagName, "tagValues", tagValues, "defaultValue", defaultValue));
@@ -79,7 +84,7 @@ public class AddEventTagCommand implements ICommand<EventTag>{
     }
 
     /**
-     * @return tag corresponding to the newly created Tag if successful and null otherwise
+     * @return tag corresponding to the newly created {@link EventTag} if successful and null otherwise
      */
     @Override
     public EventTag getResult() {

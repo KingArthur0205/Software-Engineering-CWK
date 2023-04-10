@@ -1,6 +1,4 @@
-import command.CreateEventCommand;
-import command.ListEventsCommand;
-import command.LogoutCommand;
+import command.*;
 import controller.Controller;
 import model.EventTagCollection;
 import model.EventType;
@@ -107,6 +105,44 @@ public class ListEventsSystemTests extends ConsoleTest{
 
     @Test
     void listEventsFittingConsumerPreference() {
+        Controller controller = setup();
+
+        CreateEventCommand eventCmd = new CreateEventCommand(
+                "Event2",
+                EventType.Theatre,
+                10,
+                0,
+                "55.94368888764689 -3.1888246174917114", // George Square Gardens, Edinburgh
+                "Please be prepared to pay 2.50 pounds on entry",
+                LocalDateTime.now().plusHours(8),
+                LocalDateTime.now().plusHours(12),
+                new EventTagCollection("hasAirFiltration=true")
+        );
+        CreateEventCommand eventCmd2 = new CreateEventCommand(
+                "Event1",
+                EventType.Theatre,
+                10,
+                0,
+                "55.94368888764689 -3.1888246174917114", // George Square Gardens, Edinburgh
+                "Please be prepared to pay 2.50 pounds on entry",
+                LocalDateTime.now().plusHours(8),
+                LocalDateTime.now().plusHours(12),
+                new EventTagCollection("hasAirFiltration=false")
+        );
+        controller.runCommand(eventCmd);
+        controller.runCommand(eventCmd2);
+
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        ListEventsCommand cmd = new ListEventsCommand(true, false, null);
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateConsumerProfileCommand =
+                new UpdateConsumerProfileCommand("123456", "hi","gongzi@163.com","781230", "55.94368888764689 -3.1888246174917114", "password",
+                        new EventTagCollection("hasAirFiltration=false"));
+        controller.runCommand(updateConsumerProfileCommand);
+        startOutputCapture();
+        controller.runCommand(cmd);
+        stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
 
     }
 }

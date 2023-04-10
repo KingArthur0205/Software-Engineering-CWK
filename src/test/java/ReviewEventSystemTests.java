@@ -87,10 +87,13 @@ public class ReviewEventSystemTests extends ConsoleTest{
 
     @Test
     void reviewWhenConsumerHasNoBooking() {
-        Controller controller = createStaffAndEvent(200, 5);
-        LogoutCommand logoutCommand = new LogoutCommand();
-        controller.runCommand(logoutCommand);
+        Controller controller = createController();
         createConsumer(controller);
+        Context context = controller.getContext();
+        Event testEvent = context.getEventState().createEvent("TestEvent", EventType.Music, 10,
+                100, "Old College", "This is the Test Event",
+                LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
+        );
 
         ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "Good Event");
         startOutputCapture();
@@ -110,7 +113,6 @@ public class ReviewEventSystemTests extends ConsoleTest{
         BookEventCommand bookEventCommand = new BookEventCommand(1, 1);
         controller.runCommand(bookEventCommand);
 
-
         ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "Good Event");
         startOutputCapture();
         controller.runCommand(reviewCmd);
@@ -118,5 +120,20 @@ public class ReviewEventSystemTests extends ConsoleTest{
     }
 
     @Test
-    void reviewFutureEvent() {}
+    void reviewFutureEvent() {
+        Controller controller = createController();
+        createConsumer(controller);
+        Context context = controller.getContext();
+        Event testEvent = context.getEventState().createEvent("TestEvent", EventType.Music, 10,
+                100, "Old College", "This is the Test Event",
+                LocalDateTime.now().plusHours(1), LocalDateTime.now().plusHours(2), new EventTagCollection()
+        );
+        BookEventCommand bookEventCommand = new BookEventCommand(1, 1);
+        controller.runCommand(bookEventCommand);
+
+        ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "Good Event");
+        startOutputCapture();
+        controller.runCommand(reviewCmd);
+        stopOutputCaptureAndCompare("REVIEW_EVENT_EVENT_NOT_OVER");
+    }
 }

@@ -20,7 +20,6 @@ public class Event {
     private final LocalDateTime endDateTime;
     private EventTagCollection tags;
     private List<Review> reviews;
-
     private EventStatus status;
     private int numTicketsLeft;
 
@@ -37,6 +36,7 @@ public class Event {
      *                            or if payment is required on entry in addition to ticket booking
      * @param startDateTime       date and time when the performance will begin
      * @param endDateTime         date and time when the performance will end
+     * @param tags                names and selected values associated with the event
      */
     public Event(long eventNumber,
                  String title,
@@ -57,6 +57,7 @@ public class Event {
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+        // A new event has no reviews
         this.reviews = new ArrayList<>();
         this.tags = tags;
 
@@ -71,6 +72,9 @@ public class Event {
         return numTicketsCap;
     }
 
+    /**
+     * @return Number of the tickets left that can still be purchased.
+     */
     public int getNumTicketsLeft() {
         return numTicketsLeft;
     }
@@ -118,6 +122,9 @@ public class Event {
         status = EventStatus.CANCELLED;
     }
 
+    /**
+     * @param review a new {@link Review} of the event
+     */
     public void addReview(Review review) {
         reviews.add(review);
     }

@@ -12,18 +12,10 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class CreateEventTests extends ConsoleTest {
-    private static void registerPawsForAwwws(Controller controller) {
-        controller.runCommand(new RegisterStaffCommand(
-                "hasta@vista.baby",
-                "very insecure password 123",
-                "Nec temere nec timide"
-        ));
-    }
 
     private static Event createEvent(Controller controller,
                                      LocalDateTime startDateTime,
-                                     LocalDateTime endDateTime) {
-        String address = "55.944377051350656, -3.18913215894117";
+                                     LocalDateTime endDateTime, String address) {
         CreateEventCommand eventCmd = new CreateEventCommand(
                 "Puppies against depression",
                 EventType.Theatre,
@@ -67,11 +59,12 @@ public class CreateEventTests extends ConsoleTest {
     void createEventInThePast() {
         Controller controller = createController();
         startOutputCapture();
-        registerPawsForAwwws(controller);
+        createStaff(controller);
         Event event = createEvent(
                 controller,
                 LocalDateTime.now().minusDays(5),
-                LocalDateTime.now().minusDays(5).plusHours(2)
+                LocalDateTime.now().minusDays(5).plusHours(2),
+                "55.944377051350656 -3.18913215894117"
         );
         assertNull(event);
         stopOutputCaptureAndCompare(
@@ -85,11 +78,12 @@ public class CreateEventTests extends ConsoleTest {
     void createEventWithEndBeforeStart() {
         Controller controller = createController();
         startOutputCapture();
-        registerPawsForAwwws(controller);
+        createStaff(controller);
         Event event = createEvent(
                 controller,
                 LocalDateTime.now().minusDays(5),
-                LocalDateTime.now().minusDays(5).minusHours(2)
+                LocalDateTime.now().minusDays(5).minusHours(2),
+                "55.944377051350656 -3.18913215894117"
         );
         assertNull(event);
         stopOutputCaptureAndCompare(
@@ -97,10 +91,22 @@ public class CreateEventTests extends ConsoleTest {
                 "USER_LOGIN_SUCCESS",
                 "CREATE_EVENT_START_AFTER_END"
         );
+
+        assertNull(event);
     }
 
     @Test
-    void createEventNotWithinBoundary() {}
+    void createEventNotWithinBoundary() {
+        Controller controller = createController();
+        createStaff(controller);
+        startOutputCapture();
+        Event event = createEvent(controller,
+                LocalDateTime.now().plusHours(3),
+                LocalDateTime.now().plusHours(5),
+                "51.75731046567365 -0.0806357748349268"); // London
+        stopOutputCaptureAndCompare("CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY");
+
+    }
 
     @Test
     void createEventWithInvalidAddress1() {

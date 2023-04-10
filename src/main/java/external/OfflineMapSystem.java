@@ -6,6 +6,7 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.ResponsePath;
 import com.graphhopper.config.CHProfile;
 import com.graphhopper.config.Profile;
+import com.graphhopper.routing.util.DefaultSnapFilter;
 import com.graphhopper.util.Translation;
 import com.graphhopper.util.TranslationMap;
 import com.graphhopper.util.shapes.GHPoint;
@@ -34,7 +35,8 @@ public class OfflineMapSystem implements MapSystem{
 
     @Override
     public boolean isPointWithinMapBounds(GHPoint addressPoint) {
-        return hopper.getBaseGraph().getBounds().contains(addressPoint.getLat(), addressPoint.getLon());
+        //return hopper.getBaseGraph().getBounds().contains(addressPoint.getLat(), addressPoint.getLon());
+        return hopper.getLocationIndex().findClosest(addressPoint.getLat(), addressPoint.getLon(), DefaultSnapFilter.ALL_EDGES).isValid();
     }
 
     @Override

@@ -76,7 +76,7 @@ public class CreateEventCommand implements ICommand<Event> {
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
-
+        // Verify if current user is a Staff
         if (!(currentUser instanceof Staff)) {
             view.displayFailure(
                     "CreateEventCommand",
@@ -87,6 +87,7 @@ public class CreateEventCommand implements ICommand<Event> {
             return;
         }
 
+        // Verify if the startDateTime is after the endDateTime
         if (startDateTime.isAfter(endDateTime)) {
             view.displayFailure(
                     "CreateEventCommand",
@@ -157,6 +158,8 @@ public class CreateEventCommand implements ICommand<Event> {
                 eventResult = null;
                 return;
             }
+
+            //System.out.println(map.isPointWithinMapBounds(addressPoint));
             if (!map.isPointWithinMapBounds(addressPoint)) {
                 view.displayFailure("CreateEventCommand",
                         LogStatus.CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY,

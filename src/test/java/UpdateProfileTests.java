@@ -253,20 +253,163 @@ public class UpdateProfileTests extends ConsoleTest {
     }
 
     @Test
-    void updateConsumerProfileWhenAddressIsNull() {}
+    void updateConsumerProfileWhenAddressIsNull() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                null,
+                CONSUMER_PASSWORD,
+                new EventTagCollection()
+        );
+        controller.runCommand(updateCmd);
+        assertTrue(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_SUCCESS"
+        );
+    }
 
     @Test
-    void updateConsumerProfileWhenAddressIsBlank() {}
+    void updateConsumerProfileWhenAddressIsBlank() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                "",
+                CONSUMER_PASSWORD,
+                new EventTagCollection()
+        );
+        controller.runCommand(updateCmd);
+        assertTrue(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_SUCCESS"
+        );
+    }
 
     @Test
-    void updateConsumerProfileWhenAddressFormatIsWrong() {}
+    void updateConsumerProfileWhenAddressFormatIsWrong() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                "Wrong Format",
+                CONSUMER_PASSWORD,
+                new EventTagCollection()
+        );
+        controller.runCommand(updateCmd);
+        assertFalse(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_ADDRESS_INVALID"
+        );
+    }
 
     @Test
-    void updateConsumerProfileWhenAddressIsOutOfBoundary() {}
+    void updateConsumerProfileWhenAddressIsOutOfBoundary() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                "56.0221304308943 10.75585809433506", // Denmark
+                CONSUMER_PASSWORD,
+                new EventTagCollection()
+        );
+        controller.runCommand(updateCmd);
+        assertFalse(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_ADDRESS_NOT_WITHIN_BOUNDARY"
+        );
+    }
 
     @Test
-    void updateConsumerProfileWhenTagNameIsInvalid() {}
+    void updateConsumerProfileWhenTagNameIsInvalid() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                "55.970287266858655 -3.2397796972823607",
+                CONSUMER_PASSWORD,
+                new EventTagCollection("NonexistTag=true")
+        );
+        controller.runCommand(updateCmd);
+        assertFalse(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_TAG_DO_NOT_EXIST"
+        );
+    }
 
     @Test
-    void updateConsumerProfileWhenTagValueIsInvalid() {}
+    void updateConsumerProfileWhenOneTagValueIsInvalid() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                "55.970287266858655 -3.2397796972823607",
+                CONSUMER_PASSWORD,
+                new EventTagCollection("venuecapacity=<20,hasAirFiltration=nonexist")
+        );
+        controller.runCommand(updateCmd);
+        assertFalse(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_TAG_VALUE_DO_NOT_EXIST"
+        );
+    }
+
+    @Test
+    void updateConsumerProfileSuccess() {
+        Controller controller = createController();
+        startOutputCapture();
+        createConsumer(controller);
+        UpdateConsumerProfileCommand updateCmd = new UpdateConsumerProfileCommand(
+                CONSUMER_PASSWORD,
+                "Alice",
+                "peter@parker.com",
+                "000",
+                "55.970287266858655 -3.2397796972823607",
+                CONSUMER_PASSWORD,
+                new EventTagCollection("venueCapacity=<20,hasAirFiltration=false")
+        );
+        controller.runCommand(updateCmd);
+        assertTrue(updateCmd.getResult());
+        stopOutputCaptureAndCompare(
+                "REGISTER_CONSUMER_SUCCESS",
+                "USER_LOGIN_SUCCESS",
+                "USER_UPDATE_PROFILE_SUCCESS"
+        );
+    }
 }

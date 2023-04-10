@@ -251,4 +251,22 @@ public class UpdateProfileTests extends ConsoleTest {
                 "USER_LOGIN_EMAIL_NOT_REGISTERED"
         );
     }
+
+    @Test
+    void updateConsumerProfileWhenAddressIsNull() {}
+
+    @Test
+    void updateConsumerProfileWhenAddressIsBlank() {}
+
+    @Test
+    void updateConsumerProfileWhenAddressFormatIsWrong() {}
+
+    @Test
+    void updateConsumerProfileWhenAddressIsOutOfBoundary() {}
+
+    @Test
+    void updateConsumerProfileWhenTagNameIsInvalid() {}
+
+    @Test
+    void updateConsumerProfileWhenTagValueIsInvalid() {}
 }

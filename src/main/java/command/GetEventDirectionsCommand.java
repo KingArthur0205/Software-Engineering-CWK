@@ -36,7 +36,6 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
      * @verifies.that the current user is a Consumer
      * @verifies.that the consumer's profile includes an address
      */
-
     @Override
     public void execute(Context context, IView view) {
         IEventState eventState = context.getEventState();

@@ -40,6 +40,7 @@ public class UpdateStaffProfileCommand extends UpdateProfileCommand {
      */
     @Override
     public void execute(Context context, IView view) {
+        // Verify if oldPassword, newEmail, and newPassword are all not null
         if (oldPassword == null || newEmail == null || newPassword == null) {
             view.displayFailure(
                     "UpdateStaffProfileCommand",
@@ -51,14 +52,15 @@ public class UpdateStaffProfileCommand extends UpdateProfileCommand {
             successResult = null;
             return;
         }
-
+        // Verify if oldPassword matches the current user's password
+        // and there is no other user already registered with the same email address as newEmail
         if (isProfileUpdateInvalid(context, view, oldPassword, newEmail)) {
             successResult = false;
             return;
         }
 
         User currentUser = context.getUserState().getCurrentUser();
-
+        // Verify if currently logged-in user is a Staff member
         if (!(currentUser instanceof Staff)) {
             view.displayFailure(
                     "UpdateStaffProfileCommand",

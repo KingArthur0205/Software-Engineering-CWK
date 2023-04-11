@@ -118,6 +118,7 @@ public class Main {
                 case ConsoleView.CONSUMER_MENU_CANCEL_BOOKING -> runCommandFromUserInput(controller, CancelBookingCommand.class);
                 case ConsoleView.CONSUMER_MENU_LIST_BOOKINGS -> runCommandFromUserInput(controller, ListConsumerBookingsCommand.class);
                 case ConsoleView.CONSUMER_MENU_GET_EVENT_DIRECTIONS -> runCommandFromUserInput(controller, GetEventDirectionsCommand.class);
+                case ConsoleView.CONSUMER_MENU_LIST_EVENTS_BY_DISTANCE -> runCommandFromUserInput(controller, ListEventsMaxDistanceCommand.class);
             }
             view.displayConsumerMenu();
         }

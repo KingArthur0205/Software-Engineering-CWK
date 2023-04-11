@@ -20,6 +20,11 @@ public class SaveAppStateCommand implements ICommand<Boolean> {
     }
 
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that the currently logged-in user is a Staff member
+     */
     @Override
     public void execute(Context context, IView view) {
 
@@ -61,7 +66,6 @@ public class SaveAppStateCommand implements ICommand<Boolean> {
         SAVE_APP_STATE_USER_NOT_STAFF,
         SAVE_APP_STATE_SUCCESSFUL,
         SAVE_APP_STATE_UNKNOWN_FAIL
-
     }
 }
 

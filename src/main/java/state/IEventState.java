@@ -2,6 +2,7 @@ package state;
 
 import model.Event;
 import model.EventTag;
+import model.EventTagCollection;
 import model.EventType;
 
 import java.time.LocalDateTime;
@@ -36,9 +37,6 @@ public interface IEventState {
      * @param description         additional details about the event
      * @param startDateTime       date and time when the new performance will begin
      * @param endDateTime         date and time when the new performance will end
-     * @param hasSocialDistancing whether the new performance will have social distancing in place
-     * @param hasAirFiltration    whether the new performance will have air filtration in place
-     * @param isOutdoors          whether the new performance will be outdoors
      * @return The newly created {@link Event}
      */
     Event createEvent(String title,
@@ -49,9 +47,7 @@ public interface IEventState {
                       String description,
                       LocalDateTime startDateTime,
                       LocalDateTime endDateTime,
-                      boolean hasSocialDistancing,
-                      boolean hasAirFiltration,
-                      boolean isOutdoors);
+                      EventTagCollection tags);
 
     /**
      * @param event the event which is going to be added in the system

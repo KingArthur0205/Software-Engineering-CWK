@@ -3,6 +3,7 @@ import controller.Context;
 import controller.Controller;
 import model.Booking;
 import model.Event;
+import model.EventTagCollection;
 import model.EventType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -105,9 +106,7 @@ public class ConsoleTest {
                 "Please be prepared to pay 2.50 pounds on entry",
                 LocalDateTime.now().plusHours(eventDelayHours),
                 LocalDateTime.now().plusHours(eventDelayHours + 1),
-                false,
-                false,
-                true
+                new EventTagCollection()
         );
         controller.runCommand(eventCmd);
         return eventCmd.getResult();

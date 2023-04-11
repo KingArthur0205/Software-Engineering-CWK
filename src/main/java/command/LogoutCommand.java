@@ -14,6 +14,7 @@ public class LogoutCommand implements ICommand<Void> {
      */
     @Override
     public void execute(Context context, IView view) {
+        // Verify if the current user is logged in
         if (context.getUserState().getCurrentUser() == null) {
             view.displayFailure(
                     "LogoutCommand",

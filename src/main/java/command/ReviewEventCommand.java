@@ -2,6 +2,7 @@ package command;
 
 import controller.Context;
 import model.*;
+import state.BookingState;
 import state.IEventState;
 import state.IUserState;
 import view.IView;
@@ -20,6 +21,15 @@ public class ReviewEventCommand implements ICommand<Review> {
         this.content = content;
     }
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that an event exists with the corresponding eventNumber
+     * @verifies.that the event is already over
+     * @verifies.that the current user is a logged-in Consumer
+     * @verifies.that the consumer had at least 1 valid booking (not cancelled by the consumer) at the event
+     */
+
     @Override
     public void execute(Context context, IView view) {
         // Check an event with the provided event number exists
@@ -28,6 +38,15 @@ public class ReviewEventCommand implements ICommand<Review> {
         if (eventToBeReviewed == null) {
             view.displayFailure("ReviewEventCommand", LogStatus.REVIEW_EVENT_EVENT_NUMBER_DOES_NOT_EXIST,
                     Map.of("eventNumber", eventNumber));
+            reviewResult = null;
+            return;
+        }
+
+        LocalDateTime eventEndTime = eventToBeReviewed.getEndDateTime();
+        // Verify if the event is already over
+        if (!eventEndTime.isBefore(LocalDateTime.now())) {
+            view.displayFailure("ReviewEventCommand", LogStatus.REVIEW_EVENT_EVENT_NOT_OVER,
+                    Map.of("endDateTime", eventEndTime));
             reviewResult = null;
             return;
         }
@@ -44,6 +63,20 @@ public class ReviewEventCommand implements ICommand<Review> {
         }
 
         List<Booking> bookings = context.getBookingState().findBookingsByEventNumber(eventNumber);
+        Boolean ifConsumerHasBooking = false;
+        for (Booking booking : bookings) {
+            if (booking.getBooker() == currentUser)
+                ifConsumerHasBooking = true;
+        }
+        // Verfiy if the consumer had at least 1 valid booking (not cancelled by the consumer) at the event
+        if (!ifConsumerHasBooking) {
+            view.displayFailure("BookEventCommand",
+                    LogStatus.REVIEW_EVENT_USER_HAVE_NO_BOOKING,
+                    Map.of("eventToBeReviewed", eventToBeReviewed)
+            );
+            reviewResult = null;
+            return;
+        }
 
         // Create and add the Review
         IUserState userState = context.getUserState();

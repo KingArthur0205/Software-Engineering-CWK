@@ -139,7 +139,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
                         );
                         importResult = false;
                         return;
-                    }
+                }
 
             }
         }
@@ -206,3 +206,4 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
         LOAD_APP_STATE_UNKNOWN_FAIL,
     }
 }
+

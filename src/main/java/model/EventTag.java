@@ -16,6 +16,11 @@ public class EventTag implements Serializable {
      * @param defaultValue  Default value of the Tag
      */
     public EventTag(Set<String> values, String defaultValue) {
+        // Check if any values or default value is blank
+        assert(!defaultValue.isBlank());
+        for (String value : values)
+            assert(!value.isBlank());
+
         this.defaultValue = defaultValue;
         this.values = values;
     }

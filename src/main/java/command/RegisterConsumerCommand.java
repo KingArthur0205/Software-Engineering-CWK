@@ -1,7 +1,10 @@
 package command;
 
+import com.graphhopper.util.shapes.GHPoint;
 import controller.Context;
+import external.MapSystem;
 import model.Consumer;
+import model.EventTagCollection;
 import model.User;
 import view.IView;
 
@@ -44,10 +47,12 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
      * @verifies.that no user is currently logged in
      * @verifies.that name, email, phoneNumber, and password are all not null
      * @verifies.that there is no user with the same email address already registered
+     * @verifies.that if an address is provided, it is a valid lat-long format and falls within map system boundaries
      */
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
+        // Verify if no user is currently logged in
         if (currentUser != null) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -57,7 +62,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             newConsumerResult = null;
             return;
         }
-
+        // Verify if name, email, phoneNumber, and password are all not null
         if (name == null || email == null || phoneNumber == null || password == null) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -72,6 +77,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             return;
         }
 
+        // Verify that there is no clashed email
         if (context.getUserState().getAllUsers().containsKey(email)) {
             view.displayFailure(
                     "RegisterConsumerCommand",
@@ -80,6 +86,29 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             );
             newConsumerResult = null;
             return;
+        }
+        // Verify if an address is provided, it is a valid lat-long format and falls within map system boundaries
+        if (address != null && !address.isBlank()) {
+            MapSystem mapSystem = context.getMapSystem();
+            GHPoint addressPoint = null;
+            try{
+                String[] addressCoordinates = address.split(" ");
+                String modifiedAddress = addressCoordinates[0] + "," + addressCoordinates[1];
+                addressPoint = mapSystem.convertToCoordinates(modifiedAddress);
+            } catch (Exception e) {
+                view.displayFailure("RegisterConsumerCommand",
+                        LogStatus.USER_REGISTER_INVALID_ADDRESS_FORMAT,
+                        Map.of("address", address, "error", e.getLocalizedMessage()));
+                newConsumerResult = null;
+                return;
+            }
+
+            if (!mapSystem.isPointWithinMapBounds(addressPoint)) {
+                view.displayFailure("RegisterConsumerCommand", LogStatus.USER_REGISTER_ADDRESS_OUT_OF_BOUNDS,
+                        Map.of("address", address));
+                newConsumerResult = null;
+                return;
+            }
         }
 
         Consumer consumer = new Consumer(name, email, phoneNumber, address, password);
@@ -117,6 +146,8 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
         USER_REGISTER_LOGGED_IN,
         USER_REGISTER_FIELDS_CANNOT_BE_NULL,
         USER_REGISTER_EMAIL_ALREADY_REGISTERED,
+        USER_REGISTER_INVALID_ADDRESS_FORMAT,
+        USER_REGISTER_ADDRESS_OUT_OF_BOUNDS,
         USER_LOGIN_SUCCESS,
     }
 }

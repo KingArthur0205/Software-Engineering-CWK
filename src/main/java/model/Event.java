@@ -20,12 +20,9 @@ public class Event implements Serializable {
     private final String description;
     private final LocalDateTime startDateTime;
     private final LocalDateTime endDateTime;
-    private final boolean hasSocialDistancing;
-    private final boolean hasAirFiltration;
-    private final boolean isOutdoors;
+    private EventTagCollection tags;
     private List<Review> reviews;
     private long serialVersionUID;
-
     private EventStatus status;
     private int numTicketsLeft;
 
@@ -42,9 +39,7 @@ public class Event implements Serializable {
      *                            or if payment is required on entry in addition to ticket booking
      * @param startDateTime       date and time when the performance will begin
      * @param endDateTime         date and time when the performance will end
-     * @param hasSocialDistancing whether social distancing will be in place at the performance
-     * @param hasAirFiltration    whether air filtration will be in place at the performance
-     * @param isOutdoors          whether the performance will take place outdoors
+     * @param tags                names and selected values associated with the event
      */
     public Event(long eventNumber,
                  String title,
@@ -55,10 +50,7 @@ public class Event implements Serializable {
                  String description,
                  LocalDateTime startDateTime,
                  LocalDateTime endDateTime,
-                 boolean hasSocialDistancing,
-                 boolean hasAirFiltration,
-                 boolean isOutdoors) {
-        this.serialVersionUID = UUID.randomUUID().getLeastSignificantBits();
+                 EventTagCollection tags) {
         this.eventNumber = eventNumber;
         this.title = title;
         this.type = type;
@@ -68,10 +60,9 @@ public class Event implements Serializable {
         this.description = description;
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
-        this.hasSocialDistancing = hasSocialDistancing;
-        this.hasAirFiltration = hasAirFiltration;
-        this.isOutdoors = isOutdoors;
+        // A new event has no reviews
         this.reviews = new ArrayList<>();
+        this.tags = tags;
 
         this.status = EventStatus.ACTIVE;
         this.numTicketsLeft = numTicketsCap;
@@ -84,6 +75,9 @@ public class Event implements Serializable {
         return numTicketsCap;
     }
 
+    /**
+     * @return Number of the tickets left that can still be purchased.
+     */
     public int getNumTicketsLeft() {
         return numTicketsLeft;
     }
@@ -112,6 +106,10 @@ public class Event implements Serializable {
         return status;
     }
 
+    public EventTagCollection getTags() {
+        return tags;
+    }
+
     public LocalDateTime getStartDateTime() {
         return startDateTime;
     }
@@ -124,18 +122,6 @@ public class Event implements Serializable {
         return endDateTime;
     }
 
-    public boolean hasSocialDistancing() {
-        return hasSocialDistancing;
-    }
-
-    public boolean hasAirFiltration() {
-        return hasAirFiltration;
-    }
-
-    public boolean isOutdoors() {
-        return isOutdoors;
-    }
-
     /**
      * Set {@link #status} to {@link EventStatus#CANCELLED}
      */
@@ -143,6 +129,9 @@ public class Event implements Serializable {
         status = EventStatus.CANCELLED;
     }
 
+    /**
+     * @param review a new {@link Review} of the event
+     */
     public void addReview(Review review) {
         reviews.add(review);
     }
@@ -162,11 +151,9 @@ public class Event implements Serializable {
                 ", description='" + description + '\'' +
                 ", startDateTime=" + startDateTime +
                 ", endDateTime=" + endDateTime +
-                ", hasSocialDistancing=" + hasSocialDistancing +
-                ", hasAirFiltration=" + hasAirFiltration +
-                ", isOutdoors=" + isOutdoors +
                 ", status=" + status +
                 ", numTicketsLeft=" + numTicketsLeft +
+                ", tags=" + tags +
                 '}';
     }
 

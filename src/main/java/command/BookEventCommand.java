@@ -39,6 +39,7 @@ public class BookEventCommand implements ICommand<Booking> {
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
+        // Verify if currently logged-in user is a Consumer
         if (!(currentUser instanceof Consumer)) {
             view.displayFailure("BookEventCommand",
                     LogStatus.BOOK_EVENT_USER_NOT_CONSUMER,
@@ -51,6 +52,7 @@ public class BookEventCommand implements ICommand<Booking> {
         Consumer consumer = (Consumer) currentUser;
 
         Event event = context.getEventState().findEventByNumber(eventNumber);
+        // Verify if event number corresponds to an existing event
         if (event == null) {
             view.displayFailure(
                     "BookEventCommand",
@@ -60,7 +62,7 @@ public class BookEventCommand implements ICommand<Booking> {
             bookingResult = null;
             return;
         }
-
+        // Verify if the event is active
         if (event.getStatus() != EventStatus.ACTIVE) {
             view.displayFailure(
                     "BookEventCommand",
@@ -70,7 +72,7 @@ public class BookEventCommand implements ICommand<Booking> {
             bookingResult = null;
             return;
         }
-
+        // Verify if number of requested tickets is not less than 1
         if (numTicketsRequested < 1) {
             view.displayFailure(
                     "BookEventCommand",
@@ -80,7 +82,7 @@ public class BookEventCommand implements ICommand<Booking> {
             bookingResult = null;
             return;
         }
-
+        // Verify if the selected event has not ended yet
         if (event.getEndDateTime().isBefore(LocalDateTime.now())) {
             view.displayFailure(
                     "BookEventCommand",
@@ -93,6 +95,7 @@ public class BookEventCommand implements ICommand<Booking> {
             return;
         }
 
+        // Verify if the requested number of tickets are still available
         int numTicketsLeft = event.getNumTicketsLeft();
         if (numTicketsLeft < numTicketsRequested) {
             view.displayFailure(
@@ -107,6 +110,7 @@ public class BookEventCommand implements ICommand<Booking> {
         }
 
         int ticketPrice = event.getTicketPriceInPence();
+        // Verify if the ticket price is greater than 0, the payment is successful before creating the booking
         if (ticketPrice > 0) {
             int amountToPay = numTicketsRequested * ticketPrice;
             boolean paymentSucceeded = context.getPaymentSystem().processPayment(

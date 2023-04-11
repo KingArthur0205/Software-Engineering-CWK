@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class LoadAppStateCommandSystemTests extends ConsoleTest{
+public class LoadAppDataCommandTests extends ConsoleTest{
 
     private LocalDateTime time = LocalDateTime.now();
     private static void createStandardFile(Controller controller){
@@ -31,8 +31,23 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
         controller.runCommand(bookCmd);
         return bookCmd.getResult();
     }
+    protected static Event createEvent(Controller controller, int numTickets, int eventDelayHours) {
+        CreateEventCommand eventCmd = new CreateEventCommand(
+                "Puppies against depression",
+                EventType.Theatre,
+                numTickets,
+                0,
+                "55.94368888764689 -3.1888246174917114", // George Square Gardens, Edinburgh
+                "Please be prepared to pay 2.50 pounds on entry",
+                LocalDateTime.now().plusHours(eventDelayHours),
+                LocalDateTime.now().plusHours(eventDelayHours + 1),
+                new EventTagCollection()
+        );
+        controller.runCommand(eventCmd);
+        return eventCmd.getResult();
+    }
 
-    protected static Event createEvent(Controller controller, int numTickets, int eventDelayHours , LocalDateTime time) {
+    private static Event createEvent(Controller controller, int numTickets, int eventDelayHours , LocalDateTime time) {
 
         CreateEventCommand eventCmd = new CreateEventCommand(
                 "Puppies against depression",
@@ -43,10 +58,14 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
                 "Please be prepared to pay 2.50 pounds on entry",
                 time.plusHours(eventDelayHours),
                 time.plusHours(eventDelayHours + 1),
-                new EventTagCollection());
+                new EventTagCollection()
+
+        );
         controller.runCommand(eventCmd);
         return eventCmd.getResult();
     }
+
+
     private static EventTag createEventTag(Controller controller, String tagName, Set<String> possibleValues,
                                            String defaultValue) {
         AddEventTagCommand eventCmd = new AddEventTagCommand(tagName, possibleValues, defaultValue);
@@ -150,6 +169,7 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
         Controller controller1 = createController();
 //
         createStaff(controller);
+
         createEvent(controller, 5,5,time);
         controller.runCommand(new LogoutCommand());
         createConsumer(controller);
@@ -201,6 +221,12 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_SUCCESSFUL"
         );
+
+
     }
+
+
+
+
 }
 

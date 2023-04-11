@@ -2,6 +2,7 @@ package model;
 
 import state.IEventState;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
  * {@link EventTagCollection} holds a map of names and values, corresponding each to an {@link Event}’s tag name and the
  * value selected for it.
  */
-public class EventTagCollection {
+public class EventTagCollection implements Serializable {
     private final Map<String, String> tags;
     private static final String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
 

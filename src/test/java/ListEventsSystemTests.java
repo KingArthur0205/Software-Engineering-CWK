@@ -132,7 +132,6 @@ public class ListEventsSystemTests extends ConsoleTest{
     }
 
     @Test
-    // 我写的不一定对 记得改哦
     void listActiveEventsOnly() {
         Controller controller = setup();
         createEvent(controller, 500, 2);

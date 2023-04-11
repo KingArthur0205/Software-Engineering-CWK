@@ -66,6 +66,8 @@ public class Event implements Serializable {
 
         this.status = EventStatus.ACTIVE;
         this.numTicketsLeft = numTicketsCap;
+        this.serialVersionUID = UUID.randomUUID().getLeastSignificantBits();
+
     }
 
     /**

@@ -1,18 +1,16 @@
 package command;
 
 import controller.Context;
-import model.Event;
 import model.Staff;
 import model.User;
 import view.IView;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
-public class ExportDataCommand implements ICommand<Boolean> {
+public class SaveAppStateCommand implements ICommand<Boolean> {
     private Boolean eventResult;
 
     /**
@@ -28,7 +26,7 @@ public class ExportDataCommand implements ICommand<Boolean> {
         if (!(currentUser instanceof Staff)) {
             view.displayFailure(
                     "ExportDataCommand",
-                    ExportDataCommand.LogStatus.Export_Data_USER_NOT_STAFF,
+                    SaveAppStateCommand.LogStatus.Export_Data_USER_NOT_STAFF,
                     Map.of("user", currentUser != null ? currentUser : "none")
             );
             eventResult = false;

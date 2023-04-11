@@ -48,7 +48,6 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
      * @verifies.that currently logged-in user is a Consumer
      * @verifies.that current user has an address set up in their profile
      */
-
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();

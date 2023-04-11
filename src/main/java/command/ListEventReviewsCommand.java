@@ -23,7 +23,6 @@ public class ListEventReviewsCommand implements ICommand<List<Review>>{
     /**
      * @param eventTitle              title of event
      */
-
     public ListEventReviewsCommand(String eventTitle) {
         this.eventTitle = eventTitle;
         this.reviewsResult = new ArrayList<>();

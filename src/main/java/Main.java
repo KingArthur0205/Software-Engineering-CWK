@@ -3,12 +3,16 @@ import controller.Context;
 import controller.Controller;
 import view.ConsoleView;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -142,6 +146,13 @@ public class Main {
         TimerTask autoSaveTask = new TimerTask() {
             @Override
             public void run() {
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+                String filename = "autosave" + timestamp + ".dat";
+                try (FileOutputStream fileOutputStream = new FileOutputStream(filename);
+                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+                     objectOutputStream.writeObject(context);
+                } catch (IOException e) {}
+
                 // TODO: complete auto-save code here
             }
         };

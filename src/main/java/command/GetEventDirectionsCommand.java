@@ -7,10 +7,7 @@ import com.graphhopper.util.Translation;
 import com.graphhopper.util.shapes.GHPoint;
 import controller.Context;
 import external.MapSystem;
-import model.Consumer;
-import model.Event;
-import model.TransportMode;
-import model.User;
+import model.*;
 import state.IEventState;
 import state.IUserState;
 import view.IView;
@@ -18,10 +15,19 @@ import view.IView;
 import java.util.Arrays;
 import java.util.Map;
 
+/**
+ * {@link GetEventDirectionsCommand} allows {@link model.Consumer}s to get direction
+ * to chosen {@link Event}s. This command applies for the currently logged-in user.
+ */
 public class GetEventDirectionsCommand implements ICommand<String[]>{
     private String[] directionsResult;
     private final long eventNumber;
     private TransportMode transportMode;
+
+    /**
+     * @param eventNumber              the specific event number of event that want to get direction to
+     * @param transportMode            the transport mode of event that want to get direction to
+     */
 
     public GetEventDirectionsCommand(long eventNumber, TransportMode transportMode) {
         this.eventNumber = eventNumber;

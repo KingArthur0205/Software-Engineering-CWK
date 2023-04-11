@@ -35,6 +35,7 @@ public class CreateEventCommand implements ICommand<Event> {
      * @param description         additional details about the event
      * @param startDateTime       indicates the date and time when this performance is due to start
      * @param endDateTime         indicates the date and time when this performance is due to end
+     * @param tags                indicates the tags selected for corresponding event.
      */
     public CreateEventCommand(String title,
                               EventType type,

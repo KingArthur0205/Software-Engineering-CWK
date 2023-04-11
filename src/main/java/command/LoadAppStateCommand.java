@@ -11,11 +11,17 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.io.FileNotFoundException;
 
+/**
+ * {@link LoadAppStateCommand} allows {@link Staff} members to save the state of system.
+ */
 public class LoadAppStateCommand implements ICommand<Boolean> {
     private Boolean importResult;
     private String filename;
     Context context1 = null;
 
+    /**
+     * @param filename           the location of file that going to load from
+     */
     public LoadAppStateCommand(String filename) {
         this.filename = filename;
         importResult = true;

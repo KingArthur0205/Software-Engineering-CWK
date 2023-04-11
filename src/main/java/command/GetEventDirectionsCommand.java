@@ -28,7 +28,6 @@ public class GetEventDirectionsCommand implements ICommand<String[]>{
      * @param eventNumber              the specific event number of event that want to get direction to
      * @param transportMode            the transport mode of event that want to get direction to
      */
-
     public GetEventDirectionsCommand(long eventNumber, TransportMode transportMode) {
         this.eventNumber = eventNumber;
         this.transportMode = transportMode;

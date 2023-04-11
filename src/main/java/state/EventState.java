@@ -79,6 +79,9 @@ public class EventState implements IEventState, Serializable {
 
     @Override
     public void addEvent(Event event) {
+        long eventNumber = nextEventNumber;
+        nextEventNumber++;
+        event.setEventNumber(eventNumber);
         events.add(event);
     }
 

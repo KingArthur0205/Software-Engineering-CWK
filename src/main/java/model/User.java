@@ -3,6 +3,7 @@ package model;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * {@link User} is an abstraction, containing common state and behaviours shared by different kinds of users:
@@ -11,6 +12,7 @@ import java.io.Serializable;
 public abstract class User implements Serializable {
     private String email;
     private String passwordHash;
+    private long serialVersionUID;
 
     /**
      * Create a new User and save the user email and payment account email, but do not save the password in plaintext!
@@ -27,6 +29,7 @@ public abstract class User implements Serializable {
     protected User(String email, String password) {
         this.email = email;
         this.passwordHash = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        this.serialVersionUID = UUID.randomUUID().getLeastSignificantBits();
     }
 
     public String getEmail() {
@@ -64,5 +67,9 @@ public abstract class User implements Serializable {
                 "email='" + email + '\'' +
                 ", password='***'" +
                 '}';
+    }
+
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

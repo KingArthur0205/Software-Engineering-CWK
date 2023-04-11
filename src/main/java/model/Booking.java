@@ -1,17 +1,20 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * {@link Booking} represents a booking made by a {@link Consumer} for an {@link Event}.
  */
-public class Booking {
-    private final long bookingNumber;
+public class Booking implements Serializable {
+    private long bookingNumber;
     private final Consumer booker;
     private final Event event;
     private final int numTickets;
     private final LocalDateTime bookingDateTime;
     private BookingStatus status;
+
 
     /**
      * @param bookingNumber   unique identifier for this booking
@@ -53,6 +56,14 @@ public class Booking {
         return numTickets;
     }
 
+    public void setBookingNumber(long number){
+        this.bookingNumber = number;
+    }
+
+    public LocalDateTime getBookingDateTime() {
+        return bookingDateTime;
+    }
+
     /**
      * Sets the {@link #status} to {@link BookingStatus#CancelledByConsumer}.
      */
@@ -78,4 +89,5 @@ public class Booking {
                 ", bookingDateTime=" + bookingDateTime +
                 '}';
     }
+
 }

@@ -11,48 +11,61 @@ import java.io.ObjectOutputStream;
 import java.util.Map;
 
 public class SaveAppStateCommand implements ICommand<Boolean> {
-    private Boolean eventResult;
+    private String filename;
+    private Boolean exportResult;
+
+    public SaveAppStateCommand(String filename){
+        this.exportResult = true;
+        this.filename = filename;
+    }
+
 
     /**
      * @param context object that provides access to global application state
      * @param view    allows passing information to the user interface
      * @verifies.that the currently logged-in user is a Staff member
      */
-
     @Override
     public void execute(Context context, IView view) {
 
         User currentUser = context.getUserState().getCurrentUser();
         if (!(currentUser instanceof Staff)) {
             view.displayFailure(
-                    "ExportDataCommand",
-                    SaveAppStateCommand.LogStatus.Export_Data_USER_NOT_STAFF,
+                    "SaveAppStateCommand",
+                    LogStatus.SAVE_APP_STATE_USER_NOT_STAFF,
                     Map.of("user", currentUser != null ? currentUser : "none")
             );
-            eventResult = false;
+            exportResult = false;
             return;
         }
-        try (FileOutputStream fileOutputStream = new FileOutputStream("context.ser");
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filename);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
              objectOutputStream.writeObject(context);
 
              fileOutputStream.close();
              objectOutputStream.close();
 
-             System.out.println("Context object has been serialized to context.ser");
+            view.displaySuccess(
+                    "SaveAppStateCommand",
+                    LogStatus.SAVE_APP_STATE_SUCCESSFUL
+                    );
+            exportResult = true;
         } catch (IOException e) {
-            System.err.println("Error serializing context object: " + e.getMessage());
-            e.printStackTrace();
+            view.displayFailure(
+                    "SaveAppStateCommand",
+                    LogStatus.SAVE_APP_STATE_UNKNOWN_FAIL,
+                    Map.of("file: ", filename));
         }
     }
 
     @Override
     public Boolean getResult() {
-        return null;
+        return exportResult;
     }
     private enum LogStatus {
-        Export_Data_USER_NOT_STAFF,
-
+        SAVE_APP_STATE_USER_NOT_STAFF,
+        SAVE_APP_STATE_SUCCESSFUL,
+        SAVE_APP_STATE_UNKNOWN_FAIL
     }
 }
 

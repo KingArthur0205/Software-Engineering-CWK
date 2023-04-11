@@ -4,6 +4,7 @@ import model.Booking;
 import model.Consumer;
 import model.Event;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,4 +37,8 @@ public interface IBookingState {
      * @return The newly created {@link Booking} instance
      */
     Booking createBooking(Consumer booker, Event event, int numTickets);
+
+    List<Booking> getAllBookings();
+
+    void addBooking(Booking other);
 }

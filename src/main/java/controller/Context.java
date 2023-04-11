@@ -6,6 +6,7 @@ import external.OfflineMapSystem;
 import external.PaymentSystem;
 import state.*;
 
+import java.beans.Transient;
 import java.io.Closeable;
 import java.io.Serializable;
 
@@ -20,12 +21,13 @@ public class Context implements AutoCloseable, Serializable {
     private final String orgAddress;
     private final String orgEmail;
     private final String orgSecret;
-    private final PaymentSystem paymentSystem;
-    private final MapSystem mapSystem;
+    private final transient PaymentSystem paymentSystem;
+    private final transient MapSystem mapSystem;
     private final IUserState userState;
     private final IEventState eventState;
     private final IBookingState bookingState;
 
+    private static final long serialVersionUID = 123456789L;
     /**
      * Initialises all the state members with default constructors of the concrete implementations:
      * {@link UserState}, {@link EventState}, {@link MapSystem}, and {@link BookingState}.
@@ -45,21 +47,6 @@ public class Context implements AutoCloseable, Serializable {
         this.userState = new UserState();
         this.eventState = new EventState();
         this.bookingState = new BookingState();
-    }
-
-    public void setContext(Context other){
-        for (String key : other.userState.getAllUsers().keySet()) {
-            userState.addUser(other.userState.getAllUsers().get(key));
-        }
-        for (int i = 0; i < other.eventState.getAllEvents().size(); i++) {
-            eventState.addEvent(other.eventState.getAllEvents().get(i));
-        }
-
-//        for (String key : other.eventState.getPossibleTags().keySet()) {
-//            eventState.createEventTag(other.eventState.getPossibleTags().get(key));
-//        }
-
-        //bookingState = new BookingState(other.bookingState);
     }
 
     /**

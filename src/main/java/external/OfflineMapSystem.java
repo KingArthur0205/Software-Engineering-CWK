@@ -42,6 +42,8 @@ public class OfflineMapSystem implements MapSystem{
     }
 
     /**
+     * Check the venue address for correctness and whether it fits the map boundaries.
+     * 
      * @param address The venue address.
      * @return        The converted {@link GHPoint} of the venue address.
      */
@@ -51,6 +53,8 @@ public class OfflineMapSystem implements MapSystem{
     }
 
     /**
+     * Check if the addressPoint is within the boundaries of the map
+     *
      * @param addressPoint The converted point of the address.
      * @return             A Boolean value indicating whether the venue address is within the boundary of the map.
      */
@@ -61,6 +65,9 @@ public class OfflineMapSystem implements MapSystem{
     }
 
     /**
+     * Compute the shortest route between two {@link GHPoint}s, which correspond to the start address and destination
+     * address using the given {@link TransportMode}.
+     *
      * @param transportMode      The {@link TransportMode} used to route between two addresses.
      * @param startAddress       The start address of routing.
      * @param destinationAddress The destination address of routing.

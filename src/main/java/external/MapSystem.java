@@ -28,8 +28,5 @@ public interface MapSystem {
      */
     ResponsePath routeBetweenPoints(TransportMode transportMode, GHPoint startAddressPoint, GHPoint destinationAddressPoint);
 
-    /**
-     * @return
-     */
     Translation getTranslation();
 }

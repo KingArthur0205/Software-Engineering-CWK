@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
- * {@link BookEventCommand} allows {@link model.Consumer Consumers} to book tickets for an
- * {@link Event}. The command applies for the currently logged-in user.
+ * {@link BookEventCommand} allows the {@link model.Consumer} to book tickets for an
+ * {@link Event}. The command applies for the currently logged-in consumer.
  */
 public class BookEventCommand implements ICommand<Booking> {
     private final long eventNumber;

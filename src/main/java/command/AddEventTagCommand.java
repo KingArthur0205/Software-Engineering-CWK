@@ -13,8 +13,8 @@ import java.util.Set;
 
 
 /**
- * {@link AddEventTagCommand} allows {@link model.Staff} to create new {@link EventTag}s
- * The command applies for currently logged-in user.
+ * {@link AddEventTagCommand} allows {@link model.Staff} to create a new {@link EventTag}
+ * The command applies for currently logged-in staff.
  */
 public class AddEventTagCommand implements ICommand<EventTag>{
     private final String tagName;

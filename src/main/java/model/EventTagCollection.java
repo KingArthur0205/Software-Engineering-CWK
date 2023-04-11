@@ -4,6 +4,8 @@ import state.IEventState;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * {@link EventTagCollection} holds a map of names and values, corresponding each to an {@link Event}’s tag name and the
@@ -33,7 +35,15 @@ public class EventTagCollection {
      */
     public EventTagCollection(String valuesOfEachTag) {
         this();
+        String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
         if (valuesOfEachTag != null && !valuesOfEachTag.isBlank()) {
+            Pattern compiledPattern = Pattern.compile(pattern);
+
+            // Check if the name=value pair matches the pattern
+            Matcher matcher = compiledPattern.matcher(valuesOfEachTag);
+            if(!matcher.matches()) {
+                return ;
+            }
             String[] pairs = valuesOfEachTag.split(",");
 
             // Split each "name=value" pair to two individual String of name and value and store them in tags.

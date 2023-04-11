@@ -243,18 +243,4 @@ public class CreateEventTests extends ConsoleTest {
                 new EventTagCollection("hasAirFiltration=false,hasSocialDistancing=true"));
         stopOutputCaptureAndCompare("CREATE_EVENT_SUCCESS");
     }
-
-    /*
-    @Test
-    void test() {
-        String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
-        String input = "Wrong Format";
-        Pattern compiledPattern = Pattern.compile(pattern);
-
-        // Check if the input string matches the pattern
-        Matcher matcher = compiledPattern.matcher(input);
-        System.out.println(matcher.matches());
-    }
-    */
-
 }

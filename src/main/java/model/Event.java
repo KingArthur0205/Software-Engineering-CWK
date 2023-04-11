@@ -145,6 +145,7 @@ public class Event {
                 ", endDateTime=" + endDateTime +
                 ", status=" + status +
                 ", numTicketsLeft=" + numTicketsLeft +
+                ", tags=" + tags +
                 '}';
     }
 

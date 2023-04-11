@@ -54,8 +54,10 @@ public class TestBooking extends ConsoleTest{
                 "title='TestEvent', type=Music, numTicketsCap=10, ticketPriceInPence=100, " +
                 "venueAddress='55.94368888764689 -3.1888246174917114', description='This is the Test Event', startDateTime=" +
                 startTime.toString() + ", endDateTime=" + endTime.toString() + ", " +
-                "status=ACTIVE, numTicketsLeft=10}, numTickets=1, bookingDateTime=" +
+                "status=ACTIVE, numTicketsLeft=10, tags=EventTagCollection{tags={}}}, numTickets=1, bookingDateTime=" +
                 bookingTime.toString() + "}";
+        System.out.println(bookingToString);
+        System.out.println(testString);
         assertEquals(bookingToString, testString);
     }
 }

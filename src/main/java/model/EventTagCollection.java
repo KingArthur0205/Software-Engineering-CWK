@@ -40,7 +40,7 @@ public class EventTagCollection {
             for (String pair : pairs) {
                 String[] tagAndValue = pair.split("=");
                 // Verify that each pair is parsed into separate name and value
-                assert(tagAndValue.length == 2);
+                // assert(tagAndValue.length == 2);
                 if (tagAndValue.length != 2) {
                     return;
                 }

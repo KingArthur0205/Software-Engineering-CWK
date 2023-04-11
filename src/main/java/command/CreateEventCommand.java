@@ -173,6 +173,8 @@ public class CreateEventCommand implements ICommand<Event> {
         if (tags != null) {
             Map<String, EventTag> possibleTags = context.getEventState().getPossibleTags();
             Map<String, String> eventTags = tags.getTags();
+
+
             for (String tagName: eventTags.keySet()) {
                 // Verify if there exist a tag with the name given in the system
                 if (!possibleTags.containsKey(tagName)) {

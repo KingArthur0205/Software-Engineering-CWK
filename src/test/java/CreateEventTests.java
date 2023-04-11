@@ -8,6 +8,8 @@ import model.EventType;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -217,6 +219,19 @@ public class CreateEventTests extends ConsoleTest {
     }
 
     @Test
+    void createEventWhenTagFormatIsWrong() {
+        Controller controller = createController();
+        createStaff(controller);
+        startOutputCapture();
+        Event event = createEvent(controller,
+                LocalDateTime.now().plusHours(3),
+                LocalDateTime.now().plusHours(5),
+                "55.944377051350656 -3.18913215894117",
+                new EventTagCollection("Wrong, Format"));
+        stopOutputCaptureAndCompare("CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH");
+    }
+
+    @Test
     void createEventSuccess() {
         Controller controller = createController();
         createStaff(controller);
@@ -228,4 +243,18 @@ public class CreateEventTests extends ConsoleTest {
                 new EventTagCollection("hasAirFiltration=false,hasSocialDistancing=true"));
         stopOutputCaptureAndCompare("CREATE_EVENT_SUCCESS");
     }
+
+    /*
+    @Test
+    void test() {
+        String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
+        String input = "Wrong Format";
+        Pattern compiledPattern = Pattern.compile(pattern);
+
+        // Check if the input string matches the pattern
+        Matcher matcher = compiledPattern.matcher(input);
+        System.out.println(matcher.matches());
+    }
+    */
+
 }

@@ -148,7 +148,6 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
     void loadDataFileClashingBookings() {
         Controller controller = createController();
         Controller controller1 = createController();
-//
         createStaff(controller);
         createEvent(controller, 5,5,time);
         controller.runCommand(new LogoutCommand());

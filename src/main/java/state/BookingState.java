@@ -6,6 +6,7 @@ import model.Event;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,4 +65,19 @@ public class BookingState implements IBookingState, Serializable {
         bookings.add(booking);
         return booking;
     }
+
+    public List<Booking> getAllBookings() {
+        List<Booking> bookingsList = new ArrayList<>();
+        bookingsList.addAll(bookings);
+        return bookingsList;
+    }
+
+    public void addBooking(Booking other) {
+        long bookingNumber = nextBookingNumber;
+        nextBookingNumber++;
+        other.setBookingNumber(bookingNumber);
+        bookings.add(other);
+
+    }
+
 }

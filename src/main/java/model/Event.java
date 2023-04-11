@@ -1,15 +1,17 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * {@link Event} represents an event that can be booked by {@link Consumer}s. Tickets can be free, but they are
  * required to attend, and there is a maximum cap on the number of tickets that can be booked.
  */
-public class Event {
-    private final long eventNumber;
+public class Event implements Serializable {
+    private long eventNumber;
     private final String title;
     private final EventType type;
     private final int numTicketsCap;
@@ -22,6 +24,7 @@ public class Event {
     private final boolean hasAirFiltration;
     private final boolean isOutdoors;
     private List<Review> reviews;
+    private long serialVersionUID;
 
     private EventStatus status;
     private int numTicketsLeft;
@@ -55,6 +58,7 @@ public class Event {
                  boolean hasSocialDistancing,
                  boolean hasAirFiltration,
                  boolean isOutdoors) {
+        this.serialVersionUID = UUID.randomUUID().getLeastSignificantBits();
         this.eventNumber = eventNumber;
         this.title = title;
         this.type = type;
@@ -112,6 +116,10 @@ public class Event {
         return startDateTime;
     }
 
+    public void setEventNumber(long number){
+        this.eventNumber = number;
+    }
+
     public LocalDateTime getEndDateTime() {
         return endDateTime;
     }
@@ -141,6 +149,7 @@ public class Event {
 
     public List<Review> getReviews() {return reviews;}
 
+
     @Override
     public String toString() {
         return "Event{" +
@@ -167,5 +176,8 @@ public class Event {
 
     public String getDescription() {
         return description;
+    }
+    public long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

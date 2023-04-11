@@ -130,8 +130,8 @@ public class Main {
                 case ConsoleView.STAFF_MENU_CANCEL_EVENT -> runCommandFromUserInput(controller, CancelEventCommand.class);
                 case ConsoleView.STAFF_MENU_LIST_EVENT_BOOKINGS -> runCommandFromUserInput(controller, ListEventBookingsCommand.class);
                 case ConsoleView.STAFF_MENU_ADD_EVENT_TAG -> runCommandFromUserInput(controller, AddEventTagCommand.class);
-                case ConsoleView.STAFF_MENU_EXPORT -> runCommandFromUserInput(controller, ExportDataCommand.class);
-                case ConsoleView.STAFF_MENU_IMPORT -> runCommandFromUserInput(controller, ImportDataCommand.class);
+                case ConsoleView.STAFF_MENU_EXPORT -> runCommandFromUserInput(controller, SaveAppStateCommand.class);
+                case ConsoleView.STAFF_MENU_IMPORT -> runCommandFromUserInput(controller, LoadAppStateCommand.class);
             }
             view.displayStaffMenu();
         }

@@ -82,8 +82,12 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
                 Boolean a = context1.getEventState().getAllEvents().get(i).getTitle().equals(context.getEventState().getAllEvents().get(j).getTitle());
                 Boolean b = context1.getEventState().getAllEvents().get(i).getStartDateTime().equals(context.getEventState().getAllEvents().get(j).getStartDateTime());
                 Boolean c = context1.getEventState().getAllEvents().get(i).getEndDateTime().equals(context.getEventState().getAllEvents().get(j).getEndDateTime());
+
+
                 if(a && b && c) {
                     boolean comparison = context1.getEventState().getAllEvents().get(i).getSerialVersionUID() == context.getEventState().getAllEvents().get(j).getSerialVersionUID();
+                    System.out.print(comparison);
+
                     if (comparison) {
                         eventSkip.add(i);
                     } else {

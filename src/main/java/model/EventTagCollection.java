@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  */
 public class EventTagCollection {
     private final Map<String, String> tags;
+    private static final String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
 
     /**
      * Create a new EventTagCollection with an empty map of Tags.
@@ -35,7 +36,6 @@ public class EventTagCollection {
      */
     public EventTagCollection(String valuesOfEachTag) {
         this();
-        String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
         if (valuesOfEachTag != null && !valuesOfEachTag.isBlank()) {
             Pattern compiledPattern = Pattern.compile(pattern);
 
@@ -75,9 +75,6 @@ public class EventTagCollection {
      * @return        AThe value associated with the tagName. null if the tagName doesn't exist
      */
     public String getValueFor(String tagName) {
-        if (tagName == null) {
-            return null;
-        }
         return tags.get(tagName);
     }
 }

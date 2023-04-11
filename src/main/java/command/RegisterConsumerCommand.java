@@ -111,6 +111,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             }
         }
 
+        // Register consumer and add the consumer to the system
         Consumer consumer = new Consumer(name, email, phoneNumber, address, password);
         context.getUserState().addUser(consumer);
         view.displaySuccess(
@@ -123,6 +124,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
                         "password", "***")
         );
 
+        // Set the current user to be newly registered consumer
         context.getUserState().setCurrentUser(consumer);
         view.displaySuccess(
                 "RegisterConsumerCommand",

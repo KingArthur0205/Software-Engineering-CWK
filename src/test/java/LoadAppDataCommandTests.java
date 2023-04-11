@@ -154,43 +154,59 @@ public class LoadAppDataCommandTests extends ConsoleTest{
 //
         createStaff(controller);
         createEvent(controller, 5,5,time);
+        controller.runCommand(new LogoutCommand());
+        createConsumer(controller);
+        controller.runCommand(new LogoutCommand());
+        controller.runCommand(new LoginCommand(
+                "bring-in-the-cash@pawsforawwws.org",
+                "very insecure password 123"));
         controller.runCommand(new SaveAppStateCommand("save1.ser"));
         controller.runCommand(new LogoutCommand());
-        createConsumerAndBookFirstEvent(controller,1);
+        controller.runCommand(new LoginCommand("i-would-never-steal-a@dog.xd","123456"));
+
+        controller.runCommand(new BookEventCommand(1,1));
+        controller.runCommand(new LogoutCommand());
         controller.runCommand(new LoginCommand(
                 "bring-in-the-cash@pawsforawwws.org",
                 "very insecure password 123"));
         controller.runCommand(new SaveAppStateCommand("save2.ser"));
-//
-//        controller1.runCommand(new RegisterStaffCommand(
-//                "sell-the-pups@pawsforawwws.org",
-//                "very insecure password 123",
-//                "Nec temere nec timide"
-//        ));
-//        controller1.runCommand(new LoadAppStateCommand("save1.ser"));
-//        controller1.runCommand(new LogoutCommand());
-//
-//        controller1.runCommand(new RegisterConsumerCommand(
-//                "max",
-//                "we-hate-cats@dogsfordogs.org",
-//                "0789694020332",
-//                "23 adress lane",
-//                "password"));
-//        controller1.runCommand(new BookEventCommand(1,1));
-//
-//
-//        controller1.runCommand(new LogoutCommand());
-//        controller1.runCommand(new LoginCommand(
-//                "sell-the-pups@pawsforawwws.org",
-//                "very insecure password 123"));
-
         startOutputCapture();
         controller.runCommand(new LoadAppStateCommand("save2.ser"));
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_CLASHING_BOOKINGS"
         );
+
+
     }
 
+    @Test
+    void loadData() {
+        Controller controller = createController();
+        Controller controller1 = createController();
+        createStaff(controller);
+        createEvent(controller, 5,5,time);
+        controller.runCommand(new LogoutCommand());
+        createConsumerAndBookFirstEvent(controller,1);
+        controller.runCommand(new LogoutCommand());
+        controller.runCommand(new LoginCommand("bring-in-the-cash@pawsforawwws.org",
+                "very insecure password 123"));
+
+        controller.runCommand(new SaveAppStateCommand("test.ser"));
+
+        controller1.runCommand(new RegisterStaffCommand(
+                "sell-the-pups@pawsforawwws.org",
+                "very insecure password 123",
+                "Nec temere nec timide"
+        ));
+
+        startOutputCapture();
+        controller1.runCommand(new LoadAppStateCommand("test.ser"));
+        stopOutputCaptureAndCompare(
+                "LOAD_APP_STATE_SUCCESSFUL"
+        );
+
+
+    }
 
 
 

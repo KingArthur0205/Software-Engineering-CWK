@@ -54,6 +54,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
 
         ArrayList<String> userSkip = new ArrayList<>();
         ArrayList<Integer> eventSkip = new ArrayList<>();
+        ArrayList<Integer> bookingSkip = new ArrayList<>();
 
 
         for (String key : context1.getUserState().getAllUsers().keySet()) {
@@ -126,19 +127,20 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
 
         for (int i = 0; i < context1.getBookingState().getAllBookings().size(); i++) {
             for (int j = 0; j < context.getBookingState().getAllBookings().size(); j++) {
-                if(
-                        context1.getBookingState().getAllBookings().get(i).getBooker().equals(context.getBookingState().getAllBookings().get(j).getBooker())
-                                && context1.getBookingState().getAllBookings().get(i).getEvent().equals(context.getBookingState().getAllBookings().get(j).getEvent())
-                                && context1.getBookingState().getAllBookings().get(i).getBookingDateTime().equals(context.getBookingState().getAllBookings().get(j).getBookingDateTime())
-                ) {
-                    view.displayFailure(
-                            "LoadAppStateCommand",
-                            LogStatus.LOAD_APP_STATE_CLASHING_BOOKINGS,
-                            Map.of("bookings", context1.getBookingState().getAllBookings().get(i) ," - ", context.getBookingState().getAllBookings().get(j))
-                    );
-                    importResult = false;
-                    return;
-                }
+                Boolean a = context1.getBookingState().getAllBookings().get(i).getBooker().getName().equals(context.getBookingState().getAllBookings().get(j).getBooker().getName());
+                Boolean b =context1.getBookingState().getAllBookings().get(i).getEvent().getEventNumber() == (context.getBookingState().getAllBookings().get(j).getEvent().getEventNumber());
+                Boolean c = context1.getBookingState().getAllBookings().get(i).getBookingDateTime().equals(context.getBookingState().getAllBookings().get(j).getBookingDateTime());
+//
+                if(a && b && c) {
+                        view.displayFailure(
+                                "LoadAppStateCommand",
+                                LogStatus.LOAD_APP_STATE_CLASHING_BOOKINGS,
+                                Map.of("bookings", context1.getBookingState().getAllBookings().get(i) ," - ", context.getBookingState().getAllBookings().get(j))
+                        );
+                        importResult = false;
+                        return;
+                    }
+
             }
         }
 
@@ -170,6 +172,9 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
             }
 
             for (int i = 0; i < context1.getBookingState().getAllBookings().size(); i++) {
+                if(bookingSkip.contains(i)){
+                    continue;
+                }
                 context.getBookingState().addBooking(context1.getBookingState().getAllBookings().get(i)); // incorrect wrong time
             }
 

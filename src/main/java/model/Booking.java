@@ -6,6 +6,7 @@ import java.util.UUID;
 
 /**
  * {@link Booking} represents a booking made by a {@link Consumer} for an {@link Event}.
+ * The number of tickets cannot be negative. The {@link BookingStatus} is ACTIVE by default.
  */
 public class Booking implements Serializable {
     private long bookingNumber;

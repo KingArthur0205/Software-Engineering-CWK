@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * {@link Consumer} represents a user of the application, who can browse {@link Event}s and book {@link Event}s.
+ * The address of the consumer must be within Scotland. Consumer's preferences of type {@link EventTagCollection} is
+ * initialized to empty by default.
  */
 public class Consumer extends User {
     private final List<Booking> bookings;

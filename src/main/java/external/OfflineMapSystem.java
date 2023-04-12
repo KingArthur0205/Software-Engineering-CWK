@@ -43,7 +43,7 @@ public class OfflineMapSystem implements MapSystem{
 
     /**
      * Check the venue address for correctness and whether it fits the map boundaries.
-     * 
+     *
      * @param address The venue address.
      * @return        The converted {@link GHPoint} of the venue address.
      */

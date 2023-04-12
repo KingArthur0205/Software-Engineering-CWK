@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
     private Controller setUp() {
         Controller controller = createController();
@@ -62,6 +65,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_NOT_LOGGED_IN");
+
+        assertNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -73,6 +78,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_USER_NOT_CONSUMER");
+
+        assertNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -90,6 +97,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID");
+
+        assertNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -107,6 +116,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID");
+
+        assertNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -121,6 +132,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_CONSUMER_ADDRESS_INVALID");
+
+        assertNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -143,6 +156,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -165,6 +180,8 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
@@ -187,10 +204,57 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
     }
 
     @Test
-    void listEventsMaxDistanceSuccess() {
+    void listEventsMaxDistanceSuccessWithBike() {
+        Controller controller = setUp();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.bike, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
+    }
+
+    @Test
+    void listEventsMaxDistanceSuccessWithFoot() {
+        Controller controller = setUp();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.foot, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
+    }
+
+    @Test
+    void listEventsMaxDistanceSuccessWithWheelchair() {
+        Controller controller = setUp();
+        LogoutCommand logoutCommand = new LogoutCommand();
+        controller.runCommand(logoutCommand);
+        createConsumer(controller);
+        ListEventsMaxDistanceCommand listEventsMaxDistanceCommand =
+                new ListEventsMaxDistanceCommand(false, true, null, TransportMode.wheelchair, 10000.0);
+        startOutputCapture();
+        controller.runCommand(listEventsMaxDistanceCommand);
+        stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
+    }
+
+    @Test
+    void listEventsMaxDistanceSuccessWithCar() {
         Controller controller = setUp();
         LogoutCommand logoutCommand = new LogoutCommand();
         controller.runCommand(logoutCommand);
@@ -200,5 +264,7 @@ public class ListEventsMaxDistanceSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsMaxDistanceCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_MAX_DISTANCE_SUCCESS");
+
+        assertNotNull(listEventsMaxDistanceCommand.getResult());
     }
 }

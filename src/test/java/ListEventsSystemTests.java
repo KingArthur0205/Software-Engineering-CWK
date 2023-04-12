@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ListEventsSystemTests extends ConsoleTest{
     private Controller setup() {
         Controller controller = createController();
@@ -59,15 +61,21 @@ public class ListEventsSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(3, cmd.getResult().size());
     }
 
     @Test
     void listSearchDateIsNotNullWhenActiveEventsOnly() {
         Controller controller = setup();
-        ListEventsCommand cmd = new ListEventsCommand(false, true, LocalDate.now());
+        ListEventsCommand cmd = new ListEventsCommand(false, true, LocalDateTime.now().plusHours(3).toLocalDate());
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(3, cmd.getResult().size());
     }
 
     @Test
@@ -82,10 +90,13 @@ public class ListEventsSystemTests extends ConsoleTest{
                 LocalDateTime.now().minusHours(24),
                 LocalDateTime.now().plusHours(4),
                 new EventTagCollection("hasSocialDistancing=false"));
-        ListEventsCommand cmd = new ListEventsCommand(false, false, LocalDate.now());
+        ListEventsCommand cmd = new ListEventsCommand(false, false, LocalDateTime.now().plusHours(3).toLocalDate());
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(4, cmd.getResult().size());
     }
 
     @Test
@@ -95,6 +106,9 @@ public class ListEventsSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(3, cmd.getResult().size());
     }
 
     @Test
@@ -106,6 +120,8 @@ public class ListEventsSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(listEventsCommand);
         stopOutputCaptureAndCompare("LIST_EVENTS_NOT_LOGGED_IN");
+
+        assertNull(listEventsCommand.getResult());
     }
 
 
@@ -116,6 +132,9 @@ public class ListEventsSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(3, cmd.getResult().size());
     }
 
     @Test
@@ -129,6 +148,9 @@ public class ListEventsSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(3, cmd.getResult().size());
     }
 
     @Test
@@ -139,6 +161,9 @@ public class ListEventsSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertEquals(4, cmd.getResult().size());
     }
 
     @Test
@@ -146,7 +171,7 @@ public class ListEventsSystemTests extends ConsoleTest{
         Controller controller = setup();
 
         CreateEventCommand eventCmd = new CreateEventCommand(
-                "Event2",
+                "Event4",
                 EventType.Theatre,
                 10,
                 0,
@@ -157,7 +182,7 @@ public class ListEventsSystemTests extends ConsoleTest{
                 new EventTagCollection("hasAirFiltration=true")
         );
         CreateEventCommand eventCmd2 = new CreateEventCommand(
-                "Event1",
+                "Event5",
                 EventType.Theatre,
                 10,
                 0,
@@ -182,5 +207,7 @@ public class ListEventsSystemTests extends ConsoleTest{
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("LIST_EVENTS_SUCCESS");
 
+        assertNotNull(cmd.getResult());
+        assertEquals(1, cmd.getResult().size());
     }
 }

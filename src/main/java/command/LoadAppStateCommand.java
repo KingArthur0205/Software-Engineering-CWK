@@ -27,6 +27,15 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
         importResult = true;
     }
 
+    /**
+     * @param context object that provides access to global application state
+     * @param view    allows passing information to the user interface
+     * @verifies.that currently logged-in user is a Consumer
+     * @verifies.that imported users are not clashing
+     * @verifies.that imported events are not clashing
+     * @verifies.that imported tags with same name dont have different values
+     * @verifies.that imported bookings are not clashing
+     */
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();

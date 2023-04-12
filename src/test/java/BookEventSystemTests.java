@@ -18,7 +18,7 @@ public class BookEventSystemTests extends ConsoleTest {
     private static boolean isContainedInSystem(Controller controller, Booking bookEventCommand) {
         return controller.getContext().getBookingState().getAllBookings().contains(bookEventCommand);
     }
-    
+
     @Test
     void bookTicketedEvent() {
         Controller controller = createStaffAndEvent(1, 1);

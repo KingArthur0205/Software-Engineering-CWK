@@ -207,11 +207,11 @@ public class GetEventDirectionsSystemTests extends ConsoleTest{
     }
 
     @Test
-    void getDirectionSuccess() {
+    void getDirectionSuccessWithCar() {
         Controller controller = createController();
         startOutputCapture();
         RegisterConsumerCommand registerConsumerCommand = new RegisterConsumerCommand("Elon Musk",
-                "elon@gmail.com","00000000", "55.944377051350656 -3.18913215894117",
+                "elon@gmail.com","00000000", "55.944377051350656 -3.18913215894117", //Edinburgh
                 "elon");
         controller.runCommand(registerConsumerCommand);
         controller.getContext().getEventState().createEvent("Puppies against depression",
@@ -224,6 +224,75 @@ public class GetEventDirectionsSystemTests extends ConsoleTest{
                 LocalDateTime.now().plusHours(8),
                 new EventTagCollection());
         GetEventDirectionsCommand getEventDirectionsCommand = new GetEventDirectionsCommand(1, TransportMode.car);
+        controller.runCommand(getEventDirectionsCommand);
+        stopOutputCaptureAndCompare("REGISTER_CONSUMER_SUCCESS","USER_LOGIN_SUCCESS","GET_EVENT_DIRECTIONS_SUCCESS");
+        assertNotNull(getEventDirectionsCommand.getResult());
+    }
+
+    @Test
+    void getDirectionSuccessWithFoot() {
+        Controller controller = createController();
+        startOutputCapture();
+        RegisterConsumerCommand registerConsumerCommand = new RegisterConsumerCommand("Elon Musk",
+                "elon@gmail.com","00000000", "55.944377051350656 -3.18913215894117", //Edinburgh
+                "elon");
+        controller.runCommand(registerConsumerCommand);
+        controller.getContext().getEventState().createEvent("Puppies against depression",
+                EventType.Theatre,
+                500,
+                100,
+                "55.94340074067482 -4.265672460954532", // Glasgow
+                "Come and enjoy some pets for pets",
+                LocalDateTime.now().plusHours(8),
+                LocalDateTime.now().plusHours(8),
+                new EventTagCollection());
+        GetEventDirectionsCommand getEventDirectionsCommand = new GetEventDirectionsCommand(1, TransportMode.foot);
+        controller.runCommand(getEventDirectionsCommand);
+        stopOutputCaptureAndCompare("REGISTER_CONSUMER_SUCCESS","USER_LOGIN_SUCCESS","GET_EVENT_DIRECTIONS_SUCCESS");
+        assertNotNull(getEventDirectionsCommand.getResult());
+    }
+
+    @Test
+    void getDirectionSuccessWithBike() {
+        Controller controller = createController();
+        startOutputCapture();
+        RegisterConsumerCommand registerConsumerCommand = new RegisterConsumerCommand("Elon Musk",
+                "elon@gmail.com","00000000", "55.944377051350656 -3.18913215894117", //Edinburgh
+                "elon");
+        controller.runCommand(registerConsumerCommand);
+        controller.getContext().getEventState().createEvent("Puppies against depression",
+                EventType.Theatre,
+                500,
+                100,
+                "55.94340074067482 -4.265672460954532", // Glasgow
+                "Come and enjoy some pets for pets",
+                LocalDateTime.now().plusHours(8),
+                LocalDateTime.now().plusHours(8),
+                new EventTagCollection());
+        GetEventDirectionsCommand getEventDirectionsCommand = new GetEventDirectionsCommand(1, TransportMode.bike);
+        controller.runCommand(getEventDirectionsCommand);
+        stopOutputCaptureAndCompare("REGISTER_CONSUMER_SUCCESS","USER_LOGIN_SUCCESS","GET_EVENT_DIRECTIONS_SUCCESS");
+        assertNotNull(getEventDirectionsCommand.getResult());
+    }
+
+    @Test
+    void getDirectionSuccessWithWheelchair() {
+        Controller controller = createController();
+        startOutputCapture();
+        RegisterConsumerCommand registerConsumerCommand = new RegisterConsumerCommand("Elon Musk",
+                "elon@gmail.com","00000000", "55.944377051350656 -3.18913215894117", //Edinburgh
+                "elon");
+        controller.runCommand(registerConsumerCommand);
+        controller.getContext().getEventState().createEvent("Puppies against depression",
+                EventType.Theatre,
+                500,
+                100,
+                "55.94340074067482 -4.265672460954532", // Glasgow
+                "Come and enjoy some pets for pets",
+                LocalDateTime.now().plusHours(8),
+                LocalDateTime.now().plusHours(8),
+                new EventTagCollection());
+        GetEventDirectionsCommand getEventDirectionsCommand = new GetEventDirectionsCommand(1, TransportMode.wheelchair);
         controller.runCommand(getEventDirectionsCommand);
         stopOutputCaptureAndCompare("REGISTER_CONSUMER_SUCCESS","USER_LOGIN_SUCCESS","GET_EVENT_DIRECTIONS_SUCCESS");
         assertNotNull(getEventDirectionsCommand.getResult());

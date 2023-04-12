@@ -2,15 +2,12 @@ import command.ListEventReviewsCommand;
 import command.ReviewEventCommand;
 import controller.Context;
 import controller.Controller;
-import model.Consumer;
-import model.Event;
-import model.EventTagCollection;
-import model.EventType;
+import model.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ListEventReviewsSystemTest extends ConsoleTest{
     private Controller createAndReviewEvent() {
@@ -21,16 +18,19 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
                 100, "55.94368888764689 -3.1888246174917114", "This is the Test Event",
                 LocalDateTime.now().minusHours(11), LocalDateTime.now().minusHours(8), new EventTagCollection()
         );
+        assertNotNull(testEvent);
 
         // Create a consumer, log in, and add a booking in the past
         createConsumer(controller);
         Consumer curConsumer = (Consumer)context.getUserState().getCurrentUser();
+        controller.getContext().getBookingState().addBooking(new Booking(1, curConsumer, testEvent, 1, LocalDateTime.now()));
         ReviewEventCommand reviewCmd = new ReviewEventCommand(1, "This is a good event");
         controller.runCommand(reviewCmd);
         return controller;
     }
 
     private void addMoreReview(Controller controller, int eventNumber, String content) {
+        controller.getContext().getBookingState().addBooking(new Booking(eventNumber, (Consumer)controller.getContext().getUserState().getCurrentUser(), controller.getContext().getEventState().findEventByNumber(eventNumber), 1, LocalDateTime.now()));
         ReviewEventCommand reviewCmd = new ReviewEventCommand(eventNumber, content);
         controller.runCommand(reviewCmd);
     }
@@ -51,11 +51,13 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
     @Test
     void listWhenNoEventInSystem() {
         Controller controller = createController();
+        createConsumer(controller);
         ListEventReviewsCommand testCmd = new ListEventReviewsCommand("TestEvent");
         startOutputCapture();
         controller.runCommand(testCmd);
         stopOutputCaptureAndCompare("LIST_EVENT_REVIEWS_SUCCESS");
 
+        assertNotNull(testCmd.getResult());
         assertTrue(testCmd.getResult().isEmpty());
     }
 
@@ -67,6 +69,8 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
         controller.runCommand(testCmd);
         stopOutputCaptureAndCompare("LIST_EVENT_REVIEWS_SUCCESS");
 
+        assertNotNull(testCmd.getResult());
+        assertTrue(testCmd.getResult().isEmpty());
     }
 
     @Test
@@ -76,6 +80,9 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(testCmd);
         stopOutputCaptureAndCompare("LIST_EVENT_REVIEWS_SUCCESS");
+
+        assertNotNull(testCmd.getResult());
+        assertTrue(testCmd.getResult().size() == 1);
     }
 
     @Test
@@ -87,6 +94,9 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(testCmd);
         stopOutputCaptureAndCompare("LIST_EVENT_REVIEWS_SUCCESS");
+
+        assertNotNull(testCmd.getResult());
+        assertEquals(3, testCmd.getResult().size());
     }
 
     @Test
@@ -100,5 +110,8 @@ public class ListEventReviewsSystemTest extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(testCmd);
         stopOutputCaptureAndCompare("LIST_EVENT_REVIEWS_SUCCESS");
+
+        assertNotNull(testCmd.getResult());
+        assertEquals(4, testCmd.getResult().size());
     }
 }

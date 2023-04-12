@@ -64,6 +64,8 @@ public class SaveAppStateCommand implements ICommand<Boolean> {
                     "SaveAppStateCommand",
                     LogStatus.SAVE_APP_STATE_UNKNOWN_FAIL,
                     Map.of("file: ", filename));
+            exportResult = false;
+            return;
         }
     }
 

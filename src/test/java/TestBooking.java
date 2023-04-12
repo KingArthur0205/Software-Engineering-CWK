@@ -56,8 +56,6 @@ public class TestBooking extends ConsoleTest{
                 startTime.toString() + ", endDateTime=" + endTime.toString() + ", " +
                 "status=ACTIVE, numTicketsLeft=10, tags=EventTagCollection{tags={}}}, numTickets=1, bookingDateTime=" +
                 bookingTime.toString() + "}";
-        System.out.println(bookingToString);
-        System.out.println(testString);
         assertEquals(bookingToString, testString);
     }
 }

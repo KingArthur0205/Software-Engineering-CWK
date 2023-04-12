@@ -26,6 +26,8 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
         stopOutputCaptureAndCompare(
                 "USER_UPDATE_PROFILE_NOT_LOGGED_IN"
         );
+
+        assertFalse(updateCmd.getResult());
     }
 
     @Test
@@ -49,6 +51,8 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
                 "USER_LOGIN_SUCCESS",
                 "USER_UPDATE_PROFILE_NOT_CONSUMER"
         );
+
+        assertFalse(updateCmd.getResult());
     }
 
     @Test
@@ -66,12 +70,13 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
                 new EventTagCollection()
         );
         controller.runCommand(updateCmd);
-        assertFalse(updateCmd.getResult());
         stopOutputCaptureAndCompare(
                 "REGISTER_CONSUMER_SUCCESS",
                 "USER_LOGIN_SUCCESS",
                 "USER_UPDATE_PROFILE_WRONG_PASSWORD"
         );
+
+        assertFalse(updateCmd.getResult());
     }
 
     @Test
@@ -89,12 +94,13 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
                 new EventTagCollection()
         );
         controller.runCommand(updateCmd);
-        assertTrue(updateCmd.getResult());
         stopOutputCaptureAndCompare(
                 "REGISTER_CONSUMER_SUCCESS",
                 "USER_LOGIN_SUCCESS",
                 "USER_UPDATE_PROFILE_SUCCESS"
         );
+
+        assertTrue(updateCmd.getResult());
     }
 
     @Test
@@ -118,6 +124,8 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
                 "USER_LOGIN_SUCCESS",
                 "USER_UPDATE_PROFILE_FIELDS_CANNOT_BE_NULL"
         );
+
+        assertFalse(updateCmd.getResult());
     }
 
     @Test
@@ -144,7 +152,6 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
                 new EventTagCollection()
         );
         controller.runCommand(updateCmd);
-        assertFalse(updateCmd.getResult());
         stopOutputCaptureAndCompare(
                 "REGISTER_CONSUMER_SUCCESS",
                 "USER_LOGIN_SUCCESS",
@@ -153,6 +160,8 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
                 "USER_LOGIN_SUCCESS",
                 "USER_UPDATE_PROFILE_EMAIL_ALREADY_IN_USE"
         );
+
+        assertFalse(updateCmd.getResult());
     }
 
     @Test

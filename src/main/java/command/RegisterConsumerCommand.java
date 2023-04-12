@@ -98,7 +98,7 @@ public class RegisterConsumerCommand implements ICommand<Consumer> {
             } catch (Exception e) {
                 view.displayFailure("RegisterConsumerCommand",
                         LogStatus.USER_REGISTER_INVALID_ADDRESS_FORMAT,
-                        Map.of("address", address, "error", e.getLocalizedMessage()));
+                        Map.of("address", address));
                 newConsumerResult = null;
                 return;
             }

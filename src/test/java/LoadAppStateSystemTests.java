@@ -13,7 +13,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class LoadAppStateCommandSystemTests extends ConsoleTest{
+public class LoadAppStateSystemTests extends ConsoleTest{
 
     private LocalDateTime time = LocalDateTime.now();
     private static void createStaffAndFile(Controller controller){

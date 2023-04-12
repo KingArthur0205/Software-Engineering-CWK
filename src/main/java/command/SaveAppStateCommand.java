@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
 
+
 /**
  * {@link SaveAppStateCommand} allows {@link Staff} members to save the state of system.
  */
@@ -45,10 +46,11 @@ public class SaveAppStateCommand implements ICommand<Boolean> {
             exportResult = false;
             return;
         }
+
+        //Saving data
         try (FileOutputStream fileOutputStream = new FileOutputStream(filename);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
              objectOutputStream.writeObject(context);
-
              fileOutputStream.close();
              objectOutputStream.close();
 
@@ -57,7 +59,7 @@ public class SaveAppStateCommand implements ICommand<Boolean> {
                     LogStatus.SAVE_APP_STATE_SUCCESSFUL
                     );
             exportResult = true;
-        } catch (IOException e) {
+        } catch (IOException e) {                       //catches any unexpected errors
             view.displayFailure(
                     "SaveAppStateCommand",
                     LogStatus.SAVE_APP_STATE_UNKNOWN_FAIL,
@@ -69,6 +71,7 @@ public class SaveAppStateCommand implements ICommand<Boolean> {
     public Boolean getResult() {
         return exportResult;
     }
+
     private enum LogStatus {
         SAVE_APP_STATE_USER_NOT_STAFF,
         SAVE_APP_STATE_SUCCESSFUL,

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.FileNotFoundException;
 
 /**
@@ -17,7 +18,7 @@ import java.io.FileNotFoundException;
 public class LoadAppStateCommand implements ICommand<Boolean> {
     private Boolean importResult;
     private String filename;
-    Context context1 = null;
+    Context contextNew = null;
 
     /**
      * @param filename           the location of file that going to load from
@@ -36,6 +37,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
      * @verifies.that imported tags with same name dont have different values
      * @verifies.that imported bookings are not clashing
      */
+
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
@@ -51,7 +53,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
 
         try (FileInputStream fileInputStream = new FileInputStream(filename);
              ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-             context1 = (Context) objectInputStream.readObject();
+             contextNew = (Context) objectInputStream.readObject();
         }  catch (FileNotFoundException e) {
             view.displayFailure(
                     "LoadAppStateCommand",
@@ -67,22 +69,24 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
             return;
         }
 
-        ArrayList<String> userSkip = new ArrayList<>();
-        ArrayList<Integer> eventSkip = new ArrayList<>();
-        ArrayList<Integer> bookingSkip = new ArrayList<>();
+        ArrayList<String> userSkip = new ArrayList<>();  //list to keep track of user positions to skip
+        ArrayList<Integer> eventSkip = new ArrayList<>(); //list to keep track of event positions to skip
 
 
-        for (String key : context1.getUserState().getAllUsers().keySet()) {
-            for (String key1 : context.getUserState().getAllUsers().keySet()) {
-                if (context1.getUserState().getAllUsers().get(key).getEmail().equals( (context.getUserState().getAllUsers().get(key1).getEmail()))) {
-                    boolean comparison = context1.getUserState().getAllUsers().get(key).getSerialVersionUID() == context.getUserState().getAllUsers().get(key1).getSerialVersionUID();
+        Map<String, User> contextAllUsers = context.getUserState().getAllUsers();
+        Map<String, User> contextAllUsersNew = contextNew.getUserState().getAllUsers();
+
+        for (String key : contextAllUsersNew.keySet()) {
+            for (String key1 : contextAllUsers.keySet()) {
+                if (contextAllUsersNew.get(key).getEmail().equals( (contextAllUsers.get(key1).getEmail()))) {
+                    boolean comparison = contextAllUsersNew.get(key).getSerialVersionUID() == contextAllUsers.get(key1).getSerialVersionUID();
                     if(comparison) {
                         userSkip.add(key);
                     } else {
                         view.displayFailure(
                                 "LoadAppStateCommand",
                                 LogStatus.LOAD_APP_STATE_CLASHING_USERS,
-                                Map.of("user", context1.getUserState().getAllUsers().get(key) ," - ", context.getUserState().getAllUsers().get(key1) )
+                                Map.of("user", contextAllUsersNew.get(key) ," - ", contextAllUsers.get(key1) )
                         );
                         importResult = false;
                         return;
@@ -91,16 +95,19 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
             }
         }
 
+        List<Event> contextAllEvents = context.getEventState().getAllEvents();
+        List<Event> contextAllEventsNew = contextNew.getEventState().getAllEvents();
 
-        for (int i = 0; i < context1.getEventState().getAllEvents().size(); i++) {
-            for (int j = 0; j < context.getEventState().getAllEvents().size(); j++) {
-                Boolean a = context1.getEventState().getAllEvents().get(i).getTitle().equals(context.getEventState().getAllEvents().get(j).getTitle());
-                Boolean b = context1.getEventState().getAllEvents().get(i).getStartDateTime().equals(context.getEventState().getAllEvents().get(j).getStartDateTime());
-                Boolean c = context1.getEventState().getAllEvents().get(i).getEndDateTime().equals(context.getEventState().getAllEvents().get(j).getEndDateTime());
+
+        for (int i = 0; i < contextAllEventsNew.size(); i++) {
+            for (int j = 0; j < contextAllEvents.size(); j++) {
+                Boolean a = contextAllEventsNew.get(i).getTitle().equals(contextAllEvents.get(j).getTitle());
+                Boolean b = contextAllEventsNew.get(i).getStartDateTime().equals(contextAllEvents.get(j).getStartDateTime());
+                Boolean c = contextAllEventsNew.get(i).getEndDateTime().equals(contextAllEvents.get(j).getEndDateTime());
 
 
                 if(a && b && c) {
-                    boolean comparison = context1.getEventState().getAllEvents().get(i).getSerialVersionUID() == context.getEventState().getAllEvents().get(j).getSerialVersionUID();
+                    boolean comparison = contextAllEventsNew.get(i).getSerialVersionUID() == contextAllEvents.get(j).getSerialVersionUID();
                     System.out.print(comparison);
 
                     if (comparison) {
@@ -109,7 +116,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
                         view.displayFailure(
                                 "LoadAppStateCommand",
                                 LogStatus.LOAD_APP_STATE_CLASHING_EVENTS,
-                                Map.of("events", context1.getEventState().getAllEvents().get(i) ," - ", context.getEventState().getAllEvents().get(j) )
+                                Map.of("events", contextAllEventsNew.get(i) ," - ", contextAllEvents.get(j) )
                         );
                         importResult = false;
                         return;
@@ -120,22 +127,24 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
 
         }
 
-        for (String key : context1.getEventState().getPossibleTags().keySet()) {
+        Map<String, EventTag> contextAllEventTag = context.getEventState().getPossibleTags();
+        Map<String, EventTag> contextAllEventTagNew = contextNew.getEventState().getPossibleTags();
+        for (String key : contextAllEventTagNew.keySet()) {
             if(key.equals("hasSocialDistancing") || key.equals("hasAirFiltration") || key.equals("isOutdoors") || key.equals("venueCapacity")){
                 continue;
             }
-            for (String key1 : context.getEventState().getPossibleTags().keySet()) {
+            for (String key1 : contextAllEventTag.keySet()) {
 
                 if( key.equals(key1)) {
 
                     if (
-                            context1.getEventState().getPossibleTags().get(key).getValues().equals(context.getEventState().getPossibleTags().get(key1).getValues())
-                                    && context1.getEventState().getPossibleTags().get(key).getDefaultValue().equals(context.getEventState().getPossibleTags().get(key1).getDefaultValue())
+                            contextAllEventTagNew.get(key).getValues().equals(contextAllEventTag.get(key1).getValues())
+                                    && contextAllEventTagNew.get(key).getDefaultValue().equals(contextAllEventTag.get(key1).getDefaultValue())
                     ){
                         view.displayFailure(
                                 "LoadAppStateCommand",
                                 LogStatus.LOAD_APP_STATE_CLASHING_EVENTTAGS,
-                                Map.of("tags", context1.getEventState().getPossibleTags().get(key) ," - ", context.getEventState().getPossibleTags().get(key1) )
+                                Map.of("tags", contextAllEventTagNew.get(key) ," - ", contextAllEventTag.get(key1) )
                         );
                         importResult = false;
                         return;
@@ -144,17 +153,22 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
             }
         }
 
-        for (int i = 0; i < context1.getBookingState().getAllBookings().size(); i++) {
-            for (int j = 0; j < context.getBookingState().getAllBookings().size(); j++) {
-                Boolean a = context1.getBookingState().getAllBookings().get(i).getBooker().getName().equals(context.getBookingState().getAllBookings().get(j).getBooker().getName());
-                Boolean b =context1.getBookingState().getAllBookings().get(i).getEvent().getEventNumber() == (context.getBookingState().getAllBookings().get(j).getEvent().getEventNumber());
-                Boolean c = context1.getBookingState().getAllBookings().get(i).getBookingDateTime().equals(context.getBookingState().getAllBookings().get(j).getBookingDateTime());
+        List<Booking> contextAllBookings = context.getBookingState().getAllBookings();
+        List<Booking> contextAllBookingsNew = contextNew.getBookingState().getAllBookings();
+
+
+
+        for (int i = 0; i < contextAllBookingsNew.size(); i++) {
+            for (int j = 0; j < contextAllBookings.size(); j++) {
+                Boolean a = contextAllBookingsNew.get(i).getBooker().getName().equals(contextAllBookings.get(j).getBooker().getName());
+                Boolean b = contextAllBookingsNew.get(i).getEvent().getEventNumber() == (contextAllBookings.get(j).getEvent().getEventNumber());
+                Boolean c = contextAllBookingsNew.get(i).getBookingDateTime().equals(contextAllBookings.get(j).getBookingDateTime());
 //
                 if(a && b && c) {
                         view.displayFailure(
                                 "LoadAppStateCommand",
                                 LogStatus.LOAD_APP_STATE_CLASHING_BOOKINGS,
-                                Map.of("bookings", context1.getBookingState().getAllBookings().get(i) ," - ", context.getBookingState().getAllBookings().get(j))
+                                Map.of("bookings", contextAllBookingsNew.get(i) ," - ", contextAllBookings.get(j))
                         );
                         importResult = false;
                         return;
@@ -169,32 +183,30 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
 
 
         if (importResult) {
-            for (String key : context1.getUserState().getAllUsers().keySet()) {
+            for (String key : contextAllUsersNew.keySet()) {
                 if(userSkip.contains(key)){
                     continue;
                 }
-                context.getUserState().addUser(context1.getUserState().getAllUsers().get(key));
+                context.getUserState().addUser(contextAllUsersNew.get(key));
 
             }
 
 
-            for (int i = 0; i < context1.getEventState().getAllEvents().size(); i++) {
+            for (int i = 0; i < contextAllEventsNew.size(); i++) {
                 if(eventSkip.contains(i)){
                     continue;
                 }
 
-                context.getEventState().addEvent(context1.getEventState().getAllEvents().get(i));
+                context.getEventState().addEvent(contextAllEventsNew.get(i));
             }
 
-            for (String key : context1.getEventState().getPossibleTags().keySet()) {
-                context.getEventState().createEventTag(key, context1.getEventState().getPossibleTags().get(key).getValues() , context1.getEventState().getPossibleTags().get(key).getDefaultValue() );
+            for (String key : contextAllEventTagNew.keySet()) {
+                context.getEventState().createEventTag(key, contextAllEventTagNew.get(key).getValues() , contextAllEventTagNew.get(key).getDefaultValue() );
             }
 
-            for (int i = 0; i < context1.getBookingState().getAllBookings().size(); i++) {
-                if(bookingSkip.contains(i)){
-                    continue;
-                }
-                context.getBookingState().addBooking(context1.getBookingState().getAllBookings().get(i)); // incorrect wrong time
+            for (int i = 0; i < contextAllBookingsNew.size(); i++) {
+
+                context.getBookingState().addBooking(contextAllBookingsNew.get(i));
             }
 
             view.displaySuccess(

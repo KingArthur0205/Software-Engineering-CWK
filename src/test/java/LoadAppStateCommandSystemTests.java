@@ -10,10 +10,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class LoadAppStateCommandSystemTests extends ConsoleTest{
 
     private LocalDateTime time = LocalDateTime.now();
-    private static void createStandardFile(Controller controller){
+    private static void createStaffAndFile(Controller controller){
         createStaff(controller);
         controller.runCommand(new SaveAppStateCommand("test.ser"));
     }
@@ -57,13 +60,15 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
     @Test
     void loadDataNotLoggedIn() {
         Controller controller = createController();
-        createStandardFile(controller);
+        createStaffAndFile(controller);
         controller.runCommand(new LogoutCommand());
         startOutputCapture();
-        controller.runCommand(new LoadAppStateCommand("test"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test");
+        controller.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_USER_NOT_STAFF"
         );
+        assertFalse(loadAppStateCommand.getResult());
     }
 
     @Test
@@ -72,34 +77,41 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
         createConsumer(controller);
         controller.runCommand(new LogoutCommand());
         startOutputCapture();
-        controller.runCommand(new LoadAppStateCommand("test"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test");
+        controller.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_USER_NOT_STAFF"
         );
+
+        assertFalse(loadAppStateCommand.getResult());
     }
 
     @Test
     void loadDataFileNotFound() {
         Controller controller = createController();
-        createStandardFile(controller);
+        createStaffAndFile(controller);
         startOutputCapture();
-        controller.runCommand(new LoadAppStateCommand("test1"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test1");
+        controller.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_FILE_NOT_FOUND"
         );
+        assertFalse(loadAppStateCommand.getResult());
     }
 
     @Test
     void loadDataFileClashingUsers() {
         Controller controller = createController();
         Controller controller1 = createController();
-        createStandardFile(controller);
+        createStaffAndFile(controller);
         createStaff(controller1);
         startOutputCapture();
-        controller1.runCommand(new LoadAppStateCommand("test.ser"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller1.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_CLASHING_USERS"
         );
+        assertFalse(loadAppStateCommand.getResult());
     }
 
     @Test
@@ -116,14 +128,17 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
         ));
         createEvent(controller1, 5,5,time);
         startOutputCapture();
-        controller1.runCommand(new LoadAppStateCommand("test.ser"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller1.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_CLASHING_EVENTS"
         );
+
+        assertFalse(loadAppStateCommand.getResult());
     }
 
     @Test
-    void loadDataFileClashingEventTags() {
+    void loadDataFileEventTagClashingDefaultValue() {
         Controller controller = createController();
         Controller controller1 = createController();
         createStaff(controller);
@@ -136,12 +151,67 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
                 "Nec temere nec timide"
         ));
         EventTag tag1 = createEventTag(controller1, "tag1",
+                new HashSet<>(Arrays.asList("value1", "value2")), "value2");
+        startOutputCapture();
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller1.runCommand(loadAppStateCommand);
+        stopOutputCaptureAndCompare(
+                "LOAD_APP_STATE_CLASHING_EVENT_TAGS"
+        );
+
+        assertFalse(loadAppStateCommand.getResult());
+    }
+
+    @Test
+    void loadDataFileEventTagClashingPossibleValues() {
+        Controller controller = createController();
+        Controller controller1 = createController();
+        createStaff(controller);
+        EventTag tag = createEventTag(controller, "tag1",
+                new HashSet<>(Arrays.asList("value1", "value2")), "value1");
+        controller.runCommand(new SaveAppStateCommand("test.ser"));
+        controller1.runCommand(new RegisterStaffCommand(
+                "sell-the-pups@pawsforawwws.org",
+                "very insecure password 123",
+                "Nec temere nec timide"
+        ));
+        EventTag tag1 = createEventTag(controller1, "tag1",
+                new HashSet<>(Arrays.asList("value1", "value3")), "value1");
+        startOutputCapture();
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller1.runCommand(loadAppStateCommand);
+        stopOutputCaptureAndCompare(
+                "LOAD_APP_STATE_CLASHING_EVENT_TAGS"
+        );
+        assertFalse(loadAppStateCommand.getResult());
+    }
+
+    // The reason why this test passes is because our command passes to add this tag into the system
+    @Test
+    void loadDataFileEventTagClashingNameButSameValues() {
+        Controller controller = createController();
+        Controller controller1 = createController();
+        createStaff(controller);
+        EventTag tag = createEventTag(controller, "tag1",
+                new HashSet<>(Arrays.asList("value1", "value2")), "value1");
+        controller.runCommand(new SaveAppStateCommand("test.ser"));
+
+        // We run this command to avoid registering clashing users
+        controller1.runCommand(new RegisterStaffCommand(
+                "sell-the-pups@pawsforawwws.org",
+                "very insecure password 123",
+                "Nec temere nec timide"
+        ));
+        EventTag tag1 = createEventTag(controller1, "tag1",
                 new HashSet<>(Arrays.asList("value1", "value2")), "value1");
         startOutputCapture();
-        controller1.runCommand(new LoadAppStateCommand("test.ser"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller1.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
-                "LOAD_APP_STATE_CLASHING_EVENTTAGS"
+                "LOAD_APP_STATE_SUCCESSFUL"
         );
+
+        assertTrue(loadAppStateCommand.getResult());
     }
 
     @Test
@@ -167,12 +237,13 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
                 "very insecure password 123"));
         controller.runCommand(new SaveAppStateCommand("save2.ser"));
         startOutputCapture();
-        controller.runCommand(new LoadAppStateCommand("save2.ser"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("save2.ser");
+        controller.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_CLASHING_BOOKINGS"
         );
 
-
+        assertFalse(loadAppStateCommand.getResult());
     }
 
     @Test
@@ -196,10 +267,13 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
         ));
 
         startOutputCapture();
-        controller1.runCommand(new LoadAppStateCommand("test.ser"));
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller1.runCommand(loadAppStateCommand);
         stopOutputCaptureAndCompare(
                 "LOAD_APP_STATE_SUCCESSFUL"
         );
+
+        assertTrue(loadAppStateCommand.getResult());
     }
 }
 

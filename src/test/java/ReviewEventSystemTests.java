@@ -54,6 +54,7 @@ public class ReviewEventSystemTests extends ConsoleTest{
         IEventState eventState = controller.getContext().getEventState();
         Review resultReview = reviewCmd.getResult();
         Review addedReview = eventState.findEventByNumber(1).getReviews().get(0);
+
         assertNotNull(resultReview);
         assertEquals(resultReview, addedReview);
         assertEquals("Good Event", addedReview.getContent());
@@ -70,6 +71,8 @@ public class ReviewEventSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(reviewCmd);
         stopOutputCaptureAndCompare("REVIEW_EVENT_USER_NOT_CONSUMER");
+
+        assertNull(reviewCmd.getResult());
     }
 
     @Test
@@ -83,6 +86,8 @@ public class ReviewEventSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(reviewCmd);
         stopOutputCaptureAndCompare("REVIEW_EVENT_USER_NOT_CONSUMER");
+
+        assertNull(reviewCmd.getResult());
     }
 
     @Test
@@ -99,6 +104,8 @@ public class ReviewEventSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(reviewCmd);
         stopOutputCaptureAndCompare("REVIEW_EVENT_USER_HAVE_NO_BOOKING");
+
+        assertNull(reviewCmd.getResult());
     }
 
     @Test
@@ -117,6 +124,8 @@ public class ReviewEventSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(reviewCmd);
         stopOutputCaptureAndCompare("REVIEW_EVENT_EVENT_NOT_OVER");
+
+        assertNull(reviewCmd.getResult());
     }
 
     @Test
@@ -135,5 +144,7 @@ public class ReviewEventSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(reviewCmd);
         stopOutputCaptureAndCompare("REVIEW_EVENT_EVENT_NOT_OVER");
+
+        assertNull(reviewCmd.getResult());
     }
 }

@@ -5,7 +5,7 @@ import model.Consumer;
 import model.Staff;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RegisterConsumerSystemTests extends ConsoleTest{
     @Test
@@ -18,6 +18,8 @@ public class RegisterConsumerSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("USER_REGISTER_LOGGED_IN");
+
+        assertNull(cmd.getResult());
     }
 
     @Test
@@ -29,6 +31,8 @@ public class RegisterConsumerSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("USER_REGISTER_FIELDS_CANNOT_BE_NULL");
+
+        assertNull(cmd.getResult());
     }
 
     @Test
@@ -44,6 +48,8 @@ public class RegisterConsumerSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("USER_REGISTER_EMAIL_ALREADY_REGISTERED");
+
+        assertNull(cmd.getResult());
     }
 
     @Test
@@ -70,6 +76,8 @@ public class RegisterConsumerSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("USER_REGISTER_ADDRESS_OUT_OF_BOUNDS");
+
+        assertNull(cmd.getResult());
     }
 
     @Test
@@ -81,5 +89,9 @@ public class RegisterConsumerSystemTests extends ConsoleTest{
         startOutputCapture();
         controller.runCommand(cmd);
         stopOutputCaptureAndCompare("REGISTER_CONSUMER_SUCCESS", "USER_LOGIN_SUCCESS");
+
+        assertNotNull(cmd.getResult());
+        assertTrue(controller.getContext().getUserState().getAllUsers().containsKey(cmd.getResult().getEmail()));
+        assertTrue(controller.getContext().getUserState().getAllUsers().containsValue(cmd.getResult()));
     }
 }

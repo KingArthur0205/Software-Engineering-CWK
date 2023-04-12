@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CreateEventTests extends ConsoleTest {
 
@@ -34,6 +34,12 @@ public class CreateEventTests extends ConsoleTest {
         return eventCmd.getResult();
     }
 
+    // Check if the event is created into the system
+    private static boolean isContainedInSystem(Controller controller, Event cmdResult) {
+        return controller.getContext().getEventState().getAllEvents().contains(cmdResult);
+    }
+
+
     @Test
     void createEventWhenNotLoggedIn() {
         Controller controller = createController();
@@ -46,6 +52,9 @@ public class CreateEventTests extends ConsoleTest {
                 new EventTagCollection()
         );
         stopOutputCaptureAndCompare("CREATE_EVENT_USER_NOT_STAFF");
+
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -61,6 +70,9 @@ public class CreateEventTests extends ConsoleTest {
                 new EventTagCollection()
         );
         stopOutputCaptureAndCompare("CREATE_EVENT_USER_NOT_STAFF");
+
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -81,6 +93,9 @@ public class CreateEventTests extends ConsoleTest {
         startOutputCapture();
         controller.runCommand(eventCmd);
         stopOutputCaptureAndCompare("CREATE_EVENT_NEGATIVE_TICKET_PRICE");
+
+        assertNull(eventCmd.getResult());
+        assertFalse(isContainedInSystem(controller, eventCmd.getResult()));
     }
 
     @Test
@@ -99,17 +114,24 @@ public class CreateEventTests extends ConsoleTest {
                 "55.944377051350656 -3.18913215894117", // George Square,
                 new EventTagCollection());
         stopOutputCaptureAndCompare("CREATE_EVENT_SUCCESS", "CREATE_EVENT_TITLE_AND_TIME_CLASH");
+
+        assertNotNull(event1);
+        assertNull(event2);
+        assertTrue(isContainedInSystem(controller, event1));
+        assertFalse(isContainedInSystem(controller, event2));
     }
 
     @Test
     void createNonTicketedEvent() {
         startOutputCapture();
-        createStaffAndEvent(0, 1);
+        Controller controller = createStaffAndEvent(0, 1);
         stopOutputCaptureAndCompare(
                 "REGISTER_STAFF_SUCCESS",
                 "USER_LOGIN_SUCCESS",
                 "CREATE_EVENT_SUCCESS"
         );
+
+        assertFalse(controller.getContext().getEventState().getAllEvents().isEmpty());
     }
 
     @Test
@@ -123,6 +145,7 @@ public class CreateEventTests extends ConsoleTest {
                 "CREATE_EVENT_SUCCESS",
                 "USER_LOGOUT_SUCCESS"
         );
+        assertFalse(controller.getContext().getEventState().getAllEvents().isEmpty());
     }
 
     @Test
@@ -137,12 +160,14 @@ public class CreateEventTests extends ConsoleTest {
                 "55.944377051350656 -3.18913215894117",
                 new EventTagCollection()
         );
-        assertNull(event);
         stopOutputCaptureAndCompare(
                 "REGISTER_STAFF_SUCCESS",
                 "USER_LOGIN_SUCCESS",
                 "CREATE_EVENT_IN_THE_PAST"
         );
+
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -165,6 +190,7 @@ public class CreateEventTests extends ConsoleTest {
         );
 
         assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -178,6 +204,9 @@ public class CreateEventTests extends ConsoleTest {
                 "51.75731046567365 -0.0806357748349268", new EventTagCollection()); // London
         stopOutputCaptureAndCompare("CREATE_EVENT_VENUE_ADDRESS_NOT_WITHIN_BOUNDARY");
 
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
+
     }
 
     @Test
@@ -190,6 +219,9 @@ public class CreateEventTests extends ConsoleTest {
                 LocalDateTime.now().plusHours(5),
                 "Invalid Format", new EventTagCollection());
         stopOutputCaptureAndCompare("CREATE_EVENT_VENUE_ADDRESS_INCORRECT_FORMAT");
+
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -203,6 +235,9 @@ public class CreateEventTests extends ConsoleTest {
                 "55.944377051350656 -3.18913215894117",
                 new EventTagCollection("nonexistent=true")); // London
         stopOutputCaptureAndCompare("CREATE_EVENT_TAG_DO_NOT_EXIST");
+
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -216,6 +251,9 @@ public class CreateEventTests extends ConsoleTest {
                 "55.944377051350656 -3.18913215894117",
                 new EventTagCollection("hasAirFiltration=invalid"));
         stopOutputCaptureAndCompare("CREATE_EVENT_TAG_VALUE_DO_NOT_MATCH");
+
+        assertNull(event);
+        assertFalse(isContainedInSystem(controller,event));
     }
 
     @Test
@@ -229,6 +267,9 @@ public class CreateEventTests extends ConsoleTest {
                 "55.944377051350656 -3.18913215894117",
                 new EventTagCollection("Wrong, Format"));
         stopOutputCaptureAndCompare("CREATE_EVENT_SUCCESS");
+
+        assertNotNull(event);
+        assertTrue(isContainedInSystem(controller, event));
     }
 
     @Test
@@ -242,5 +283,8 @@ public class CreateEventTests extends ConsoleTest {
                 "55.944377051350656 -3.18913215894117",
                 new EventTagCollection("hasAirFiltration=false,hasSocialDistancing=true"));
         stopOutputCaptureAndCompare("CREATE_EVENT_SUCCESS");
+
+        assertNotNull(event);
+        assertTrue(isContainedInSystem(controller, event));
     }
 }

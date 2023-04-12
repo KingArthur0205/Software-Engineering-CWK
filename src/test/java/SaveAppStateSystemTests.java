@@ -2,7 +2,7 @@ import command.SaveAppStateCommand;
 import controller.Controller;
 import org.junit.jupiter.api.Test;
 
-public class SaveAppStateTests extends ConsoleTest{
+public class SaveAppStateSystemTests extends ConsoleTest{
     @Test
     void exportDataNotLoggedIn() {
         Controller controller = createController();

@@ -22,7 +22,6 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
     }
 
     protected static Booking BookFirstEvent(Controller controller, int numTicketsRequested, User consumer) {
-
         ListEventsCommand eventsCmd = new ListEventsCommand(false, false, null);
         controller.runCommand(eventsCmd);
         List<Event> events = eventsCmd.getResult();
@@ -36,7 +35,6 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
     }
 
     protected static Event createEvent(Controller controller, int numTickets, int eventDelayHours , LocalDateTime time) {
-
         CreateEventCommand eventCmd = new CreateEventCommand(
                 "Puppies against depression",
                 EventType.Theatre,
@@ -184,6 +182,23 @@ public class LoadAppStateCommandSystemTests extends ConsoleTest{
                 "LOAD_APP_STATE_CLASHING_EVENT_TAGS"
         );
         assertFalse(loadAppStateCommand.getResult());
+    }
+
+    @Test
+    void loadDataFileUserClash() {
+        Controller controller = createController();
+        createStaff(controller);
+
+        controller.runCommand(new SaveAppStateCommand("test.ser"));
+
+        startOutputCapture();
+        LoadAppStateCommand loadAppStateCommand = new LoadAppStateCommand("test.ser");
+        controller.runCommand(loadAppStateCommand);
+        stopOutputCaptureAndCompare(
+                "LOAD_APP_STATE_SUCCESSFUL"
+        );
+
+        assertTrue(loadAppStateCommand.getResult());
     }
 
     // The reason why this test passes is because our command passes to add this tag into the system

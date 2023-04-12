@@ -5,6 +5,7 @@ import java.util.Set;
 
 /**
  * {@link EventTag} aids classification of the {@link Event}s or match of preferences for {@link Consumer}s.
+ * The defaultValue must be one of the values.
  */
 public class EventTag implements Serializable {
     private final Set<String> values;

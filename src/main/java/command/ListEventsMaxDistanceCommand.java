@@ -15,7 +15,13 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * {@link ListEventsMaxDistanceCommand} allows {@link model.Consumer} to get
+ * a list of {@link Event}s based on address set in their profile{@link model.Consumer}.
+ * The command applies for currently logged-in user.
+ */
 public class ListEventsMaxDistanceCommand extends ListEventsCommand{
+
     private final TransportMode transportMode;
     private final double maxDistance;
     /**
@@ -26,6 +32,8 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
      *                         {@link EventStatus#ACTIVE}
      * @param searchDate       chosen date to look for events. Can be null. If not null, only {@link Event}s that are
      *                         happening on {@link #searchDate} (i.e., starting, ending, or in between) will be included
+     * @param transportMode    the chosen transport mode for calculating distance, {@link TransportMode}s
+     * @param maxDistance      the maximum range used to filter the events that not with in this range
      */
     public ListEventsMaxDistanceCommand(boolean userEventsOnly, boolean activeEventsOnly, LocalDate searchDate,
                                         TransportMode transportMode, double maxDistance) {
@@ -40,7 +48,6 @@ public class ListEventsMaxDistanceCommand extends ListEventsCommand{
      * @verifies.that currently logged-in user is a Consumer
      * @verifies.that current user has an address set up in their profile
      */
-
     @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();

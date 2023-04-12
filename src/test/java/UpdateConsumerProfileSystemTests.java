@@ -52,41 +52,6 @@ public class UpdateConsumerProfileSystemTests extends ConsoleTest {
     }
 
     @Test
-    void updateProviderNotLoggedIn() {
-        Controller controller = createController();
-        startOutputCapture();
-        UpdateStaffProfileCommand updateCmd = new UpdateStaffProfileCommand(
-                STAFF_PASSWORD,
-                STAFF_EMAIL,
-                STAFF_PASSWORD
-        );
-        controller.runCommand(updateCmd);
-        assertFalse(updateCmd.getResult());
-        stopOutputCaptureAndCompare(
-                "USER_UPDATE_PROFILE_NOT_LOGGED_IN"
-        );
-    }
-
-    @Test
-    void updateProviderAsConsumer() {
-        Controller controller = createController();
-        startOutputCapture();
-        createConsumer(controller);
-        UpdateStaffProfileCommand updateCmd = new UpdateStaffProfileCommand(
-                CONSUMER_PASSWORD,
-                CONSUMER_EMAIL,
-                CONSUMER_PASSWORD
-        );
-        controller.runCommand(updateCmd);
-        assertFalse(updateCmd.getResult());
-        stopOutputCaptureAndCompare(
-                "REGISTER_CONSUMER_SUCCESS",
-                "USER_LOGIN_SUCCESS",
-                "USER_UPDATE_PROFILE_NOT_STAFF"
-        );
-    }
-
-    @Test
     void updateConsumerWrongPassword() {
         Controller controller = createController();
         startOutputCapture();

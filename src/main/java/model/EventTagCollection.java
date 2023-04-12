@@ -1,5 +1,6 @@
 package model;
 
+import com.google.protobuf.MapEntry;
 import state.IEventState;
 
 import java.io.Serializable;
@@ -9,11 +10,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * {@link EventTagCollection} holds a map of names and values, corresponding each to an {@link Event}’s tag name and the
- * value selected for it.
+ * {@link EventTagCollection} holds a map of names and values, corresponding each to an {@link EventTag} and the selected value.
  */
 public class EventTagCollection implements Serializable {
     private final Map<String, String> tags;
+    private static final String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
 
     /**
      * Create a new EventTagCollection with an empty map of Tags.
@@ -36,7 +37,6 @@ public class EventTagCollection implements Serializable {
      */
     public EventTagCollection(String valuesOfEachTag) {
         this();
-        String pattern = "^(\\w+=[^,]+)(,\\w+=[^,]+)*$";
         if (valuesOfEachTag != null && !valuesOfEachTag.isBlank()) {
             Pattern compiledPattern = Pattern.compile(pattern);
 
@@ -45,9 +45,12 @@ public class EventTagCollection implements Serializable {
             if(!matcher.matches()) {
                 return ;
             }
-            String[] pairs = valuesOfEachTag.split(",");
 
             // Split each "name=value" pair to two individual String of name and value and store them in tags.
+            String[] pairs = valuesOfEachTag.split(",");
+
+            // A buffer to store the name-value pairs. bufferTags will be set to tags only if the String parsing succeed.
+            Map<String, String> bufferTags = new HashMap<>();
             for (String pair : pairs) {
                 String[] tagAndValue = pair.split("=");
                 // Verify that each pair is parsed into separate name and value
@@ -58,7 +61,12 @@ public class EventTagCollection implements Serializable {
 
                 String tagName = tagAndValue[0];
                 String value = tagAndValue[1];
-                tags.put(tagName, value);
+                bufferTags.put(tagName, value);
+            }
+
+
+            for (Map.Entry<String, String> entry : bufferTags.entrySet()) {
+                tags.put(entry.getKey(), entry.getValue());
             }
         }
     }
@@ -76,9 +84,6 @@ public class EventTagCollection implements Serializable {
      * @return        AThe value associated with the tagName. null if the tagName doesn't exist
      */
     public String getValueFor(String tagName) {
-        if (tagName == null) {
-            return null;
-        }
         return tags.get(tagName);
     }
 }

@@ -11,11 +11,19 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * {@link ReviewEventCommand} allows {@link model.Consumer}s to leave review for chosen event{@link Event}.
+ */
+
 public class ReviewEventCommand implements ICommand<Review> {
     private Review reviewResult;
     private final long eventNumber;
     private final String content;
 
+    /**
+     * @param eventNumber             the event number for the event wanted to leave review
+     * @param content                 the review content for review
+     */
     public ReviewEventCommand(long eventNumber, String content) {
         this.eventNumber = eventNumber;
         this.content = content;
@@ -29,7 +37,6 @@ public class ReviewEventCommand implements ICommand<Review> {
      * @verifies.that the current user is a logged-in Consumer
      * @verifies.that the consumer had at least 1 valid booking (not cancelled by the consumer) at the event
      */
-
     @Override
     public void execute(Context context, IView view) {
         // Check an event with the provided event number exists

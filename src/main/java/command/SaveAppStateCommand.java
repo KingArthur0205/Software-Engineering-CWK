@@ -1,6 +1,7 @@
 package command;
 
 import controller.Context;
+import model.Event;
 import model.Staff;
 import model.User;
 import view.IView;
@@ -12,17 +13,14 @@ import java.util.Map;
 
 
 /**
- * {@link SaveAppStateCommand} allows {@link Staff}s to load data from a file.
- *
+ * {@link SaveAppStateCommand} allows {@link Staff} members to save the state of system.
  */
 public class SaveAppStateCommand implements ICommand<Boolean> {
     private String filename;
     private Boolean exportResult;
 
-
     /**
-     *
-     * @param filename the name under you want to save the file
+     * @param filename           the location of file that going to save
      */
     public SaveAppStateCommand(String filename){
         this.exportResult = true;

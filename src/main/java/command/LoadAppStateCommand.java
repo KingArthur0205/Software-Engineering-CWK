@@ -13,8 +13,7 @@ import java.util.List;
 import java.io.FileNotFoundException;
 
 /**
- * {@link LoadAppStateCommand} allows {@link Staff}s to load data from a file.
- *
+ * {@link LoadAppStateCommand} allows {@link Staff} members to save the state of system.
  */
 public class LoadAppStateCommand implements ICommand<Boolean> {
     private Boolean importResult;
@@ -22,8 +21,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
     Context contextNew = null;
 
     /**
-     *
-     * @param filename the name under you want to save the file
+     * @param filename           the location of file that going to load from
      */
     public LoadAppStateCommand(String filename) {
         this.filename = filename;
@@ -40,6 +38,7 @@ public class LoadAppStateCommand implements ICommand<Boolean> {
      * @verifies.that imported bookings are not clashing
      */
 
+    @Override
     public void execute(Context context, IView view) {
         User currentUser = context.getUserState().getCurrentUser();
         if (!(currentUser instanceof Staff)) {

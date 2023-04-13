@@ -86,4 +86,31 @@ public class EventTagCollection implements Serializable {
     public String getValueFor(String tagName) {
         return tags.get(tagName);
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        // Check if o is an instance of EventTagCollection or not
+        if (!(o instanceof EventTagCollection)) {
+            return false;
+        }
+
+        // typecast o to EventTagCollection so that we can compare data members
+        EventTagCollection c = (EventTagCollection) o;
+
+        // Compare the data members and return accordingly
+        return tags.equals(c.tags);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 4;
+        hash = 7 * hash + tags.hashCode();
+        return hash;
+    }
 }

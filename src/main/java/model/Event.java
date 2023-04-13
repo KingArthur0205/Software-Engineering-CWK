@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -168,5 +169,52 @@ public class Event implements Serializable {
     }
     public long getSerialVersionUID() {
         return serialVersionUID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        // Check if o is an instance of Event or not
+        if (!(o instanceof Event)) {
+            return false;
+        }
+
+        // typecast o to Event so that we can compare data members
+        Event c = (Event) o;
+
+        boolean venueEquals = Objects.equals(venueAddress, c.venueAddress);
+        boolean descriptionEquals = Objects.equals(description, c.description);
+
+        // Compare the data members and return accordingly
+        return venueEquals && eventNumber == c.eventNumber && title.equals(c.title) && type.equals(c.type)
+                && numTicketsCap == c.numTicketsCap && ticketPriceInPence == c.ticketPriceInPence && descriptionEquals
+                && startDateTime.equals(c.startDateTime) && endDateTime.equals(c.endDateTime) && tags.equals(c.tags)
+                && reviews.equals(c.reviews) && status.equals(c.status) && numTicketsLeft == c.numTicketsLeft;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 2;
+
+        hash = 2 * hash + (venueAddress == null ? 0 : venueAddress.hashCode());
+        hash = 2 * hash + (title == null ? 0 : title.hashCode());
+        hash = 2 * hash + type.hashCode();
+        hash = 2 * hash + (description == null ? 0 : description.hashCode());
+        hash = 2 * hash + (startDateTime == null ? 0 : startDateTime.hashCode());
+        hash = 2 * hash + (endDateTime == null ? 0 : endDateTime.hashCode());
+        hash = 2 * hash + tags.hashCode();
+        hash = 2 * hash + reviews.hashCode();
+        hash = 2 * hash + status.hashCode();
+
+        hash += (int)eventNumber;
+        hash += numTicketsLeft;
+        hash += ticketPriceInPence;
+        hash += numTicketsCap;
+        return hash;
     }
 }

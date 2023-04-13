@@ -94,4 +94,38 @@ public class Consumer extends User {
     public String getAddress() {
         return address;
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        // Check if o is an instance of Complex or not
+
+        if (!(o instanceof Consumer)) {
+            return false;
+        }
+
+        // typecast o to Consumer so that we can compare data members
+        Consumer c = (Consumer) o;
+
+        boolean addressEquals = address == null ? c.address == null : c.address.equals(address);
+
+        // Compare the data members and return accordingly
+        return name.equals(c.name) && phoneNumber.equals(c.phoneNumber) && addressEquals && bookings.equals(c.bookings) && preferences.equals(c.preferences);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 3 * hash + (name == null ? 0 : name.hashCode());
+        hash = 3 * hash + (phoneNumber == null ? 0 : phoneNumber.hashCode());
+        hash = 3 * hash + (address == null ? 0 : address.hashCode());
+        hash = 3 * hash + bookings.hashCode();
+        hash = 3 * hash + preferences.hashCode();
+        return hash;
+    }
 }

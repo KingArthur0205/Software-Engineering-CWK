@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestBooking extends ConsoleTest{
     Consumer consumer;
@@ -58,4 +58,49 @@ public class TestBooking extends ConsoleTest{
                 bookingTime.toString() + "}";
         assertEquals(bookingToString, testString);
     }
+
+    @Test
+    void testEqualsIdentical() {
+        Booking booking2 = new Booking(10, this.consumer, this.event, 1, bookingTime);
+
+        assertTrue(booking.equals(booking2));
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertFalse(booking.equals(null));
+    }
+
+    @Test
+    void testEqualsNotIdentical() {
+        Booking booking2 = new Booking(5, this.consumer, this.event, 1, bookingTime);
+        assertFalse(booking.equals(booking2));
+    }
+
+    @Test
+    void testEqualsToItSelf() {
+        assertTrue(booking.equals(booking));
+    }
+
+    @Test
+    void testHashCodeToIdentical() {
+        Booking booking2 = new Booking(10, this.consumer, this.event, 1, bookingTime);
+
+        assertTrue(booking.equals(booking2));
+        assertTrue(booking.hashCode() == booking2.hashCode());
+    }
+
+    @Test
+    void testHashCodeToItself() {
+        assertTrue(booking.hashCode() == booking.hashCode());
+    }
+
+    @Test
+    void testHashCodeToNotIdentical() {
+        Booking booking2 = new Booking(3, this.consumer, this.event, 1, bookingTime);
+
+        assertFalse(booking.equals(booking2));
+        assertFalse(booking.hashCode() == booking2.hashCode());
+    }
+
 }

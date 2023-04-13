@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestEvent extends ConsoleTest{
     private LocalDateTime startTime;
@@ -67,5 +67,59 @@ public class TestEvent extends ConsoleTest{
                 "startDateTime="+ startTime.toString()+ ", endDateTime=" + endTime.toString() +", status=ACTIVE, " +
                 "numTicketsLeft=30, tags=EventTagCollection{tags={hasSocialDistancing=true, hasAirFiltration=false}}}";
         assertEquals(eventString, eventToString);
+    }
+
+    @Test
+    void testEquals() {
+        Event event1 = new Event(1, "Event1", EventType.Music, 30, 100,
+                "55.94368888764689 -3.1888246174917114", "This is the Test Event",
+                startTime, endTime, tags);
+
+        assertTrue(event.equals(event1));
+    }
+
+    @Test
+    void testEqualsNull() {
+        assertFalse(event.equals(null));
+    }
+
+    @Test
+    void testEqualsToItself() {
+        assertTrue(event.equals(event));
+    }
+
+    @Test
+    void testEqualsNotIdentical() {
+        Event event1 = new Event(2, "Event1", EventType.Music, 30, 100,
+                "55.94368888764689 -3.1888246174917114", "This is the Test Event",
+                startTime, endTime, tags);
+
+        assertFalse(event.equals(event1));
+    }
+
+    @Test
+    void testHashCodeIdentical() {
+        Event event1 = new Event(1, "Event1", EventType.Music, 30, 100,
+                "55.94368888764689 -3.1888246174917114", "This is the Test Event",
+                startTime, endTime, tags);
+
+        assertTrue(event.equals(event1));
+
+        assertEquals(event.hashCode(), event1.hashCode());
+    }
+
+    @Test
+    void testHashCodeToItself() {
+        assertEquals(event.hashCode(), event.hashCode());
+    }
+
+    @Test
+    void testHashCodeToNotIdentical() {
+        Event event1 = new Event(2, "Event1", EventType.Music, 30, 100,
+                "55.94368888764689 -3.1888246174917114", "This is the Test Event",
+                startTime, endTime, tags);
+
+        assertFalse(event.equals(event1));
+        assertNotEquals(event1.hashCode(), event.hashCode());
     }
 }

@@ -91,4 +91,40 @@ public class Booking implements Serializable {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+
+        // If the object is compared with itself then return true
+        if (o == this) {
+            return true;
+        }
+
+        // Check if o is an instance of Booking or not
+
+        if (!(o instanceof Booking)) {
+            return false;
+        }
+
+        // typecast o to Booking so that we can compare data members
+        Booking c = (Booking) o;
+
+
+        // Compare the data members and return accordingly
+        return bookingNumber == c.bookingNumber && booker.equals(c.booker) && event.equals(c.event) && numTickets == c.numTickets &&
+                bookingDateTime.equals(c.bookingDateTime) && status.equals(c.status);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 6 * hash + (int)bookingNumber;
+        hash = 6 * hash + booker.hashCode();
+        hash = 6 * hash + event.hashCode();
+        hash = 6 * hash + bookingDateTime.hashCode();
+        hash = 6 * hash + status.hashCode();
+
+        hash += numTickets;
+
+        return hash;
+    }
 }

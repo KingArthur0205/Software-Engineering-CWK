@@ -69,6 +69,7 @@ public class TestConsumer extends ConsoleTest{
         Booking booking = new Booking(1, consumer, event, 1, LocalDateTime.now());
         consumer.addBooking(booking);
 
+        // Verify that booking is actually added to the system
         assertTrue(consumer.getBookings().contains(booking));
     }
 
@@ -79,5 +80,65 @@ public class TestConsumer extends ConsoleTest{
         startOutputCapture();
         consumer.notify(message);
         stopOutputCaptureAndCompare("Message to elon@gmail.com and 1234: The event is cancelled.");
+    }
+
+    @Test
+    void testEquals() {
+        Consumer consumer1 = createConsumer();
+        Consumer consumer2 = createConsumer();
+
+        assertNotNull(consumer1);
+        assertNotNull(consumer2);
+        assertTrue(consumer1.equals(consumer2));
+    }
+
+    @Test
+    void testEqualsNull() {
+        Consumer consumer1 = createConsumer();
+
+        assertFalse(consumer1.equals(null));
+    }
+
+    @Test
+    void testEqualsToItself() {
+        Consumer consumer1 = createConsumer();
+
+        assertTrue(consumer1.equals(consumer1));
+    }
+
+    @Test
+    void testEqualsNotIdentical() {
+        Consumer consumer2 = new Consumer("Different user", "elon@gmail.com","1234","","123");
+        Consumer consumer1 = createConsumer();
+
+        assertFalse(consumer1.equals(consumer2));
+    }
+
+    @Test
+    void testHashCodeToIdentical() {
+        Consumer consumer1 = createConsumer();
+        Consumer consumer2 = createConsumer();
+
+        assertNotNull(consumer1);
+        assertNotNull(consumer2);
+        assertTrue(consumer1.equals(consumer2));
+
+        assertTrue(consumer1.hashCode() == consumer2.hashCode());
+    }
+
+    @Test
+    void testHashCodeToItself() {
+        Consumer consumer1 = createConsumer();
+        assertTrue(consumer1.equals(consumer1));
+        assertEquals(consumer1.hashCode(), consumer1.hashCode());
+    }
+
+    @Test
+    void testHashCodeToNotIdentical() {
+        Consumer consumer2 = new Consumer("Different user", "elon@gmail.com","1234","","123");
+        Consumer consumer1 = createConsumer();
+
+        assertFalse(consumer1.equals(consumer2));
+        assertNotEquals(consumer1.hashCode(), consumer2.hashCode());
     }
 }

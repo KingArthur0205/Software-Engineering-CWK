@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class TestEventTagCollection {
@@ -86,5 +85,77 @@ public class TestEventTagCollection {
         EventTagCollection collection = new EventTagCollection(constructorInput);
         String collectionToString = "EventTagCollection{tags={hasAirFiltration=true, venueCapacity=<20}}";
         assertEquals(collectionToString, collection.toString());
+    }
+
+    @Test
+    void testEqualsWithNonEmptyInput() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+        EventTagCollection collection1 = new EventTagCollection(constructorInput);
+
+        assertTrue(collection.equals(collection1));
+    }
+
+    @Test
+    void testEqualsToItself() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+
+        assertTrue(collection.equals(collection));
+    }
+
+    @Test
+    void testEqualsNull() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+
+        assertFalse(collection.equals(null));
+    }
+
+    @Test
+    void testEqualsNotIdentical() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+        EventTagCollection collection1 = new EventTagCollection();
+
+        assertFalse(collection.equals(collection1));
+    }
+
+    @Test
+    void testEqualsIdentical() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+        EventTagCollection collection1 = new EventTagCollection(constructorInput);
+
+        assertTrue(collection.equals(collection1));
+    }
+
+    @Test
+    void testHashCodeIdentical() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+        EventTagCollection collection1 = new EventTagCollection(constructorInput);
+
+        assertTrue(collection.equals(collection1));
+        assertEquals(collection.hashCode(), collection1.hashCode());
+    }
+
+    @Test
+    void tesetHashCodeNotIdentical() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+        EventTagCollection collection1 = new EventTagCollection();
+
+        assertFalse(collection.equals(collection1));
+        assertNotEquals(collection1.hashCode(), collection.hashCode());
+    }
+
+    @Test
+    void testHashCodeToItself() {
+        String constructorInput = "hasAirFiltration=true,venueCapacity=<20";
+        EventTagCollection collection = new EventTagCollection(constructorInput);
+
+        assertTrue(collection.equals(collection));
+        assertEquals(collection.hashCode(), collection.hashCode());
     }
 }
